@@ -5,10 +5,10 @@ layout: nil
 <feed xmlns="http://www.w3.org/2005/Atom">
  
  <title>SanCoder-Q Blog</title>
- <link href="http://blog.sancoder.com/atom.xml" rel="self"/>
- <link href="http://blog.sancoder.com/"/>
+ <link href="http://sancoder-q.github.io/atom.xml" rel="self"/>
+ <link href="http://sancoder-q.github.io/"/>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://blog.sancoder.com/</id>
+ <id>http://sancoder-q.github.io/</id>
  <author>
    <name>SanCoder.Q</name>
    <email>sancoder.q@gmail.com</email>
@@ -19,7 +19,7 @@ layout: nil
    <title>{{ post.title }}</title>
    <link href="http://blog.sancoder.com{{ post.url }}"/>
    <updated>{{ post.date | date_to_xmlschema }}</updated>
-   <id>http://blog.sancoder.com{{ post.id }}</id>
+   <id>http://sancoder-q.github.io{{ post.id }}</id>
    <content type="html">{{ post.content | xml_escape }}</content>
  </entry>
  {% endfor %}
