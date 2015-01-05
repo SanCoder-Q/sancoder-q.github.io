@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JavaScript : Dynamic load external JS file
+title: "JavaScript : Dynamic load external JS file"
 ---
 
 ##{{ page.title }}
