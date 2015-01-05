@@ -1,4 +1,9 @@
-##Compare dmesgs
+---
+layout: post
+title: Compare dmesgs
+---
+
+##{{ page.title }}
 
 ```bash
 cat dmesg |cut -b 15- >dmesgc

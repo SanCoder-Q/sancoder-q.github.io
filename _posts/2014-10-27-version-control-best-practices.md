@@ -1,4 +1,9 @@
-## VERSION CONTROL BEST PRACTICES
+---
+layout: post
+title: VERSION CONTROL BEST PRACTICES
+---
+
+##{{ page.title }}
 ### 版本控制最佳实践
 ----
 ### Commit Related Changes
