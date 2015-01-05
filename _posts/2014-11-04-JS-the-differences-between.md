@@ -3,7 +3,8 @@ layout: post
 title: "JavaScript : The differences between ..."
 ---
 
-##{{ page.title }}
+#{{ page.title }}
+<br>
 ===============
 
 ```js

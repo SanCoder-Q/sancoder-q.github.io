@@ -3,7 +3,7 @@ layout: post
 title: Compare dmesgs
 ---
 
-##{{ page.title }}
+#{{ page.title }}
 <br>
 =======
 

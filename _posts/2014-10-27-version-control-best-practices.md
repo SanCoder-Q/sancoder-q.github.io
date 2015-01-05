@@ -3,10 +3,9 @@ layout: post
 title: VERSION CONTROL BEST PRACTICES
 ---
 
-##{{ page.title }}
-### 版本控制最佳实践
-
-
+#{{ page.title }}
+## 版本控制最佳实践
+<br>
 ----
 ### Commit Related Changes
 A commit should be a wrapper for related changes. For example, fixing two different bugs should produce two separate commits. Small commits make it easier for other team members to understand the changes and roll them back if something went wrong. With tools like the staging area and the ability to stage only parts of a file, Git makes it easy to create very granular commits.

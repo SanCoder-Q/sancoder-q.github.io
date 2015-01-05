@@ -3,7 +3,8 @@ layout: post
 title: "JavaScript : Dynamic load external JS file"
 ---
 
-##{{ page.title }}
+#{{ page.title }}
+<br>
 ===============
 
 ```js

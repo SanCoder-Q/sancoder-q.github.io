@@ -3,7 +3,8 @@ layout: post
 title: "Make emmet support .erb in Atom"
 ---
 
-##{{ page.title }}
+#{{ page.title }}
+<br>
 ===============
 
 
