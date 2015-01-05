@@ -4,7 +4,7 @@ title: JavaScript : A way to find out the relative path of current js file to it
 ---
 
 ##{{ page.title }}
-================
+
 
 ```js
 //get explorer
