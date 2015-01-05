@@ -4,7 +4,7 @@ title: "JavaScript : Dynamic load external JS file"
 ---
 
 ##{{ page.title }}
-
+===============
 
 ```js
 function loadExternalFile(fileName, fileType) {

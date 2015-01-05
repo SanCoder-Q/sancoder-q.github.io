@@ -1,10 +1,10 @@
 ---
 layout: post
-title: JavaScript : A way to find out the relative path of current js file to it's parent html
+title: "JavaScript : A way to find out the relative path of current js file to it's parent html"
 ---
 
 ##{{ page.title }}
-
+==============
 
 ```js
 //get explorer
