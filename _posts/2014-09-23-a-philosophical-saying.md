@@ -8,4 +8,5 @@ title: "A philosophical saying"
 ==============
 
 Why aren't people just up front with whay they want?
+
 Why don't they ever just say whay they mean?
