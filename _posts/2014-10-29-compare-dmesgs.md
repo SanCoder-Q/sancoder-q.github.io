@@ -4,6 +4,8 @@ title: Compare dmesgs
 ---
 
 ##{{ page.title }}
+<br>
+=======
 
 ```bash
 cat dmesg |cut -b 15- >dmesgc
