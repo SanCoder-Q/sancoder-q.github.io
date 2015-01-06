@@ -91,14 +91,20 @@ ul.posts {
   margin: 3em auto 2em auto;
   line-height: 1.5em;
 }
+.head {
+  margin-bottom: 2em;
+}
 
 .head .title {
   color: #a00;
   font-weight: bold;
-  font: normal bold 60px Crushed;
+  font: normal bold 50px Crushed;
+  margin-bottom: 20px;
 }
 .head .description {
-  font-size: 130%;
+  font-size: 110%;
+  color: #444;
+  font-weight: bold;
 }
 
 .nav {
