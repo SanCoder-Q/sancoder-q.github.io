@@ -98,7 +98,7 @@ ul.posts {
 .head .title {
   color: #a00;
   font-weight: bold;
-  font: normal bold 50px Crushed;
+  font-size: 50px;
   margin-bottom: 20px;
 }
 .head .description {
