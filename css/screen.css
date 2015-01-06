@@ -39,12 +39,12 @@ a {
   text-decoration: blink;
 }
 
-a:hover {
-  color: #500;
-}
-
 a:visited {
   color: #555;
+}
+
+a:hover {
+  color: #500;
 }
 
 table {
