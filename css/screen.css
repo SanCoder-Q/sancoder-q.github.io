@@ -68,9 +68,13 @@ ul.posts {
   }
 
   ul.posts span {
-    color: #aaa;
+    color: #888;
     font-family: Monaco, "Courier New", monospace;
     font-size: 80%;
+  }
+
+  ul.posts a {
+    font-weight: bold;
   }
 
 /*****************************************************************************/
