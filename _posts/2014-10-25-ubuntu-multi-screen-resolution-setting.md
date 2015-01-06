@@ -7,31 +7,31 @@ title: "Ubuntu multi-screen resolution setting"
 <br>
 ==============
 
-```bash
+{% highlight bash %}
 >cvt 1920 1080
 # 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz
-Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync 
+Modeline "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
 
 >xrandr --newmode  "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
 
 >xrandr --addmode VGA-1 "1920x1080_60.00"
 
 >xrandr --output VGA-1 --mode "1920x1080_60.00"
-```
-```bash
+{% endhighlight %}
+{% highlight bash %}
 $ sudo gedit /etc/gdm/Init/Default
-```
-(this will ask for your root password type the password and a text editor will appear)in this you will see a text line like this 
-```bash
+{% endhighlight %}
+(this will ask for your root password type the password and a text editor will appear)in this you will see a text line like this
+{% highlight bash %}
 PATH=/usr/bin:$PATH
 OLD_IFS=$IFS
-```
+{% endhighlight %}
 just below this paste the step 3 to 5 commands
 and then save it.
 
 example :
 
-```bash
+{% highlight bash %}
 #!/bin/sh
 # Stolen from the debian kdm setup, aren't I sneaky
 # Plus a lot of fun stuff added
@@ -49,4 +49,4 @@ if [ -x '/usr/bin/xsplash' ];
 
 then
 /usr/bin/xsplash --gdm-session --daemon
-```
+{% endhighlight %}

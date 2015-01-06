@@ -11,7 +11,7 @@ title: "Make emmet support .erb in Atom"
 Create a new file named "snippets.json" in ~/emmet/ folder. (Default extensions path).
 Add the follow content in it and restart your Atom. Have fun!
 
-```json
+{% highlight js %}
 {
 	"html": {
 		"filters": "html",
@@ -184,4 +184,4 @@ Add the follow content in it and restart your Atom. Have fun!
 		}
 	}
 }
-```
+{% endhighlight %}

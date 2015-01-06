@@ -7,7 +7,7 @@ title: "JavaScript : A way to find out the relative path of current js file to i
 <br>
 ==============
 
-```js
+{% highlight js %}
 //get explorer
 (function(){
   var explorer = window.navigator.userAgent;
@@ -66,5 +66,4 @@ function getRelativePath(srcPath, desPath) {
 var href = /(?:http|https|file):(\/+)(.+)/.exec(window.location.href)[2];
 var current = getCurrentJSPath();
 var relative = getRelativePath(href, current);
-```
-
+{% endhighlight %}

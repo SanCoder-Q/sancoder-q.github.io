@@ -7,7 +7,7 @@ title: "JavaScript : Dynamic load external JS file"
 <br>
 ===============
 
-```js
+{% highlight js %}
 function loadExternalFile(fileName, fileType) {
   var fileRef;
   switch(fileType.toLowerCase()) {
@@ -30,11 +30,11 @@ function loadExternalFile(fileName, fileType) {
     document.getElementsByTagName("head")[0].appendChild(fileRef);
   }
 }
-```
+{% endhighlight %}
 
 Another way is use Ajax, the content will be run immidiately, then run the code after.
 
 
-```js
+{% highlight js %}
 $.getScript('javascript.js');
-```
+{% endhighlight %}
