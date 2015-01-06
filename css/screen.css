@@ -111,6 +111,10 @@ ul.posts {
   color: #a00;
   font-weight: bold;
   margin-bottom: 2em;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  border-top: 2px solid #eee;
+  border-bottom: 2px solid #eee;
 }
 
   .site .nav a {
