@@ -36,14 +36,15 @@ p {
 
 a {
   color: #333;
+  text-decoration: blink;
 }
 
 a:hover {
-  color: black;
+  color: #500;
 }
 
 a:visited {
-  color: #444;
+  color: #555;
 }
 
 table {
