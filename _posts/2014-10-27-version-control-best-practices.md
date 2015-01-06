@@ -1,6 +1,6 @@
 ---
 layout: post
-title: VERSION CONTROL BEST PRACTICES
+title: Version Control Best Practices
 ---
 
 #{{ page.title }}
