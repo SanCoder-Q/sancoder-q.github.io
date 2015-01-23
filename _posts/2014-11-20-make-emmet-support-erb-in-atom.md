@@ -1,15 +1,187 @@
 ---
 layout: post
-title: "Sublime Text 3 zh_patch"
+title: "Make emmet support .erb in Atom"
 ---
 
 #{{ page.title }}
 <br>
 ===============
 
-- Extract .7z
-- {% highlight bash %} sudo ./setup.sh {% endhighlight %}
-- Done!
 
-[Download Zip](https://github.com/SanCoder-Q/sublime_zh_patch/archive/master.zip)
-[Repository](https://github.com/SanCoder-Q/sublime_zh_patch)
+Create a new file named "snippets.json" in ~/emmet/ folder. (Default extensions path).
+Add the follow content in it and restart your Atom. Have fun!
+
+{% highlight js %}
+{
+	"html": {
+		"filters": "html",
+		"profile": "html",
+		"snippets": {
+			"%":"<% |${child} %>"
+		}
+	},
+
+	"erb": {
+		"extends": "html",
+		"filters": "html",
+		"profile": "erb",
+		"snippets": {
+			"%":"<% |${child} %>",
+			"!!!":    "<!DOCTYPE html>",
+			"!!!4t":  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">",
+			"!!!4s":  "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">",
+			"!!!xt":  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">",
+			"!!!xs":  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">",
+			"!!!xxs": "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">",
+
+			"c": "<!-- |${child} -->",
+			"cc:ie6": "<!--[if lte IE 6]>\n\t${child}|\n<![endif]-->",
+			"cc:ie": "<!--[if IE]>\n\t${child}|\n<![endif]-->",
+			"cc:noie": "<!--[if !IE]><!-->\n\t${child}|\n<!--<![endif]-->"
+		},
+
+		"abbreviations": {
+			"!": "html:5",
+			"a": "<a href=\"\">",
+			"a:link": "<a href=\"http://|\">",
+			"a:mail": "<a href=\"mailto:|\">",
+			"abbr": "<abbr title=\"\">",
+			"acr|acronym": "<acronym title=\"\">",
+			"base": "<base href=\"\" />",
+			"basefont": "<basefont/>",
+			"br": "<br/>",
+			"frame": "<frame/>",
+			"hr": "<hr/>",
+			"bdo": "<bdo dir=\"\">",
+			"bdo:r": "<bdo dir=\"rtl\">",
+			"bdo:l": "<bdo dir=\"ltr\">",
+			"col": "<col/>",
+			"link": "<link rel=\"stylesheet\" href=\"\" />",
+			"link:css": "<link rel=\"stylesheet\" href=\"${1:style}.css\" />",
+			"link:print": "<link rel=\"stylesheet\" href=\"${1:print}.css\" media=\"print\" />",
+			"link:favicon": "<link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"${1:favicon.ico}\" />",
+			"link:touch": "<link rel=\"apple-touch-icon\" href=\"${1:favicon.png}\" />",
+			"link:rss": "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"${1:rss.xml}\" />",
+			"link:atom": "<link rel=\"alternate\" type=\"application/atom+xml\" title=\"Atom\" href=\"${1:atom.xml}\" />",
+			"meta": "<meta/>",
+			"meta:utf": "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\" />",
+			"meta:win": "<meta http-equiv=\"Content-Type\" content=\"text/html;charset=windows-1251\" />",
+			"meta:vp": "<meta name=\"viewport\" content=\"width=${1:device-width}, user-scalable=${2:no}, initial-scale=${3:1.0}, maximum-scale=${4:1.0}, minimum-scale=${5:1.0}\" />",
+			"meta:compat": "<meta http-equiv=\"X-UA-Compatible\" content=\"${1:IE=7}\" />",
+			"style": "<style>",
+			"script": "<script !src=\"\">",
+			"script:src": "<script src=\"\">",
+			"img": "<img src=\"\" alt=\"\" />",
+			"iframe": "<iframe src=\"\" frameborder=\"0\">",
+			"embed": "<embed src=\"\" type=\"\" />",
+			"object": "<object data=\"\" type=\"\">",
+			"param": "<param name=\"\" value=\"\" />",
+			"map": "<map name=\"\">",
+			"area": "<area shape=\"\" coords=\"\" href=\"\" alt=\"\" />",
+			"area:d": "<area shape=\"default\" href=\"\" alt=\"\" />",
+			"area:c": "<area shape=\"circle\" coords=\"\" href=\"\" alt=\"\" />",
+			"area:r": "<area shape=\"rect\" coords=\"\" href=\"\" alt=\"\" />",
+			"area:p": "<area shape=\"poly\" coords=\"\" href=\"\" alt=\"\" />",
+			"form": "<form action=\"\">",
+			"form:get": "<form action=\"\" method=\"get\">",
+			"form:post": "<form action=\"\" method=\"post\">",
+			"label": "<label for=\"\">",
+			"input": "<input type=\"${1:text}\" />",
+			"inp": "<input type=\"${1:text}\" name=\"\" id=\"\" />",
+			"input:h|input:hidden": "input[type=hidden name]",
+			"input:t|input:text": "inp",
+			"input:search": "inp[type=search]",
+			"input:email": "inp[type=email]",
+			"input:url": "inp[type=url]",
+			"input:p|input:password": "inp[type=password]",
+			"input:datetime": "inp[type=datetime]",
+			"input:date": "inp[type=date]",
+			"input:datetime-local": "inp[type=datetime-local]",
+			"input:month": "inp[type=month]",
+			"input:week": "inp[type=week]",
+			"input:time": "inp[type=time]",
+			"input:tel": "inp[type=tel]",
+			"input:number": "inp[type=number]",
+			"input:color": "inp[type=color]",
+			"input:c|input:checkbox": "inp[type=checkbox]",
+			"input:r|input:radio": "inp[type=radio]",
+			"input:range": "inp[type=range]",
+			"input:f|input:file": "inp[type=file]",
+			"input:s|input:submit": "<input type=\"submit\" value=\"\" />",
+			"input:i|input:image": "<input type=\"image\" src=\"\" alt=\"\" />",
+			"input:b|input:button": "<input type=\"button\" value=\"\" />",
+			"isindex": "<isindex/>",
+			"input:reset": "input:button[type=reset]",
+			"select": "<select name=\"\" id=\"\">",
+			"select:d|select:disabled": "select[disabled.]",
+			"opt|option": "<option value=\"\">",
+			"textarea": "<textarea name=\"\" id=\"\" cols=\"${1:30}\" rows=\"${2:10}\">",
+			"marquee": "<marquee behavior=\"\" direction=\"\">",
+			"menu:c|menu:context": "menu[type=context]>",
+			"menu:t|menu:toolbar": "menu[type=toolbar]>",
+			"video": "<video src=\"\">",
+			"audio": "<audio src=\"\">",
+			"html:xml": "<html xmlns=\"http://www.w3.org/1999/xhtml\">",
+			"keygen": "<keygen/>",
+			"command": "<command/>",
+			"btn:s|button:s|button:submit" : "button[type=submit]",
+			"btn:r|button:r|button:reset" : "button[type=reset]",
+			"btn:d|button:d|button:disabled" : "button[disabled.]",
+			"fst:d|fset:d|fieldset:d|fieldset:disabled" : "fieldset[disabled.]",
+
+			"bq": "blockquote",
+			"fig": "figure",
+			"figc": "figcaption",
+			"ifr": "iframe",
+			"emb": "embed",
+			"obj": "object",
+			"src": "source",
+			"cap": "caption",
+			"colg": "colgroup",
+			"fst": "fieldset",
+			"btn": "button",
+			"optg": "optgroup",
+			"tarea": "textarea",
+			"leg": "legend",
+			"sect": "section",
+			"art": "article",
+			"hdr": "header",
+			"ftr": "footer",
+			"adr": "address",
+			"dlg": "dialog",
+			"str": "strong",
+			"prog": "progress",
+			"mn": "main",
+			"tem": "template",
+			"fset": "fieldset",
+			"datag": "datagrid",
+			"datal": "datalist",
+			"kg": "keygen",
+			"out": "output",
+			"det": "details",
+			"cmd": "command",
+			"doc": "html>(head>meta[charset=${charset}]+title{${1:Document}})+body",
+			"doc4": "html>(head>meta[http-equiv=\"Content-Type\" content=\"text/html;charset=${charset}\"]+title{${1:Document}})+body",
+
+			"html:4t":  "!!!4t+doc4[lang=${lang}]",
+			"html:4s":  "!!!4s+doc4[lang=${lang}]",
+			"html:xt":  "!!!xt+doc4[xmlns=http://www.w3.org/1999/xhtml xml:lang=${lang}]",
+			"html:xs":  "!!!xs+doc4[xmlns=http://www.w3.org/1999/xhtml xml:lang=${lang}]",
+			"html:xxs": "!!!xxs+doc4[xmlns=http://www.w3.org/1999/xhtml xml:lang=${lang}]",
+			"html:5":   "!!!+doc[lang=${lang}]",
+
+			"ol+": "ol>li",
+			"ul+": "ul>li",
+			"dl+": "dl>dt+dd",
+			"map+": "map>area",
+			"table+": "table>tr>td",
+			"colgroup+": "colgroup>col",
+			"colg+": "colgroup>col",
+			"tr+": "tr>td",
+			"select+": "select>option",
+			"optgroup+": "optgroup>option",
+			"optg+": "optgroup>option"
+		}
+	}
+}
+{% endhighlight %}
