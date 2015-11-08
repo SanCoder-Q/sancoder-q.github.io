@@ -1,0 +1,48 @@
+---
+layout: post
+title: Set default shell to fish
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Set the shell</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<ul class="org-ul">
+<li>Add /usr/local/bin/fish into /etc/shells</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">chsh -s /usr/local/bin/fish
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Change the theme</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ul class="org-ul">
+<li>Install oh-my-fish</li>
+<li>Choose a omf theme from <a href="https://github.com/oh-my-fish/oh-my-fish/blob/master/docs/Themes.md">https://github.com/oh-my-fish/oh-my-fish/blob/master/docs/Themes.md</a></li>
+<li>Choose a iterm2 theme from <a href="http://iterm2colorschemes.com/">http://iterm2colorschemes.com/</a></li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-sh">omf theme THEME_NAME
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">Install the omf plugin</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<div class="org-src-container">
+
+<pre class="src src-sh">omf install z
+omf install rbenv
+omf install export
+rbenv rehash
+</pre>
+</div>
+</div>
+</div>

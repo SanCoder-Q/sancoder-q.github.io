@@ -1,0 +1,74 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: Start to learn LisP
+---
+#+END_HTML
+* COMMENT requirement
+#+BEGIN_SRC emacs-lisp
+(require 'ob-scheme)
+#+END_SRC
+
+#+RESULTS:
+: ob-scheme
+
+* Why LisP
+
+因为 LisP 有着：
+- 简单的语法规则
+- 众多的方言（Emacs LisP, Scheme, Clojure, Guile）
+- 对函数式的良好支持
+- 天然的 λ演算语言
+- 一本 NB 的书（SICP）
+
+* Rules of LisP
+
+*** 1. 表达式与组合式
+#+BEGIN_SRC scheme :result-type nil
+
+(+ 1 3)
+#+END_SRC
+
+#+RESULTS:
+: 4
+
+#+BEGIN_SRC scheme
+(+ 1 2)
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+#+BEGIN_SRC scheme
+(+ 1 (+ 1 1))
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+*** 2. 命名 α-Conversion
+#+BEGIN_SRC scheme
+(lambda f x (f x))
+#+END_SRC
+
+#+RESULTS:
+| + | 1 | 2 |
+
+#+BEGIN_SRC scheme
+(setq f 'f)
+#+END_SRC
+
+#+RESULTS:
+: f
+
+#+BEGIN_SRC scheme
+(setq f '(+ 1 2))
+#+END_SRC
+
+#+RESULTS:
+| + | 1 | 2 |
+
+LisP 使用应用序而非正则序来对组合式求值
+*** 3. 替换 β-Reduction

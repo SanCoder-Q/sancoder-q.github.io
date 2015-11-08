@@ -1,0 +1,20 @@
+---
+layout: post
+title: Close the damned notification windows using AppleScript
+---
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Close the damned notification windows</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<div class="org-src-container">
+
+<pre class="src src-applescript"><span style="color: #99cc99;">tell</span> <span style="color: #99cc99;">application</span> <span style="color: #66cccc;">"System Events"</span>
+    <span style="color: #99cc99;">if</span> exists (window 1 of process <span style="color: #66cccc;">"Notification Center"</span>)
+        <span style="color: #99cc99;">if</span> exists (button <span style="color: #66cccc;">"Close"</span> of window 1 of process <span style="color: #66cccc;">"Notification Center"</span>)
+            click button <span style="color: #66cccc;">"Close"</span> of window 1 of process <span style="color: #66cccc;">"Notification Center"</span>
+        <span style="color: #99cc99;">end</span> <span style="color: #99cc99;">if</span>
+    <span style="color: #99cc99;">end</span> <span style="color: #99cc99;">if</span>
+<span style="color: #99cc99;">end</span> <span style="color: #99cc99;">tell</span>
+</pre>
+</div>
+</div>
+</div>

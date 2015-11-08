@@ -1,0 +1,29 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: Set default shell to fish
+---
+#+END_HTML
+
+* Set the shell
+
+- Add /usr/local/bin/fish into /etc/shells
+#+BEGIN_SRC sh
+chsh -s /usr/local/bin/fish
+#+END_SRC
+
+* Change the theme
+- Install oh-my-fish
+- Choose a omf theme from https://github.com/oh-my-fish/oh-my-fish/blob/master/docs/Themes.md
+- Choose a iterm2 theme from http://iterm2colorschemes.com/
+#+BEGIN_SRC sh
+omf theme THEME_NAME
+#+END_SRC
+
+* Install the omf plugin
+#+BEGIN_SRC sh
+omf install z
+omf
+#+END_SRC

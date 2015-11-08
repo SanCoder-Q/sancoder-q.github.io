@@ -1,0 +1,71 @@
+---
+layout: post
+title: Start to learn LisP
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Why LisP</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+因为 LisP 有着：
+</p>
+<ul class="org-ul">
+<li>简单的语法规则</li>
+<li>众多的方言（Emacs LisP, Schema, Clojure, Guile）</li>
+<li>对函数式的良好支持</li>
+<li>天然的 λ演算语言</li>
+<li>一本 NB 的书（SICP）</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Rules of LisP</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+</div><div id="outline-container-orgheadline2" class="outline-4">
+<h4 id="orgheadline2">1. 表达式与组合式</h4>
+<div class="outline-text-4" id="text-orgheadline2">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">3
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(+ 1 2)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(+ 1 (+ 1 1))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">2. 命名 α-Conversion</h4>
+<div class="outline-text-4" id="text-orgheadline3">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #99cc99;">lambda</span> f (f x))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(setq f 'f)
+</pre>
+</div>
+
+<p>
+LisP 使用应用序而非正则序来对组合式求值
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">3. 替换 β-Reduction</h4>
+</div>
+</div>
