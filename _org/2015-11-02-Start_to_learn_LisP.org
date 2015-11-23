@@ -6,13 +6,27 @@ layout: post
 title: Start to learn LisP
 ---
 #+END_HTML
+
 * COMMENT requirement
+
 #+BEGIN_SRC emacs-lisp
+(require 'yasnippet)
 (require 'ob-scheme)
 #+END_SRC
 
 #+RESULTS:
 : ob-scheme
+
+* Content
+- [[Why LisP]]
+- [[Rules of LisP]]
+  - [[表达式与组合式]]
+  - [[命名 α-Conversion]]
+  - [[替换 β-Reduction]]
+  - [[条件与谓词]]
+  - [[Abstration of procedures 过程抽象]]
+
+
 
 * Why LisP
 
@@ -25,8 +39,8 @@ title: Start to learn LisP
 
 * Rules of LisP
 
-*** 1. 表达式与组合式
-#+BEGIN_SRC scheme :result-type nil
+*** 表达式与组合式
+#+BEGIN_SRC scheme
 
 (+ 1 3)
 #+END_SRC
@@ -38,9 +52,6 @@ title: Start to learn LisP
 (+ 1 2)
 #+END_SRC
 
-#+RESULTS:
-: 3
-
 #+BEGIN_SRC scheme
 (+ 1 (+ 1 1))
 #+END_SRC
@@ -48,27 +59,144 @@ title: Start to learn LisP
 #+RESULTS:
 : 3
 
-*** 2. 命名 α-Conversion
+*** 命名 α-Conversion
 #+BEGIN_SRC scheme
-(lambda f x (f x))
+(define (f x) (+ x x))
+(f 1)
 #+END_SRC
 
 #+RESULTS:
-| + | 1 | 2 |
-
-#+BEGIN_SRC scheme
-(setq f 'f)
-#+END_SRC
-
-#+RESULTS:
-: f
-
-#+BEGIN_SRC scheme
-(setq f '(+ 1 2))
-#+END_SRC
-
-#+RESULTS:
-| + | 1 | 2 |
+: 2
 
 LisP 使用应用序而非正则序来对组合式求值
-*** 3. 替换 β-Reduction
+
+*** 替换 β-Reduction
+
+#+BEGIN_SRC scheme
+((lambda (x) (+ x x)) 1)
+#+END_SRC
+
+#+RESULTS:
+: 2
+
+*** 条件与谓词
+
+条件谓词判断语法: *cond*
+#+BEGIN_SRC scheme
+(cond (<predicate> <expression>)
+      (<predicate> <expression>)
+      ...
+      [(else <expression>)])
+#+END_SRC
+
+#+BEGIN_SRC scheme
+  (define (abs x)
+    (cond ((> x 0) x)
+          ((= x 0) 0)
+          (else (- x))))
+  (abs -3)
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+条件谓词判断语法: *if*
+#+BEGIN_SRC scheme
+(if <predicate> <consequent> <alternative>)
+#+END_SRC
+
+#+BEGIN_SRC scheme
+  (define (abs x)
+    (if (< x 0) (- x) x))
+  (abs -3)
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+逻辑运算符: *and* *or* *not*
+#+BEGIN_SRC scheme
+(and <expression> ... <expression>)
+(or <expression> ... <expression>)
+(not <expression>)
+#+END_SRC
+
+#+BEGIN_SRC scheme
+    ((lambda (x y) (and x y)) 1 1)
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+#+BEGIN_SRC scheme
+    ((lambda (x y) (or x y)) 1 0)
+#+END_SRC
+
+#+RESULTS:
+: 1
+
+#+BEGIN_SRC scheme
+    ((lambda (x) (not x)) (> 1 0))
+#+END_SRC
+
+#+RESULTS:
+: #f
+*** Abstration of procedures 过程抽象
+- Local
+  - Bound Variable 约束变量
+  - Free Variable 自由变量
+  - Captured Variable 被捕获变量
+- Internal Definitions
+下方代码的过程 =bar= 被称为 *内部定义过程* , 这种结构被称为 *块结构(Block Structure)*:
+#+BEGIN_SRC scheme
+  (define (foo)
+    (define (bar) 2)
+    (bar))
+  (foo)
+#+END_SRC
+
+#+RESULTS:
+: 2
+可以定义 *词法作用域(Lexical Scoping)*:
+#+BEGIN_SRC scheme
+  (define (foo x)
+    (define (bar) (+ 2 x))
+    (bar))
+  (foo 2)
+#+END_SRC
+
+#+RESULTS:
+: 4
+** Procedure & Process
+过程是一种计算过程的演化(Procedure is a pattern for the local evolution of a computational process.)
+*** Linear Recursion and Iteration
+- 线性递归计算 Linear Recursion Process (*NOT Procedure!!*)
+#+BEGIN_SRC scheme
+  (define (factorial n)
+    (if (= n 1)
+        1
+        (* n (factorial (- n 1)))))
+  (factorial 3)
+#+END_SRC
+
+#+RESULTS:
+: 6
+
+- 线性迭代计算 Linear Iteration Process (*NOT Procedure!!*)
+#+BEGIN_SRC scheme
+  (define (fact-iter c i n)
+    (if (> i n)
+        c
+        (fact-iter (* c i) (+ i 1) n)))
+
+  (define (factorial n)
+    (fact-iter 1 1 n))
+
+  (factorial 3)
+#+END_SRC
+
+#+RESULTS:
+: 6
+
+过程 (Procedure) 描述的是语法形式的事实, 一个递归过程 (Recursion Procedure) 指的是过程的定义中直接或间接的引用了该过程本身。
+计算 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式计算的，也就是 *尾递归 (Tail-Recursion)* 的方式计算的。

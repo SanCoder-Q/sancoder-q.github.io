@@ -3,6 +3,25 @@ layout: post
 title: Start to learn LisP
 ---
 
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">Content</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<ul class="org-ul">
+<li><a href="#orgheadline1">Why LisP</a></li>
+<li><a href="#orgheadline2">Rules of LisP</a>
+<ul class="org-ul">
+<li><a href="#orgheadline3">表达式与组合式</a></li>
+<li><a href="#orgheadline4">命名 α-Conversion</a></li>
+<li><a href="#orgheadline5">替换 β-Reduction</a></li>
+<li><a href="#orgheadline6">条件与谓词</a></li>
+<li><a href="#orgheadline7">Abstration of procedures 过程抽象</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+
 <div id="outline-container-orgheadline1" class="outline-2">
 <h2 id="orgheadline1">Why LisP</h2>
 <div class="outline-text-2" id="text-orgheadline1">
@@ -11,7 +30,7 @@ title: Start to learn LisP
 </p>
 <ul class="org-ul">
 <li>简单的语法规则</li>
-<li>众多的方言（Emacs LisP, Schema, Clojure, Guile）</li>
+<li>众多的方言（Emacs LisP, Scheme, Clojure, Guile）</li>
 <li>对函数式的良好支持</li>
 <li>天然的 λ演算语言</li>
 <li>一本 NB 的书（SICP）</li>
@@ -19,44 +38,39 @@ title: Start to learn LisP
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">Rules of LisP</h2>
-<div class="outline-text-2" id="text-orgheadline5">
-</div><div id="outline-container-orgheadline2" class="outline-4">
-<h4 id="orgheadline2">1. 表达式与组合式</h4>
-<div class="outline-text-4" id="text-orgheadline2">
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">3
-</pre>
-</div>
-
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(+ 1 2)
-</pre>
-</div>
-
-<div class="org-src-container">
-
-<pre class="src src-emacs-lisp">(+ 1 (+ 1 1))
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3">2. 命名 α-Conversion</h4>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Rules of LisP</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+</div><div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">表达式与组合式</h4>
 <div class="outline-text-4" id="text-orgheadline3">
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(<span style="color: #99cc99;">lambda</span> f (f x))
+<pre class="src src-scheme">(+ 1 3)
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-emacs-lisp">(setq f 'f)
+<pre class="src src-scheme">(+ 1 2)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(+ 1 (+ 1 1))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">命名 α-Conversion</h4>
+<div class="outline-text-4" id="text-orgheadline4">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">f</span> x) (+ x x))
+(f 1)
 </pre>
 </div>
 
@@ -65,7 +79,171 @@ LisP 使用应用序而非正则序来对组合式求值
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">3. 替换 β-Reduction</h4>
+
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">替换 β-Reduction</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">((<span style="color: #99cc99;">lambda</span> (x) (+ x x)) 1)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6">条件与谓词</h4>
+<div class="outline-text-4" id="text-orgheadline6">
+<p>
+条件谓词判断语法: <b>cond</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">cond</span> (<span style="color: #6699cc;">&lt;predicate&gt;</span> <span style="color: #6699cc;">&lt;expression&gt;</span>)
+      (<span style="color: #6699cc;">&lt;predicate&gt;</span> <span style="color: #6699cc;">&lt;expression&gt;</span>)
+      ...
+      [(<span style="color: #99cc99;">else</span> <span style="color: #6699cc;">&lt;expression&gt;</span>)])
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">abs</span> x)
+  (<span style="color: #99cc99;">cond</span> ((&gt; x 0) x)
+        ((= x 0) 0)
+        (<span style="color: #99cc99;">else</span> (- x))))
+(abs -3)
+</pre>
+</div>
+
+<p>
+条件谓词判断语法: <b>if</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">if</span> <span style="color: #6699cc;">&lt;predicate&gt;</span> <span style="color: #6699cc;">&lt;consequent&gt;</span> <span style="color: #6699cc;">&lt;alternative&gt;</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">abs</span> x)
+  (<span style="color: #99cc99;">if</span> (&lt; x 0) (- x) x))
+(abs -3)
+</pre>
+</div>
+
+<p>
+逻辑运算符: <b>and</b> <b>or</b> <b>not</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">and</span> <span style="color: #6699cc;">&lt;expression&gt;</span> ... <span style="color: #6699cc;">&lt;expression&gt;</span>)
+(<span style="color: #99cc99;">or</span> <span style="color: #6699cc;">&lt;expression&gt;</span> ... <span style="color: #6699cc;">&lt;expression&gt;</span>)
+(not <span style="color: #6699cc;">&lt;expression&gt;</span>)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">((<span style="color: #99cc99;">lambda</span> (x y) (<span style="color: #99cc99;">and</span> x y)) 1 1)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">((<span style="color: #99cc99;">lambda</span> (x y) (<span style="color: #99cc99;">or</span> x y)) 1 0)
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">((<span style="color: #99cc99;">lambda</span> (x) (not x)) (&gt; 1 0))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">Abstration of procedures 过程抽象</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<ul class="org-ul">
+<li>Local
+<ul class="org-ul">
+<li>Bound Variable 约束变量</li>
+<li>Free Variable 自由变量</li>
+<li>Captured Variable 被捕获变量</li>
+</ul></li>
+<li>Internal Definitions</li>
+</ul>
+<p>
+下方代码的过程 <code>bar</code> 被称为 <b>内部定义过程</b> , 这种结构被称为 <b>块结构(Block Structure)</b>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">foo</span>)
+  (<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">bar</span>) 2)
+  (bar))
+(foo)
+</pre>
+</div>
+<p>
+可以定义 <b>词法作用域(Lexical Scoping)</b>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">foo</span> x)
+  (<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">bar</span>) (+ 2 x))
+  (bar))
+(foo 2)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">Procedure &amp; Process</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+过程是一种计算过程的演化(Procedure is a pattern for the local evolution of a computational process.)
+</p>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">Linear Recursion and Iteration</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<ul class="org-ul">
+<li>线性递归计算 Linear Recursion Process (<b>NOT Procedure!!</b>)</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">factorial</span> n)
+  (<span style="color: #99cc99;">if</span> (= n 1)
+      1
+      (* n (factorial (- n 1)))))
+(factorial 3)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>线性迭代计算 Linear Iteration Process (<b>NOT Procedure!!</b>)</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fact-iter</span> c i n)
+  (<span style="color: #99cc99;">if</span> (&gt; i n)
+      c
+      (fact-iter (* c i) (+ i 1) n)))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">factorial</span> n)
+  (fact-iter 1 1 n))
+
+(factorial 3)
+</pre>
+</div>
+
+<p>
+过程 (Procedure) 描述的是语法形式的事实, 一个递归过程 (Recursion Procedure) 指的是过程的定义中直接或间接的引用了该过程本身。
+计算 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式计算的，也就是 <b>尾递归 (Tail-Recursion)</b> 的方式计算的。
+</p>
+</div>
+</div>
 </div>
 </div>

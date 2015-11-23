@@ -1,0 +1,219 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: SICP Exercise Results
+---
+#+END_HTML
+
+* COMMENT requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'yasnippet)
+(require 'ob-scheme)
+#+END_SRC
+
+#+RESULTS:
+: ob-scheme
+
+* 1. Building Abstractions with Procedures
+** 1.1 The Elements of Programming
+*** Exercise 1.1
+#+BEGIN_SRC scheme
+  (list 10
+        (+ 5 3 4)
+        (- 9 1)
+        (/ 6 2)
+        (+ (* 2 4) (- 4 6))
+        )
+#+END_SRC
+
+#+RESULTS:
+: (10 12 8 3 6)
+
+#+BEGIN_SRC scheme
+  (define a 3)
+  (define b (+ a 1))
+  (list (+ a b (* a b))
+        (= a b)
+        (if (and (> b a) (< b (* a b)))
+            b
+            a)
+        (cond ((= a 4) 6)
+              ((= b 4) (+ 6 7 a))
+              (else 25))
+        (+ 2 (if (> b a) b a))
+        (* (cond ((> a b) a)
+                 ((< a b) b)
+                 (else -1))
+           (+ a 1)))
+#+END_SRC
+
+#+RESULTS:
+: (19 #f 4 16 6 16)
+*** Exercise 1.2
+#+BEGIN_SRC scheme
+  (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
+     (* 3 (- 6 2) (- 2 7)))
+#+END_SRC
+
+#+RESULTS:
+: -37/150
+*** Exercise 1.3
+#+BEGIN_SRC scheme
+  (define (func a b c)
+    (if (> a b)
+        (if (> b c)
+            (+ a b)
+            (+ a c))
+        (if (> a c)
+            (+ a b)
+            (+ b c))))
+  (func 4 2 3)
+#+END_SRC
+
+#+RESULTS:
+: 7
+*** Exercise 1.4
+*** Exercise 1.5
+#+BEGIN_SRC scheme
+(define (q) (q))
+#+END_SRC
+This line means to define a *non-parameter recursive function*. So once it be evaluated, the complier will go into a endless loop.
+The difference between =normal order= and =applicative order= is the first one will not eval anything before all the expression is expanded.
+So in this exercise, if the complier is using the =applicative order= to interpreter the code, it will crash.
+Another interest thing is =if= syntax. It's a high level structor with a specific process which means there is only one of the expression will be evaluated whatever the predicate is. Hence, if the coplier is using the =normal order=, the result will be 0.
+*** Exercise 1.6
+Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and it will evaluate the predicate and the follow expression at the same time. So it should not be used to stop a recursive process.
+*** Exercise 1.7
+#+BEGIN_SRC scheme
+  (define (improve guess x)
+    (/ (+ guess (/ x guess)) 2))
+
+  (define (abs x)
+    (if (< x 0)
+        (- x)
+        x))
+
+  (define (good-enough? guess last-guess)
+    (if (< (abs (- (/ guess last-guess) 1)) 0.01)
+        #t
+        #f))
+
+  (define (sqrt-iter guess last-guess x)
+    (if (= x 0)
+        0
+        (if (good-enough? guess last-guess)
+            guess
+            (sqrt-iter (improve guess x) guess x))))
+
+  (define (my-sqrt x)
+    (sqrt-iter 1.0 x x))
+
+  (list
+   (my-sqrt 10000)
+   (my-sqrt 100)
+   (my-sqrt 0.0001)
+   (my-sqrt 0))
+#+END_SRC
+
+#+RESULTS:
+: (100.00000025490743 10.000052895642693 0.010000000025490743 0)
+
+*** Exercise 1.8
+#+BEGIN_SRC scheme
+  (define (improve guess x)
+    (/ (+ (/ x (* guess guess)) (* 2 guess)) 3))
+
+  (define (abs x)
+    (if (< x 0)
+        (- x)
+        x))
+
+  (define (good-enough? guess last-guess)
+    (if (< (abs (- (/ guess last-guess) 1)) 0.01)
+        #t
+        #f))
+
+  (define (cube-iter guess last-guess x)
+    (if (= x 0)
+        0
+        (if (good-enough? guess last-guess)
+            guess
+            (cube-iter (improve guess x) guess x))))
+
+  (define (my-cube x)
+    (cube-iter 1.0 x x))
+
+  (list
+   (my-cube 1000000)
+   (my-cube 27)
+   (my-cube 0.001)
+   (my-cube 0))
+#+END_SRC
+
+#+RESULTS:
+: (100.000072886219 3.0000005410641766 0.10000000198565878 0)
+*** Exercise 1.9
+#+BEGIN_SRC scheme
+  (define (inc x)
+    (+ x 1))
+
+  (define (dec x)
+    (- x 1))
+
+  (define (mplus1 a b)
+    (if (= a 0)
+        b
+        (inc (mplus1 (dec a) b))))
+
+  (define (mplus2 a b)
+    (if (= a 0)
+        b
+        (mplus2 (dec a) (inc b))))
+
+  (list (list (mplus1 4 5)
+              (inc (mplus1 3 5))
+              (inc (inc (mplus1 2 5)))
+              (inc (inc (inc (mplus1 1 5))))
+              (inc (inc (inc (inc (mplus1 0 5)))))
+              (inc (inc (inc (inc 5))))
+              (inc (inc (inc 6)))
+              (inc (inc 7))
+              (inc 8)
+              9)
+
+        (list (mplus2 4 5)
+              (mplus2 3 6)
+              (mplus2 2 7)
+              (mplus2 1 8)
+              (mplus2 0 9)
+              9))
+#+END_SRC
+
+#+RESULTS:
+: ((9 9 9 9 9 9 9 9 9 9) (9 9 9 9 9 9))
+
+*** Exercise 1.10
+#+BEGIN_SRC scheme
+  (define (A x y)
+    (cond ((= y 0) 0)
+          ((= x 0) (* 2 y))
+          ((= y 1) 2)
+          (else (A (- x 1)
+                   (A x (- y 1))))))
+
+  (define (f n) (A 0 n))  ;;2y
+
+  (define (g n) (A 1 n))  ;;2^n
+
+  (define (h n) (A 2 n))  ;;2^(2^n)
+
+  (list (A 1 10)
+        (A 2 4)
+        (A 3 3))
+#+END_SRC
+
+#+RESULTS:
+: (1024 65536 65536)

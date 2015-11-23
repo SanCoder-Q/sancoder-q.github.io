@@ -1,0 +1,247 @@
+---
+layout: post
+title: SICP Exercise Results
+---
+
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">1. Building Abstractions with Procedures</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+</div><div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">1.1 The Elements of Programming</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+</div><div id="outline-container-orgheadline1" class="outline-4">
+<h4 id="orgheadline1">Exercise 1.1</h4>
+<div class="outline-text-4" id="text-orgheadline1">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list 10
+      (+ 5 3 4)
+      (- 9 1)
+      (/ 6 2)
+      (+ (* 2 4) (- 4 6))
+      )
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> <span style="color: #f99157;">a</span> 3)
+(<span style="color: #99cc99;">define</span> <span style="color: #f99157;">b</span> (+ a 1))
+(list (+ a b (* a b))
+      (= a b)
+      (<span style="color: #99cc99;">if</span> (<span style="color: #99cc99;">and</span> (&gt; b a) (&lt; b (* a b)))
+          b
+          a)
+      (<span style="color: #99cc99;">cond</span> ((= a 4) 6)
+            ((= b 4) (+ 6 7 a))
+            (<span style="color: #99cc99;">else</span> 25))
+      (+ 2 (<span style="color: #99cc99;">if</span> (&gt; b a) b a))
+      (* (<span style="color: #99cc99;">cond</span> ((&gt; a b) a)
+               ((&lt; a b) b)
+               (<span style="color: #99cc99;">else</span> -1))
+         (+ a 1)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-4">
+<h4 id="orgheadline2">Exercise 1.2</h4>
+<div class="outline-text-4" id="text-orgheadline2">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
+   (* 3 (- 6 2) (- 2 7)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">Exercise 1.3</h4>
+<div class="outline-text-4" id="text-orgheadline3">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">func</span> a b c)
+  (<span style="color: #99cc99;">if</span> (&gt; a b)
+      (<span style="color: #99cc99;">if</span> (&gt; b c)
+          (+ a b)
+          (+ a c))
+      (<span style="color: #99cc99;">if</span> (&gt; a c)
+          (+ a b)
+          (+ b c))))
+(func 4 2 3)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">Exercise 1.4</h4>
+</div>
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">Exercise 1.5</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">q</span>) (q))
+</pre>
+</div>
+<p>
+This line means to define a <b>non-parameter recursive function</b>. So once it be evaluated, the complier will go into a endless loop.
+The difference between <code>normal order</code> and <code>applicative order</code> is the first one will not eval anything before all the expression is expanded.
+So in this exercise, if the complier is using the <code>applicative order</code> to interpreter the code, it will crash.
+Another interest thing is <code>if</code> syntax. It's a high level structor with a specific process which means there is only one of the expression will be evaluated whatever the predicate is. Hence, if the coplier is using the <code>normal order</code>, the result will be 0.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6">Exercise 1.6</h4>
+<div class="outline-text-4" id="text-orgheadline6">
+<p>
+Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using the <code>cond</code> syntax, and it will evaluate the predicate and the follow expression at the same time. So it should not be used to stop a recursive process.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">Exercise 1.7</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">improve</span> guess x)
+  (/ (+ guess (/ x guess)) 2))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">abs</span> x)
+  (<span style="color: #99cc99;">if</span> (&lt; x 0)
+      (- x)
+      x))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">good-enough?</span> guess last-guess)
+  (<span style="color: #99cc99;">if</span> (&lt; (abs (- (/ guess last-guess) 1)) 0.01)
+      #t
+      #f))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">sqrt-iter</span> guess last-guess x)
+  (<span style="color: #99cc99;">if</span> (= x 0)
+      0
+      (<span style="color: #99cc99;">if</span> (good-enough? guess last-guess)
+          guess
+          (sqrt-iter (improve guess x) guess x))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">my-sqrt</span> x)
+  (sqrt-iter 1.0 x x))
+
+(list
+ (my-sqrt 10000)
+ (my-sqrt 100)
+ (my-sqrt 0.0001)
+ (my-sqrt 0))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">Exercise 1.8</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">improve</span> guess x)
+  (/ (+ (/ x (* guess guess)) (* 2 guess)) 3))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">abs</span> x)
+  (<span style="color: #99cc99;">if</span> (&lt; x 0)
+      (- x)
+      x))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">good-enough?</span> guess last-guess)
+  (<span style="color: #99cc99;">if</span> (&lt; (abs (- (/ guess last-guess) 1)) 0.01)
+      #t
+      #f))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">cube-iter</span> guess last-guess x)
+  (<span style="color: #99cc99;">if</span> (= x 0)
+      0
+      (<span style="color: #99cc99;">if</span> (good-enough? guess last-guess)
+          guess
+          (cube-iter (improve guess x) guess x))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">my-cube</span> x)
+  (cube-iter 1.0 x x))
+
+(list
+ (my-cube 1000000)
+ (my-cube 27)
+ (my-cube 0.001)
+ (my-cube 0))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">Exercise 1.9</h4>
+<div class="outline-text-4" id="text-orgheadline9">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">inc</span> x)
+  (+ x 1))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">dec</span> x)
+  (- x 1))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">mplus1</span> a b)
+  (<span style="color: #99cc99;">if</span> (= a 0)
+      b
+      (inc (mplus1 (dec a) b))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">mplus2</span> a b)
+  (<span style="color: #99cc99;">if</span> (= a 0)
+      b
+      (mplus2 (dec a) (inc b))))
+
+(list (list (mplus1 4 5)
+            (inc (mplus1 3 5))
+            (inc (inc (mplus1 2 5)))
+            (inc (inc (inc (mplus1 1 5))))
+            (inc (inc (inc (inc (mplus1 0 5)))))
+            (inc (inc (inc (inc 5))))
+            (inc (inc (inc 6)))
+            (inc (inc 7))
+            (inc 8)
+            9)
+
+      (list (mplus2 4 5)
+            (mplus2 3 6)
+            (mplus2 2 7)
+            (mplus2 1 8)
+            (mplus2 0 9)
+            9))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">Exercise 1.10</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">A</span> x y)
+  (<span style="color: #99cc99;">cond</span> ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (<span style="color: #99cc99;">else</span> (A (- x 1)
+                 (A x (- y 1))))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">f</span> n) (A 0 n))  <span style="color: #999999; font-style: italic;">;;</span><span style="color: #999999; font-style: italic;">2y</span>
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">g</span> n) (A 1 n))  <span style="color: #999999; font-style: italic;">;;</span><span style="color: #999999; font-style: italic;">2^n</span>
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">h</span> n) (A 2 n))  <span style="color: #999999; font-style: italic;">;;</span><span style="color: #999999; font-style: italic;">2^(2^n)</span>
+
+(list (A 1 10)
+      (A 2 4)
+      (A 3 3))
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
