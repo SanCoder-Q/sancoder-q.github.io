@@ -3,12 +3,12 @@ layout: post
 title: SICP Exercise Results
 ---
 
-<div id="outline-container-orgheadline12" class="outline-2">
-<h2 id="orgheadline12">1. Building Abstractions with Procedures</h2>
-<div class="outline-text-2" id="text-orgheadline12">
-</div><div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11">1.1 The Elements of Programming</h3>
-<div class="outline-text-3" id="text-orgheadline11">
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14">1. Building Abstractions with Procedures</h2>
+<div class="outline-text-2" id="text-orgheadline14">
+</div><div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">1.1 The Elements of Programming</h3>
+<div class="outline-text-3" id="text-orgheadline13">
 </div><div id="outline-container-orgheadline1" class="outline-4">
 <h4 id="orgheadline1">Exercise 1.1</h4>
 <div class="outline-text-4" id="text-orgheadline1">
@@ -239,6 +239,91 @@ Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using t
 (list (A 1 10)
       (A 2 4)
       (A 3 3))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">Exercise 1.11</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<ul class="org-ul">
+<li>Tree Recursion</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">f</span> n)
+  (<span style="color: #99cc99;">if</span> (&lt; n 3)
+      n
+      (+ (f (- n 1))
+         (* 2 (f (- n 2)))
+         (* 3 (f (- n 3))))))
+
+(list (f 2)
+      (f 3)
+      (f 4)
+      (f 5)
+      (f 6)
+      (f 7)
+      (f 8)
+      (f 9))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Iteration Recursion</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">iter-f</span> c lc llc n)
+  (<span style="color: #99cc99;">cond</span> ((&lt; n 2) n)
+        ((= n 2) c)
+        (<span style="color: #99cc99;">else</span> (iter-f (+ c (* 2 lc) (* 3 llc))
+                      c
+                      lc
+                      (- n 1)))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">f</span> n)
+  (iter-f 2 1 0 n))
+
+(list (f 2)
+      (f 3)
+      (f 4)
+      (f 5)
+      (f 6)
+      (f 7)
+      (f 8)
+      (f 9))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">Exercise 1.12</h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">pp</span> n i)
+  (<span style="color: #99cc99;">if</span> (<span style="color: #99cc99;">or</span> (= n i) (= i 1))
+      1
+      (+ (pp (- n 1) (- i 1))
+         (pp (- n 1) i))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">iter-p</span> l i n)
+  (<span style="color: #99cc99;">if</span> (&lt; i n)
+      (iter-p (cons (pp n (+ i 1)) l)
+              (+ i 1)
+              n)
+      l))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">p</span> n)
+  (iter-p (list (pp n 1))
+          1
+          n))
+
+(list (p 2)
+      (p 3)
+      (p 4))
 </pre>
 </div>
 </div>

@@ -203,14 +203,14 @@ LisP 使用应用序而非正则序来对组合式求值
 <h3 id="orgheadline9">Procedure &amp; Process</h3>
 <div class="outline-text-3" id="text-orgheadline9">
 <p>
-过程是一种计算过程的演化(Procedure is a pattern for the local evolution of a computational process.)
+过程是一种处理过程的演化(Procedure is a pattern for the local evolution of a computational process.)
 </p>
 </div>
 <div id="outline-container-orgheadline10" class="outline-4">
 <h4 id="orgheadline10">Linear Recursion and Iteration</h4>
 <div class="outline-text-4" id="text-orgheadline10">
 <ul class="org-ul">
-<li>线性递归计算 Linear Recursion Process (<b>NOT Procedure!!</b>)</li>
+<li>线性递归处理 Linear Recursion Process (<b>NOT Procedure!!</b>)</li>
 </ul>
 <div class="org-src-container">
 
@@ -223,7 +223,7 @@ LisP 使用应用序而非正则序来对组合式求值
 </div>
 
 <ul class="org-ul">
-<li>线性迭代计算 Linear Iteration Process (<b>NOT Procedure!!</b>)</li>
+<li>线性迭代处理 Linear Iteration Process (<b>NOT Procedure!!</b>)</li>
 </ul>
 <div class="org-src-container">
 
@@ -241,8 +241,59 @@ LisP 使用应用序而非正则序来对组合式求值
 
 <p>
 过程 (Procedure) 描述的是语法形式的事实, 一个递归过程 (Recursion Procedure) 指的是过程的定义中直接或间接的引用了该过程本身。
-计算 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式计算的，也就是 <b>尾递归 (Tail-Recursion)</b> 的方式计算的。
+处理 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式处理的，也就是 <b>尾递归 (Tail-Recursion)</b> 的方式计算的。
 </p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">Tree Recursion 树形递归</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<ul class="org-ul">
+<li>Fibonacci Sequence 斐波那契数列</li>
+</ul>
+<p>
+树形递归法:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fib</span> n)
+  (<span style="color: #99cc99;">cond</span> ((= n 0) 0)
+        ((= n 1) 1)
+        (<span style="color: #99cc99;">else</span> (+ (fib (- n 1))
+                 (fib (- n 2))))))
+
+(list (fib 2)
+      (fib 3)
+      (fib 4)
+      (fib 5)
+      (fib 6)
+      (fib 7))
+</pre>
+</div>
+
+<p>
+迭代递归法:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">iter-fib</span> c lc n)
+  (<span style="color: #99cc99;">if</span> (= n 0)
+      lc
+      (iter-fib (+ c lc)
+                c
+                (- n 1))))
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fib</span> n)
+  (iter-fib 1 0 n))
+
+(list (fib 2)
+      (fib 3)
+      (fib 4)
+      (fib 5)
+      (fib 6)
+      (fib 7))
+</pre>
+</div>
 </div>
 </div>
 </div>

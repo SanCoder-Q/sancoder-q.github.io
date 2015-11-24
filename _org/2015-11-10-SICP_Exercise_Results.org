@@ -217,3 +217,79 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 
 #+RESULTS:
 : (1024 65536 65536)
+
+*** Exercise 1.11
+- Tree Recursion
+#+BEGIN_SRC scheme
+  (define (f n)
+    (if (< n 3)
+        n
+        (+ (f (- n 1))
+           (* 2 (f (- n 2)))
+           (* 3 (f (- n 3))))))
+
+  (list (f 2)
+        (f 3)
+        (f 4)
+        (f 5)
+        (f 6)
+        (f 7)
+        (f 8)
+        (f 9))
+#+END_SRC
+
+#+RESULTS:
+: (2 4 11 25 59 142 335 796)
+
+- Iteration Recursion
+#+BEGIN_SRC scheme
+  (define (iter-f c lc llc n)
+    (cond ((< n 2) n)
+          ((= n 2) c)
+          (else (iter-f (+ c (* 2 lc) (* 3 llc))
+                        c
+                        lc
+                        (- n 1)))))
+
+  (define (f n)
+    (iter-f 2 1 0 n))
+
+  (list (f 2)
+        (f 3)
+        (f 4)
+        (f 5)
+        (f 6)
+        (f 7)
+        (f 8)
+        (f 9))
+#+END_SRC
+
+#+RESULTS:
+: (2 4 11 25 59 142 335 796)
+*** Exercise 1.12
+#+BEGIN_SRC scheme
+  (define (pp n i)
+    (if (or (= n i) (= i 1))
+        1
+        (+ (pp (- n 1) (- i 1))
+           (pp (- n 1) i))))
+
+  (define (iter-p l i n)
+    (if (< i n)
+        (iter-p (cons (pp n (+ i 1)) l)
+                (+ i 1)
+                n)
+        l))
+
+  (define (p n)
+    (iter-p (list (pp n 1))
+            1
+            n))
+
+  (list (p 2)
+        (p 3)
+        (p 4))
+#+END_SRC
+
+#+RESULTS:
+: ((1 1) (1 2 1) (1 3 3 1))

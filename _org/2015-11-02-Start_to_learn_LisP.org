@@ -168,9 +168,9 @@ LisP 使用应用序而非正则序来对组合式求值
 #+RESULTS:
 : 4
 ** Procedure & Process
-过程是一种计算过程的演化(Procedure is a pattern for the local evolution of a computational process.)
+过程是一种处理过程的演化(Procedure is a pattern for the local evolution of a computational process.)
 *** Linear Recursion and Iteration
-- 线性递归计算 Linear Recursion Process (*NOT Procedure!!*)
+- 线性递归处理 Linear Recursion Process (*NOT Procedure!!*)
 #+BEGIN_SRC scheme
   (define (factorial n)
     (if (= n 1)
@@ -182,7 +182,7 @@ LisP 使用应用序而非正则序来对组合式求值
 #+RESULTS:
 : 6
 
-- 线性迭代计算 Linear Iteration Process (*NOT Procedure!!*)
+- 线性迭代处理 Linear Iteration Process (*NOT Procedure!!*)
 #+BEGIN_SRC scheme
   (define (fact-iter c i n)
     (if (> i n)
@@ -199,4 +199,47 @@ LisP 使用应用序而非正则序来对组合式求值
 : 6
 
 过程 (Procedure) 描述的是语法形式的事实, 一个递归过程 (Recursion Procedure) 指的是过程的定义中直接或间接的引用了该过程本身。
-计算 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式计算的，也就是 *尾递归 (Tail-Recursion)* 的方式计算的。
+处理 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式处理的，也就是 *尾递归 (Tail-Recursion)* 的方式计算的。
+
+*** Tree Recursion 树形递归
+- Fibonacci Sequence 斐波那契数列
+树形递归法:
+#+BEGIN_SRC scheme
+  (define (fib n)
+    (cond ((= n 0) 0)
+          ((= n 1) 1)
+          (else (+ (fib (- n 1))
+                   (fib (- n 2))))))
+
+  (list (fib 2)
+        (fib 3)
+        (fib 4)
+        (fib 5)
+        (fib 6)
+        (fib 7))
+#+END_SRC
+
+#+RESULTS:
+: (1 2 3 5 8 13)
+
+迭代递归法:
+#+BEGIN_SRC scheme
+  (define (iter-fib c lc n)
+    (if (= n 0)
+        lc
+        (iter-fib (+ c lc)
+                  c
+                  (- n 1))))
+  (define (fib n)
+    (iter-fib 1 0 n))
+
+  (list (fib 2)
+        (fib 3)
+        (fib 4)
+        (fib 5)
+        (fib 6)
+        (fib 7))
+#+END_SRC
+
+#+RESULTS:
+: (1 2 3 5 8 13)
