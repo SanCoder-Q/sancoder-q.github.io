@@ -3,12 +3,12 @@ layout: post
 title: SICP Exercise Results
 ---
 
-<div id="outline-container-orgheadline14" class="outline-2">
-<h2 id="orgheadline14">1. Building Abstractions with Procedures</h2>
-<div class="outline-text-2" id="text-orgheadline14">
-</div><div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">1.1 The Elements of Programming</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="orgheadline17">1. Building Abstractions with Procedures</h2>
+<div class="outline-text-2" id="text-orgheadline17">
+</div><div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">1.1 The Elements of Programming</h3>
+<div class="outline-text-3" id="text-orgheadline16">
 </div><div id="outline-container-orgheadline1" class="outline-4">
 <h4 id="orgheadline1">Exercise 1.1</h4>
 <div class="outline-text-4" id="text-orgheadline1">
@@ -85,10 +85,10 @@ title: SICP Exercise Results
 </pre>
 </div>
 <p>
-This line means to define a <b>non-parameter recursive function</b>. So once it be evaluated, the complier will go into a endless loop.
-The difference between <code>normal order</code> and <code>applicative order</code> is the first one will not eval anything before all the expression is expanded.
-So in this exercise, if the complier is using the <code>applicative order</code> to interpreter the code, it will crash.
-Another interest thing is <code>if</code> syntax. It's a high level structor with a specific process which means there is only one of the expression will be evaluated whatever the predicate is. Hence, if the coplier is using the <code>normal order</code>, the result will be 0.
+This line means to define a <b>non-parameter recursive function</b>. So once it be evaluated, the complier will go into a endless loop.<br  />
+The difference between <code>normal order</code> and <code>applicative order</code> is the first one will not eval anything before all the expression is expanded.<br  />
+So in this exercise, if the complier is using the <code>applicative order</code> to interpreter the code, it will crash.<br  />
+Another interest thing is <code>if</code> syntax. It's a high level structor with a specific process which means there is only one of the expression will be evaluated whatever the predicate is. Hence, if the coplier is using the <code>normal order</code>, the result will be 0.<br  />
 </p>
 </div>
 </div>
@@ -96,7 +96,7 @@ Another interest thing is <code>if</code> syntax. It's a high level structor wit
 <h4 id="orgheadline6">Exercise 1.6</h4>
 <div class="outline-text-4" id="text-orgheadline6">
 <p>
-Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using the <code>cond</code> syntax, and it will evaluate the predicate and the follow expression at the same time. So it should not be used to stop a recursive process.
+Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using the <code>cond</code> syntax, and it will evaluate the predicate and the follow expression at the same time. So it should not be used to stop a recursive process.<br  />
 </p>
 </div>
 </div>
@@ -248,7 +248,7 @@ Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using t
 <h4 id="orgheadline11">Exercise 1.11</h4>
 <div class="outline-text-4" id="text-orgheadline11">
 <ul class="org-ul">
-<li>Tree Recursion</li>
+<li>Tree Recursion<br  /></li>
 </ul>
 <div class="org-src-container">
 
@@ -271,7 +271,7 @@ Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using t
 </div>
 
 <ul class="org-ul">
-<li>Iteration Recursion</li>
+<li>Iteration Recursion<br  /></li>
 </ul>
 <div class="org-src-container">
 
@@ -323,7 +323,79 @@ Same reason as the <code>Exercise 1.6</code>, the <code>new-if</code> is using t
 
 (list (p 2)
       (p 3)
-      (p 4))
+      (p 4)
+      (p 5)
+      (p 6))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13">Exercise 1.13 1.14 1.15</h4>
+<div class="outline-text-4" id="text-orgheadline13">
+<p>
+What the hell!<br  />
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">Exercise 1.16</h4>
+<div class="outline-text-4" id="text-orgheadline14">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">even?</span> n)
+  (= (remainder n 2) 0))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">square</span> n)
+  (* n n))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fast-expt-iter</span> a b n)
+  (<span style="color: #99cc99;">cond</span> ((= n 0) a)
+        ((even? n) (fast-expt-iter a (square b) (/ n 2)))
+        (<span style="color: #99cc99;">else</span> (fast-expt-iter (* a b) b (- n 1)))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fast-expt</span> b n)
+  (fast-expt-iter 1 b n))
+
+(list (fast-expt 2 5)
+      (fast-expt 2 8)
+      (fast-expt 2 10)
+      (fast-expt 2 11))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">Exercise 1.17 1.18</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<p>
+Using commutation law<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">even?</span> n)
+  (= (remainder n 2) 0))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">double</span> n)
+  (+ n n))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">halve</span> n)
+  (/ n 2))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fast-mult-iter</span> a b n)
+  (<span style="color: #99cc99;">cond</span> ((= n 0) a)
+        ((even? n) (fast-mult-iter a (double b) (halve n)))
+        (<span style="color: #99cc99;">else</span> (fast-mult-iter (+ a b) b (- n 1)))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fast-mult</span> b n)
+  (<span style="color: #99cc99;">if</span> (&lt; b n)
+      (fast-mult-iter 0 n b)
+      (fast-mult-iter 0 b n)))
+
+(list (fast-mult 3 7)
+      (fast-mult 5 9)
+      (fast-mult 19 111)
+      (fast-mult 111 19))
 </pre>
 </div>
 </div>

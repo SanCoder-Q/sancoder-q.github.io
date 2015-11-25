@@ -7,14 +7,14 @@ title: Start to learn LisP
 <h2 id="orgheadline8">Content</h2>
 <div class="outline-text-2" id="text-orgheadline8">
 <ul class="org-ul">
-<li><a href="#orgheadline1">Why LisP</a></li>
-<li><a href="#orgheadline2">Rules of LisP</a>
+<li><a href="#orgheadline1">Why LisP</a><br  /></li>
+<li><a href="#orgheadline2">Rules of LisP</a><br  />
 <ul class="org-ul">
-<li><a href="#orgheadline3">表达式与组合式</a></li>
-<li><a href="#orgheadline4">命名 α-Conversion</a></li>
-<li><a href="#orgheadline5">替换 β-Reduction</a></li>
-<li><a href="#orgheadline6">条件与谓词</a></li>
-<li><a href="#orgheadline7">Abstration of procedures 过程抽象</a></li>
+<li><a href="#orgheadline3">表达式与组合式</a><br  /></li>
+<li><a href="#orgheadline4">命名 α-Conversion</a><br  /></li>
+<li><a href="#orgheadline5">替换 β-Reduction</a><br  /></li>
+<li><a href="#orgheadline6">条件与谓词</a><br  /></li>
+<li><a href="#orgheadline7">Abstration of procedures 过程抽象</a><br  /></li>
 </ul></li>
 </ul>
 </div>
@@ -26,14 +26,14 @@ title: Start to learn LisP
 <h2 id="orgheadline1">Why LisP</h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <p>
-因为 LisP 有着：
+因为 LisP 有着：<br  />
 </p>
 <ul class="org-ul">
-<li>简单的语法规则</li>
-<li>众多的方言（Emacs LisP, Scheme, Clojure, Guile）</li>
-<li>对函数式的良好支持</li>
-<li>天然的 λ演算语言</li>
-<li>一本 NB 的书（SICP）</li>
+<li>简单的语法规则<br  /></li>
+<li>众多的方言（Emacs LisP, Scheme, Clojure, Guile）<br  /></li>
+<li>对函数式的良好支持<br  /></li>
+<li>天然的 λ演算语言<br  /></li>
+<li>一本 NB 的书（SICP）<br  /></li>
 </ul>
 </div>
 </div>
@@ -75,7 +75,7 @@ title: Start to learn LisP
 </div>
 
 <p>
-LisP 使用应用序而非正则序来对组合式求值
+LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 </div>
 </div>
@@ -95,7 +95,7 @@ LisP 使用应用序而非正则序来对组合式求值
 <h4 id="orgheadline6">条件与谓词</h4>
 <div class="outline-text-4" id="text-orgheadline6">
 <p>
-条件谓词判断语法: <b>cond</b>
+条件谓词判断语法: <b>cond</b><br  />
 </p>
 <div class="org-src-container">
 
@@ -117,7 +117,7 @@ LisP 使用应用序而非正则序来对组合式求值
 </div>
 
 <p>
-条件谓词判断语法: <b>if</b>
+条件谓词判断语法: <b>if</b><br  />
 </p>
 <div class="org-src-container">
 
@@ -134,7 +134,7 @@ LisP 使用应用序而非正则序来对组合式求值
 </div>
 
 <p>
-逻辑运算符: <b>and</b> <b>or</b> <b>not</b>
+逻辑运算符: <b>and</b> <b>or</b> <b>not</b><br  />
 </p>
 <div class="org-src-container">
 
@@ -167,16 +167,16 @@ LisP 使用应用序而非正则序来对组合式求值
 <h4 id="orgheadline7">Abstration of procedures 过程抽象</h4>
 <div class="outline-text-4" id="text-orgheadline7">
 <ul class="org-ul">
-<li>Local
+<li>Local<br  />
 <ul class="org-ul">
-<li>Bound Variable 约束变量</li>
-<li>Free Variable 自由变量</li>
-<li>Captured Variable 被捕获变量</li>
+<li>Bound Variable 约束变量<br  /></li>
+<li>Free Variable 自由变量<br  /></li>
+<li>Captured Variable 被捕获变量<br  /></li>
 </ul></li>
-<li>Internal Definitions</li>
+<li>Internal Definitions<br  /></li>
 </ul>
 <p>
-下方代码的过程 <code>bar</code> 被称为 <b>内部定义过程</b> , 这种结构被称为 <b>块结构(Block Structure)</b>:
+下方代码的过程 <code>bar</code> 被称为 <b>内部定义过程</b> , 这种结构被称为 <b>块结构(Block Structure)</b>:<br  />
 </p>
 <div class="org-src-container">
 
@@ -187,7 +187,7 @@ LisP 使用应用序而非正则序来对组合式求值
 </pre>
 </div>
 <p>
-可以定义 <b>词法作用域(Lexical Scoping)</b>:
+可以定义 <b>词法作用域(Lexical Scoping)</b>:<br  />
 </p>
 <div class="org-src-container">
 
@@ -203,14 +203,14 @@ LisP 使用应用序而非正则序来对组合式求值
 <h3 id="orgheadline9">Procedure &amp; Process</h3>
 <div class="outline-text-3" id="text-orgheadline9">
 <p>
-过程是一种处理过程的演化(Procedure is a pattern for the local evolution of a computational process.)
+过程是一种处理过程的演化(Procedure is a pattern for the local evolution of a computational process.)<br  />
 </p>
 </div>
 <div id="outline-container-orgheadline10" class="outline-4">
 <h4 id="orgheadline10">Linear Recursion and Iteration</h4>
 <div class="outline-text-4" id="text-orgheadline10">
 <ul class="org-ul">
-<li>线性递归处理 Linear Recursion Process (<b>NOT Procedure!!</b>)</li>
+<li>线性递归处理 Linear Recursion Process (<b>NOT Procedure!!</b>)<br  /></li>
 </ul>
 <div class="org-src-container">
 
@@ -223,7 +223,7 @@ LisP 使用应用序而非正则序来对组合式求值
 </div>
 
 <ul class="org-ul">
-<li>线性迭代处理 Linear Iteration Process (<b>NOT Procedure!!</b>)</li>
+<li>线性迭代处理 Linear Iteration Process (<b>NOT Procedure!!</b>)<br  /></li>
 </ul>
 <div class="org-src-container">
 
@@ -240,8 +240,8 @@ LisP 使用应用序而非正则序来对组合式求值
 </div>
 
 <p>
-过程 (Procedure) 描述的是语法形式的事实, 一个递归过程 (Recursion Procedure) 指的是过程的定义中直接或间接的引用了该过程本身。
-处理 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式处理的，也就是 <b>尾递归 (Tail-Recursion)</b> 的方式计算的。
+过程 (Procedure) 描述的是语法形式的事实, 一个递归过程 (Recursion Procedure) 指的是过程的定义中直接或间接的引用了该过程本身。<br  />
+处理 (Process) 描述的是计算的进展方式。一个递归的过程很可能是以一种迭代进展方式处理的，也就是 <b>尾递归 (Tail-Recursion)</b> 的方式计算的。<br  />
 </p>
 </div>
 </div>
@@ -250,10 +250,10 @@ LisP 使用应用序而非正则序来对组合式求值
 <h4 id="orgheadline11">Tree Recursion 树形递归</h4>
 <div class="outline-text-4" id="text-orgheadline11">
 <ul class="org-ul">
-<li>Fibonacci Sequence 斐波那契数列</li>
+<li>Fibonacci Sequence 斐波那契数列<br  /></li>
 </ul>
 <p>
-树形递归法:
+树形递归法:<br  />
 </p>
 <div class="org-src-container">
 
@@ -273,7 +273,7 @@ LisP 使用应用序而非正则序来对组合式求值
 </div>
 
 <p>
-迭代递归法:
+迭代递归法:<br  />
 </p>
 <div class="org-src-container">
 
@@ -294,6 +294,15 @@ LisP 使用应用序而非正则序来对组合式求值
       (fib 7))
 </pre>
 </div>
+
+<ul class="org-ul">
+<li>算法复杂度 Order<br  /></li>
+</ul>
+<p>
+称 <i>&Theta;(f(n))</i> 为算法的 <b>复杂度(阶)</b>, 当存在与 <i>n</i> 无关的整数k<sub>1</sub>和k<sub>2</sub>, 使得:<br  />
+k<sub>1</sub>f(n) &le; &Theta;(f(n)) &le; k<sub>2</sub>f(n)<br  />
+对于任意大的 <i>n</i> 成立.<br  />
+</p>
 </div>
 </div>
 </div>

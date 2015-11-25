@@ -1,5 +1,7 @@
+#+STARTUP: entitiespretty
 #+STARTUP: showall indent
 #+STARTUP: hidestars
+#+OPTIONS: \n:t
 #+BEGIN_HTML
 ---
 layout: post
@@ -243,3 +245,8 @@ LisP 使用应用序而非正则序来对组合式求值
 
 #+RESULTS:
 : (1 2 3 5 8 13)
+
+- 算法复杂度 Order
+称 /\Theta(f(n))/ 为算法的 *复杂度(阶)*, 当存在与 /n/ 无关的整数k_{1}和k_{2}, 使得:
+k_{1}f(n) \le \Theta(f(n)) \le k_{2}f(n)
+对于任意大的 /n/ 成立.
