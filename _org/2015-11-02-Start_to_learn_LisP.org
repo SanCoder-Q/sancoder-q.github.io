@@ -250,3 +250,87 @@ LisP 使用应用序而非正则序来对组合式求值
 称 /\Theta(f(n))/ 为算法的 *复杂度(阶)*, 当存在与 /n/ 无关的整数k_{1}和k_{2}, 使得:
 k_{1}f(n) \le \Theta(f(n)) \le k_{2}f(n)
 对于任意大的 /n/ 成立.
+
+- Greatest Common Divisors 最大公约数
+#+BEGIN_SRC scheme
+  (define (gcd-iter x y)
+    (if (= y 0)
+        x
+        (gcd-iter y (remainder x y))))
+
+  (define (gcd x y)
+    (if (> x y)
+        (gcd-iter x y)
+        (gcd-iter y x)))
+
+  (list (gcd 206 40)
+        (gcd 144 81))
+#+END_SRC
+
+#+RESULTS:
+: (2 9)
+
+Lam\eacute 定理: 如果欧几里得算法需要 /k/ 步计算出一个对偶数的 GCD, 则其中的较小者必大于等于 Fib(k).
+
+* LisP 语法
+** define
+*** 定义 *变量*
+#+BEGIN_SRC scheme
+  (define A 3)
+
+  (define (getValue)
+    (newline)
+    (display "Call getValue ...\n")
+    3)
+
+  (define B (getValue))
+
+  (list A B)
+#+END_SRC
+
+#+RESULTS:
+: (3 3)
+*** 定义 *函数*
+#+BEGIN_SRC scheme
+  (define (func param)
+    (display "The function call need a pair of parentheses.\n")
+    (display "This can be a block called sequentially.\n")
+    (display "The value of last expression will be the return value of func.\n")
+    (+ param 1))
+
+  (list (func 1))
+#+END_SRC
+
+#+RESULTS:
+: (2)
+
+#+BEGIN_SRC scheme
+  (define func (lambda param) (
+    (display "The function call need a pair of parentheses.\n")
+    (display "This can be a block called sequentially.\n")
+    (display "The value of last expression will be the return value of func.\n")
+    (+ param 1)))
+
+  (list (func 1))
+
+#+END_SRC
+
+#+RESULTS:
+: "An error occurred."
+
+
+
+
+** if
+*** 当 ~if~ 语句不包含 ~else~ 时, 返回 ~unspecified~.
+#+BEGIN_SRC scheme
+    (define (whatif bool)
+      (if bool
+         1))
+
+    (list (whatif (> 3 2))
+          (whatif (< 3 2)))
+#+END_SRC
+
+#+RESULTS:
+: (1 #<unspecified>)

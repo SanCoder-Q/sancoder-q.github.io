@@ -1,0 +1,24 @@
+---
+layout: post
+title: Using Scheme For Church Encoding
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Boolean &amp; Logic</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<div class="org-src-container">
+
+<pre class="src src-scheme"><span style="color: #999999; font-style: italic;">;; </span><span style="color: #999999; font-style: italic;">Boolean &amp; Logic</span>
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">TRUE</span> x y) x)
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">FALSE</span> x y) y)
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">IF</span> e then else)
+  (e then else))
+
+(list (IF TRUE <span style="color: #66cccc;">"true"</span> <span style="color: #66cccc;">"false"</span>)
+      (IF FALSE <span style="color: #66cccc;">"true"</span> <span style="color: #66cccc;">"false"</span>))
+</pre>
+</div>
+</div>
+</div>

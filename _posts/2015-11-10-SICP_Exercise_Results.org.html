@@ -3,12 +3,12 @@ layout: post
 title: SICP Exercise Results
 ---
 
-<div id="outline-container-orgheadline17" class="outline-2">
-<h2 id="orgheadline17">1. Building Abstractions with Procedures</h2>
-<div class="outline-text-2" id="text-orgheadline17">
-</div><div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="orgheadline16">1.1 The Elements of Programming</h3>
-<div class="outline-text-3" id="text-orgheadline16">
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21">1. Building Abstractions with Procedures</h2>
+<div class="outline-text-2" id="text-orgheadline21">
+</div><div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20">1.1 The Elements of Programming</h3>
+<div class="outline-text-3" id="text-orgheadline20">
 </div><div id="outline-container-orgheadline1" class="outline-4">
 <h4 id="orgheadline1">Exercise 1.1</h4>
 <div class="outline-text-4" id="text-orgheadline1">
@@ -396,6 +396,160 @@ Using commutation law<br  />
       (fast-mult 5 9)
       (fast-mult 19 111)
       (fast-mult 111 19))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">exercise 1.19</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<p>
+q &lt;- q<sup>2</sup><sup>nil</sup> + 2pq<br  />
+p &lt;- p<sup>2</sup> + q<sup>2</sup><br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">even?</span> n)
+  (= (remainder n 2) 0))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fib-iter</span> a b p q count)
+  (<span style="color: #99cc99;">cond</span> ((= count 0) b)
+        ((even? count) (fib-iter a
+                             b
+                             (+ (* p p) (* q q))
+                             (+ (* 2 p q) (* q q))
+                             (/ count 2)))
+        (<span style="color: #99cc99;">else</span> (fib-iter (+ (* b q) (* a (+ p q)))
+                        (+ (* b p) (* a q))
+                        p
+                        q
+                        (- count 1)))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">fib</span> n)
+  (fib-iter 1 0 0 1 n))
+
+(list (fib 1)
+      (fib 2)
+      (fib 3)
+      (fib 4)
+      (fib 5)
+      (fib 6)
+      (fib 7))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">Exercise 1.20</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<p>
+正则序:<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list (gcd 206 40)
+      (gcd 40 (remainder 206 40))
+      (gcd (remainder 206 40) (remainder 40 (remainder 206 40)))
+      (gcd (remainder 40 (remainder 206 40))
+           (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+      (gcd (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))
+           (remainder (remainder 40 (remainder 206 40))
+            (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
+      (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
+</pre>
+</div>
+
+<p>
+IF: 0 + 1 + 2 + 4 + 7<br  />
+GCD: 4<br  />
+SUM: 18<br  />
+</p>
+
+<p>
+应用序:<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(list (gcd 206 40)
+      (gcd 40 6)
+      (gcd 6 4)
+      (gcd 4 2)
+      (gcd 2 0))
+</pre>
+</div>
+
+<p>
+IF: 0<br  />
+GCD: 4<br  />
+SUM: 4<br  />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18">Exercise 1.21</h4>
+<div class="outline-text-4" id="text-orgheadline18">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">square</span> n)
+  (* n n))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">smallest-divisor</span> n)
+  (find-divisor n 2))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">find-divisor</span> n test-divisor)
+  (<span style="color: #99cc99;">cond</span> ((&gt; (square test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (<span style="color: #99cc99;">else</span> (find-divisor n (+ test-divisor 1)))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">divides?</span> a n)
+  (= (remainder n a) 0))
+
+(list (smallest-divisor 199)
+      (smallest-divisor 1999)
+      (smallest-divisor 19999))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">Exercise 1.22</h4>
+<div class="outline-text-4" id="text-orgheadline19">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">my-return</span>)
+  (display <span style="color: #66cccc;">"loading ..."</span>)
+  5)
+
+(<span style="color: #99cc99;">define</span> <span style="color: #f99157;">lazy</span> (my-return))
+
+(list lazy
+      lazy
+      lazy)
+</pre>
+</div>
+
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">time-prime-test</span> n)
+  (newline)
+  (display n)
+  (start-prime-test n (runtime)))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">start-prime-test</span> n start-time)
+  (<span style="color: #99cc99;">if</span> prime?
+      (report-prime (- (runtime) start-time)))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">report-prime</span> elapsed-time)
+  (display <span style="color: #66cccc;">" *** "</span>)
+  (display elapsed-time))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">search-for-primes</span> i n)
+  (<span style="color: #99cc99;">cond</span> ()
+        ()
+        (<span style="color: #99cc99;">else</span>))) <span style="color: #999999; font-style: italic;">;</span><span style="color: #999999; font-style: italic;">return the smallest i primes greater than n</span>
 </pre>
 </div>
 </div>

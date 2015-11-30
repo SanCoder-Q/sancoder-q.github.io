@@ -1,0 +1,38 @@
+#+STARTUP: entitiespretty
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+OPTIONS: \n:t
+#+BEGIN_HTML
+---
+layout: post
+title: Using Scheme For Church Encoding
+---
+#+END_HTML
+
+* COMMENT requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'yasnippet)
+(require 'ob-scheme)
+#+END_SRC
+
+#+RESULTS:
+: ob-scheme
+
+* Boolean & Logic
+#+BEGIN_SRC scheme
+  ;; Boolean & Logic
+  (define (TRUE x y) x)
+
+  (define (FALSE x y) y)
+
+  (define (IF e then else)
+    (e then else))
+
+  (list (IF TRUE "true" "false")
+        (IF FALSE "true" "false"))
+
+#+END_SRC
+
+#+RESULTS:
+: (0 1/2 1/2 100/101 400/401)

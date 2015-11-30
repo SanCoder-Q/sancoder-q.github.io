@@ -303,6 +303,109 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 k<sub>1</sub>f(n) &le; &Theta;(f(n)) &le; k<sub>2</sub>f(n)<br  />
 对于任意大的 <i>n</i> 成立.<br  />
 </p>
+
+<ul class="org-ul">
+<li>Greatest Common Divisors 最大公约数<br  /></li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">gcd-iter</span> x y)
+  (<span style="color: #99cc99;">if</span> (= y 0)
+      x
+      (gcd-iter y (remainder x y))))
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">gcd</span> x y)
+  (<span style="color: #99cc99;">if</span> (&gt; x y)
+      (gcd-iter x y)
+      (gcd-iter y x)))
+
+(list (gcd 206 40)
+      (gcd 144 81))
+</pre>
+</div>
+
+<p>
+Lam&eacute; 定理: 如果欧几里得算法需要 <i>k</i> 步计算出一个对偶数的 GCD, 则其中的较小者必大于等于 Fib(k).<br  />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="orgheadline17">LisP 语法</h2>
+<div class="outline-text-2" id="text-orgheadline17">
+</div><div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">define</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+</div><div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">定义 <b>变量</b></h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> <span style="color: #f99157;">A</span> 3)
+
+(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">getValue</span>)
+  (newline)
+  (display <span style="color: #66cccc;">"Call getValue ...\n"</span>)
+  3)
+
+(<span style="color: #99cc99;">define</span> <span style="color: #f99157;">B</span> (getValue))
+
+(list A B)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13">定义 <b>函数</b></h4>
+<div class="outline-text-4" id="text-orgheadline13">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">func</span> param)
+  (display <span style="color: #66cccc;">"The function call need a pair of parentheses.\n"</span>)
+  (display <span style="color: #66cccc;">"This can be a block called sequentially.\n"</span>)
+  (display <span style="color: #66cccc;">"The value of last expression will be the return value of func.\n"</span>)
+  (+ param 1))
+
+(list (func 1))
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> <span style="color: #f99157;">func</span> (<span style="color: #99cc99;">lambda</span> param) (
+  (display <span style="color: #66cccc;">"The function call need a pair of parentheses.\n"</span>)
+  (display <span style="color: #66cccc;">"This can be a block called sequentially.\n"</span>)
+  (display <span style="color: #66cccc;">"The value of last expression will be the return value of func.\n"</span>)
+  (+ param 1)))
+
+(list (func 1))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">if</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+</div><div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">当 <code>if</code> 语句不包含 <code>else</code> 时, 返回 <code>unspecified</code>.</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">whatif</span> bool)
+  (<span style="color: #99cc99;">if</span> bool
+     1))
+
+(list (whatif (&gt; 3 2))
+      (whatif (&lt; 3 2)))
+</pre>
+</div>
 </div>
 </div>
 </div>
