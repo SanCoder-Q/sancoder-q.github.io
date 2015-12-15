@@ -12,8 +12,8 @@ title: SICP Exercise Results
 * COMMENT requirement
 
 #+BEGIN_SRC emacs-lisp
-(require 'yasnippet)
-(require 'ob-scheme)
+  (require 'yasnippet)
+  (require 'ob-scheme)
 #+END_SRC
 
 #+RESULTS:
@@ -80,7 +80,7 @@ title: SICP Exercise Results
 *** Exercise 1.4
 *** Exercise 1.5
 #+BEGIN_SRC scheme
-(define (q) (q))
+  (define (q) (q))
 #+END_SRC
 This line means to define a *non-parameter recursive function*. So once it be evaluated, the complier will go into a endless loop.
 The difference between =normal order= and =applicative order= is the first one will not eval anything before all the expression is expanded.
@@ -363,10 +363,10 @@ p <- p^2 + q^2
   (define (fib-iter a b p q count)
     (cond ((= count 0) b)
           ((even? count) (fib-iter a
-                               b
-                               (+ (* p p) (* q q))
-                               (+ (* 2 p q) (* q q))
-                               (/ count 2)))
+                                   b
+                                   (+ (* p p) (* q q))
+                                   (+ (* 2 p q) (* q q))
+                                   (/ count 2)))
           (else (fib-iter (+ (* b q) (* a (+ p q)))
                           (+ (* b p) (* a q))
                           p
@@ -398,12 +398,12 @@ p <- p^2 + q^2
              (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
         (gcd (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))
              (remainder (remainder 40 (remainder 206 40))
-              (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
+                        (remainder (remainder 206 40) (remainder 40 (remainder 206 40)))))
         (remainder (remainder 206 40) (remainder 40 (remainder 206 40))))
 #+END_SRC
 
 #+RESULTS:
-: (2 2 2 2 2 2)
+| 2 | 2 | 2 | 2 | 2 | 2 |
 
 IF: 0 + 1 + 2 + 4 + 7
 GCD: 4
@@ -419,7 +419,7 @@ SUM: 18
 #+END_SRC
 
 #+RESULTS:
-: (2 2 2 2 2)
+| 2 | 2 | 2 | 2 | 2 |
 
 IF: 0
 GCD: 4
@@ -467,23 +467,897 @@ SUM: 4
 
 
 #+BEGIN_SRC scheme
+  (define (square n)
+    (* n n))
+
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n) n)
+          ((divides? test-divisor n) test-divisor)
+          (else (find-divisor n (+ test-divisor 1)))))
+
+  (define (divides? a n)
+    (= (remainder n a) 0))
+
+  (define (prime? n)
+    (= n (smallest-divisor n)))
+
+  (define (runtime)
+    (tms:clock (times)))
+
   (define (time-prime-test n)
-    (newline)
-    (display n)
     (start-prime-test n (runtime)))
 
+  ;; Need to change this
   (define (start-prime-test n start-time)
-    (if prime?
-        (report-prime (- (runtime) start-time)))
+    (if (prime? n)
+        (begin (newline)
+               (display n)
+               (report-prime (- (runtime) start-time))
+               #t)
+        #f))
 
   (define (report-prime elapsed-time)
     (display " *** ")
     (display elapsed-time))
 
-  (define (search-for-primes i n)
-    (cond ()
-          ()
-          (else))) ;return the smallest i primes greater than n
+  (define (next-odd n)
+    (if (= (remainder n 2) 0)
+        (+ n 1)
+        (+ n 2)))
+
+  (define (search-for-primes-iter i n)
+    (if (> i 0)
+        (if (time-prime-test n)
+            (search-for-primes-iter (- i 1) (next-odd n))
+            (search-for-primes-iter i (next-odd n)))))
+
+  (define (search-for-primes n)
+    (search-for-primes-iter 3 n))
+
+  (list (search-for-primes 1000)
+        (search-for-primes 10000)
+        (search-for-primes 100000)
+        (search-for-primes 1000000)
+        (search-for-primes 10000000)
+        (search-for-primes 100000000)
+        (search-for-primes 1000000000)
+        (search-for-primes 10000000000)
+        (search-for-primes 100000000000)
+        (search-for-primes 1000000000000))
 #+END_SRC
 
 #+RESULTS:
+: (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
+
+*** Exercise 1.23
+#+BEGIN_SRC scheme
+  (define (square n)
+    (* n n))
+
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+
+  (define (next n)
+    (if (= n 2)
+        3
+        (+ n 2)))
+
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n) n)
+          ((divides? test-divisor n) test-divisor)
+          (else (find-divisor n (next test-divisor)))))
+
+  (define (divides? a n)
+    (= (remainder n a) 0))
+
+  (define (prime? n)
+    (= n (smallest-divisor n)))
+
+  (define (runtime)
+    (tms:clock (times)))
+
+  (define (time-prime-test n)
+    (start-prime-test n (runtime)))
+
+  ;; Need to change this
+  (define (start-prime-test n start-time)
+    (if (prime? n)
+        (begin (newline)
+               (display n)
+               (report-prime (- (runtime) start-time))
+               #t)
+        #f))
+
+  (define (report-prime elapsed-time)
+    (display " *** ")
+    (display elapsed-time))
+
+  (define (next-odd n)
+    (if (= (remainder n 2) 0)
+        (+ n 1)
+        (+ n 2)))
+
+  (define (search-for-primes-iter i n)
+    (if (> i 0)
+        (if (time-prime-test n)
+            (search-for-primes-iter (- i 1) (next-odd n))
+            (search-for-primes-iter i (next-odd n)))))
+
+  (define (search-for-primes n)
+    (search-for-primes-iter 3 n))
+
+  (list (search-for-primes 1000)
+        (search-for-primes 10000)
+        (search-for-primes 100000)
+        (search-for-primes 1000000)
+        (search-for-primes 10000000)
+        (search-for-primes 100000000)
+        (search-for-primes 1000000000)
+        (search-for-primes 10000000000)
+        (search-for-primes 100000000000)
+        (search-for-primes 1000000000000))
+#+END_SRC
+
+#+RESULTS:
+: (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
+
+*** Exercise 1.24
+#+BEGIN_SRC scheme
+  (define (square n)
+    (* n n))
+
+  (define (even? n)
+    (= (remainder n 2) 0))
+
+  (define (expmod base exp m)
+    (cond ((= exp 0) 1)
+          ((even? exp)
+           (remainder (square (expmod base (/ exp 2) m))
+                      m))
+          (else
+           (remainder (* base (expmod base (- exp 1) m))
+                      m))))
+
+  (define (fermat-test n)
+    (define (try-it a)
+      (= (expmod a n n) a))
+    (try-it (+ 1 (random (- n 1)))))
+
+  (define (fast-prime? n times)
+    (cond ((= times 0) #t)
+          ((fermat-test n) (fast-prime? n (- times 1)))
+          (else #f)))
+
+  (define (runtime)
+    (tms:clock (times)))
+
+  (define (time-prime-test n)
+    (start-prime-test n (runtime)))
+
+  ;; Need to change this
+  (define (start-prime-test n start-time)
+    (if (fast-prime? n 100)
+        (begin (newline)
+               (display n)
+               (report-prime (- (runtime) start-time))
+               #t)
+        #f))
+
+  (define (report-prime elapsed-time)
+    (display " *** ")
+    (display elapsed-time))
+
+  (define (next-odd n)
+    (if (= (remainder n 2) 0)
+        (+ n 1)
+        (+ n 2)))
+
+  (define (search-for-primes-iter i n)
+    (if (> i 0)
+        (if (time-prime-test n)
+            (search-for-primes-iter (- i 1) (next-odd n))
+            (search-for-primes-iter i (next-odd n)))))
+
+  (define (search-for-primes n)
+    (search-for-primes-iter 3 n))
+
+  (list (search-for-primes 1000)
+        (search-for-primes 10000)
+        (search-for-primes 100000)
+        (search-for-primes 1000000)
+        (search-for-primes 10000000)
+        (search-for-primes 100000000)
+        (search-for-primes 1000000000)
+        (search-for-primes 10000000000)
+        (search-for-primes 100000000000)
+        (search-for-primes 1000000000000))
+
+#+END_SRC
+
+#+RESULTS:
+: (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
+
+*** Exercise 1.28
+#+BEGIN_SRC scheme
+  (define (square n)
+    (* n n))
+
+  (define (even? n)
+    (= (remainder n 2) 0))
+
+  (define (trivial-square-test a n )
+    (if (and (not (= a 1))
+             (not (= a (- n 1)))
+             (= (remainder (square a) n) 1))
+        0
+        a))
+
+  (define (expmod base exp m)
+    (cond ((= exp 0) 1)
+          ((even? exp)
+           (remainder (square (trivial-square-test (expmod base (/ exp 2) m) m))
+                      m))
+          (else
+           (remainder (* base (expmod base (- exp 1) m))
+                      m))))
+
+  (define (rabin-test n)
+    (define (try-it a)
+      (= (expmod a (- n 1) n) 1))
+    (try-it (+ 1 (random (- n 1)))))
+
+  (define (fast-prime? n times)
+    (cond ((= times 0) #t)
+          ((rabin-test n) (fast-prime? n (- times 1)))
+          (else #f)))
+
+  (define (runtime)
+    (tms:clock (times)))
+
+  (define (time-prime-test n)
+    (start-prime-test n (runtime)))
+
+  ;; Need to change this
+  (define (start-prime-test n start-time)
+    (if (fast-prime? n 100)
+        (begin (newline)
+               (display n)
+               (report-prime (- (runtime) start-time))
+               #t)
+        #f))
+
+  (define (report-prime elapsed-time)
+    (display " *** ")
+    (display elapsed-time))
+
+  (define (next-odd n)
+    (if (= (remainder n 2) 0)
+        (+ n 1)
+        (+ n 2)))
+
+  (define (search-for-primes-iter i n)
+    (if (> i 0)
+        (if (time-prime-test n)
+            (search-for-primes-iter (- i 1) (next-odd n))
+            (search-for-primes-iter i (next-odd n)))))
+
+  (define (search-for-primes n)
+    (search-for-primes-iter 3 n))
+
+  (list (search-for-primes 1000)
+        (search-for-primes 10000)
+        (search-for-primes 100000)
+        (search-for-primes 1000000)
+        (search-for-primes 10000000)
+        (search-for-primes 100000000)
+        (search-for-primes 1000000000)
+        (search-for-primes 10000000000)
+        (search-for-primes 100000000000)
+        (search-for-primes 1000000000000))
+#+END_SRC
+
+#+RESULTS:
+: (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
+*** Exercise 1.29
+#+BEGIN_SRC scheme
+  (define (sum term a next b)
+    (if (> a b)
+        0
+        (+ (term a)
+           (sum term (next a) next b))))
+
+  (define (integral f a b n)
+    (define h (/ (- b a) n))
+    (define (new-f i)
+      (* (+ 2 (* 2 (remainder i 2)))
+         (f (+ a (* i h)))))
+    (/ (* h
+          (+ (f a)
+             (f b)
+             (sum new-f 1 (lambda (x) (+ x 1)) (- n 1))))
+       3.0))
+
+  (define (cube x)
+    (* x x x))
+
+  (list (integral cube 0 1.0 100)
+        (integral cube 0 1.0 1000))
+#+END_SRC
+
+#+RESULTS:
+: (0.25000000000000006 0.25000000000000006)
+
+*** Exercise 1.30
+#+BEGIN_SRC scheme
+  (define (sum term a next b)
+    (define (iter a result)
+      (if (> a b)
+          result
+          (iter (next a)
+                (+ result (term a)))))
+    (iter a 0))
+
+  (define (inc x)
+    (+ x 1))
+
+  (list (sum (lambda (x) x) 1 inc 10)
+        (sum (lambda (x) (* x x x)) 1 inc 10))
+#+END_SRC
+
+#+RESULTS:
+: (55 3025)
+
+*** Exercise 1.31
+#+BEGIN_SRC scheme
+  (define (product term a next b)
+    (define (iter a result)
+      (if (> a b)
+          result
+          (iter (next a)
+                (* result (term a)))))
+    (iter a 1))
+
+  (define (inc x)
+    (+ x 1))
+
+  (define (square x)
+    (* x x))
+
+  (define (factorial n)
+    (product (lambda (x) x) 1 inc n))
+
+  (define (PI)
+    (define (like-PI n)
+      (* 4.0
+         (/ 2 (+ 3 (* n 2)))
+         (product (lambda (x) (square (/ (+ 2 (* x 2))
+                                         (+ 1 (* x 2))))) 1 inc n)))
+    (like-PI 10000))
+
+  (list (factorial 5)
+        (PI))
+#+END_SRC
+
+#+RESULTS:
+: (120 3.1415141265341364)
+
+*** Exercise 1.32
+#+BEGIN_SRC scheme
+  (define (accumulate combiner null-value term a next b)
+    (define (iter a result)
+      (if (> a b)
+          result
+          (iter (next a)
+                (combiner result (term a)))))
+    (iter a null-value))
+
+  (define (sum term a next b)
+    (accumulate (lambda (x y) (+ x y))
+                0
+                term a next b))
+
+  (define (inc x)
+    (+ x 1))
+
+  (list (sum (lambda (x) x) 0 inc 10))
+#+END_SRC
+
+#+RESULTS:
+| 55 |
+
+*** Exercise 1.33
+#+BEGIN_SRC scheme
+  (define (square n)
+    (* n n))
+
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+
+  (define (next n)
+    (if (= n 2)
+        3
+        (+ n 2)))
+
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n) n)
+          ((divides? test-divisor n) test-divisor)
+          (else (find-divisor n (next test-divisor)))))
+
+  (define (divides? a n)
+    (= (remainder n a) 0))
+
+  (define (prime? n)
+    (= n (smallest-divisor n)))
+
+  (define (filtered-accumulate filter combiner null-value term a next b)
+    (define (iter a result)
+      (cond ((> a b) result)
+            ((filter a) (iter (next a)
+                              (combiner result (term a))))
+            (else (iter (next a) result))))
+    (iter a null-value))
+
+  (define (sum term a next b)
+    (filtered-accumulate (lambda (x) #t)
+                         (lambda (x y) (+ x y))
+                         0
+                         term a next b))
+
+  (define (inc x)
+    (+ x 1))
+
+  (define (prime-sum a b)
+    (filtered-accumulate prime?
+                         (lambda (x y) (+ x y))
+                         0
+                         (lambda (x) x)
+                         a
+                         inc
+                         b))
+
+  (define (prime-n n)
+    (filtered-accumulate (lambda (x)
+                           (= (gcd x n)
+                              1))
+                         (lambda (x y) (+ x y))
+                         0
+                         (lambda (x) x)
+                         1
+                         inc
+                         n))
+
+  (list (sum (lambda (x) x) 0 inc 10)
+        (prime-sum 0 10)
+        (prime-n 10))
+#+END_SRC
+
+#+RESULTS:
+| 55 | 18 | 20 |
+*** Exercise 1.34
+Give a error to use ~2~ as a function.
+*** Exercise 1.35
+#+BEGIN_SRC scheme
+  (define tolerance 0.00001)
+
+  (define (fixed-point f guess)
+    (let ((next-guess (f guess)))
+      (begin (display next-guess)
+             (newline)
+             (if (> tolerance
+                    (abs (- guess next-guess)))
+                 next-guess
+                 (fixed-point f next-guess)))))
+
+  (fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0)
+#+END_SRC
+
+#+RESULTS:
+: 1.6180327868852458
+
+*** Exercise 1.36
+#+BEGIN_SRC scheme
+  (define tolerance 0.00001)
+
+  (define (average x y)
+    (/ (+ x y)
+       2))
+
+  (define (fixed-point f guess)
+    (let ((next-guess (f guess)))
+      (begin (display next-guess)
+             (newline)
+             (if (> tolerance
+                    (abs (- guess next-guess)))
+                 next-guess
+                 (fixed-point f next-guess)))))
+
+  (fixed-point (lambda (x)
+                 (let ((log1000 (log 1000)))
+                   (/ log1000 (log x))))
+               10.0)
+
+  (newline)
+
+  (fixed-point (lambda (x)
+                 (let ((log1000 (log 1000)))
+                   (average (/ log1000 (log x))
+                            x)))
+               10.0)
+#+END_SRC
+
+#+RESULTS:
+: 4.555536206185039
+*** Exercise 1.37
+#+BEGIN_SRC scheme
+  (define (cont-frac N D k)
+    (define (cont-frac-recur i)
+      (if (> i k)
+          0
+          (/ (N i) (+ (D i)
+                      (cont-frac-recur (+ i 1))))))
+    (cont-frac-recur 1))
+
+  (/ 1 (cont-frac (lambda (i) 1.0)
+                  (lambda (i) 1.0)
+                  100))
+#+END_SRC
+
+#+RESULTS:
+: 1.618033988749895
+
+#+BEGIN_SRC scheme
+  (define (cont-frac N D k)
+    (define (cont-frac-iter i result)
+      (if (= i 1)
+          result
+          (cont-frac-iter (- i 1)
+                          (/ (N i) (+ (D i) result)))))
+    (cont-frac-iter k 0))
+
+  (/ 1 (cont-frac (lambda (i) 1.0)
+                  (lambda (i) 1.0)
+                  100))
+
+#+END_SRC
+
+#+RESULTS:
+: 1.618033988749895
+
+CPS iteration
+#+BEGIN_SRC scheme
+  (define (identity x) x)
+
+  (define (cont-frac N D k)
+    (define (cont-frac-cps i f)
+      (if (> i k)
+          (f 0)
+          (cont-frac-cps (+ i 1)
+                         (lambda (x)
+                           (f (/ (N i)
+                                 (+ (D i) x)))))))
+    (cont-frac-cps 1 identity))
+
+  (/ 1 (cont-frac (lambda (i) 1.0)
+                  (lambda (i) 1.0)
+                  100))
+
+#+END_SRC
+
+#+RESULTS:
+: 1.618033988749895
+*** Exercise 1.38
+#+BEGIN_SRC scheme
+  (define (identity x) x)
+
+  (define (cont-frac N D k)
+    (define (cont-frac-cps i f)
+      (if (> i k)
+          (f 0)
+          (cont-frac-cps (+ i 1)
+                         (lambda (x)
+                           (f (/ (N i)
+                                 (+ (D i) x)))))))
+    (cont-frac-cps 1 identity))
+
+  (define (D i)
+    (if (= (remainder i 3) 2)
+        (* 2 (ceiling-quotient i 3))
+        1))
+
+  (+ 2 (cont-frac (lambda (i) 1.0)
+                  D
+                  100))
+#+END_SRC
+
+#+RESULTS:
+: 2.7182818284590455
+*** Exercise 1.39
+#+BEGIN_SRC scheme
+  (define (identity x) x)
+
+  (define (cont-frac N D k)
+    (define (cont-frac-cps i f)
+      (if (> i k)
+          (f 0)
+          (cont-frac-cps (+ i 1)
+                         (lambda (x)
+                           (f (/ (N i)
+                                 (+ (D i) x)))))))
+    (cont-frac-cps 1 identity))
+
+  (define (tan-cf x k)
+    (define (D i)
+      (- (* i 2) 1))
+    (define (N i)
+      (if (= i 1)
+          x
+          (- (* x x))))
+    (cont-frac N D k))
+
+  (list (tan-cf (/ 3.1415926 4) 100)
+        (tan (/ 3.1415926 4)))
+
+#+END_SRC
+
+#+RESULTS:
+| 0.9999999732051038 | 0.9999999732051039 |
+
+*** Exercise 1.40
+#+BEGIN_SRC scheme
+  (define tolerance 0.00001)
+
+  (define (fixed-point f guess)
+    (let ((next-guess (f guess)))
+      (begin (display next-guess)
+             (newline)
+             (if (> tolerance
+                    (abs (- guess next-guess)))
+                 next-guess
+                 (fixed-point f next-guess)))))
+
+  (define dx 0.00001)
+
+  (define (deriv g)
+    (lambda (x)
+      (/ (- (g (+ x dx)) (g x))
+         dx)))
+
+  (define (newton-transform g)
+    (lambda (x)
+      (- x (/ (g x) ((deriv g) x)))))
+
+  (define (newton-method g guess)
+    (fixed-point (newton-transform g) guess))
+
+  (define (cubic a b c)
+    (lambda (x) (+ (* x x x)
+                   (* a x x)
+                   (* b x)
+                   (* c))))
+
+  (define (polynomial a b c)
+    (newton-method (cubic a b c) 1))
+
+  (polynomial 0 0 1)
+#+END_SRC
+
+#+RESULTS:
+: -0.9999999999999863
+
+*** Exercise 1.41
+#+BEGIN_SRC scheme
+  (define (double f)
+    (lambda (x) (f (f x))))
+
+  (define (inc x)
+    (+ x 1))
+
+  (((double (double double)) inc) 5) #|(double (double (double (double inc))))|#
+#+END_SRC
+
+#+RESULTS:
+: 21
+
+*** Exercise 1.42
+#+BEGIN_SRC scheme
+  (define (compose f g)
+    (lambda (x)
+      (f (g x))))
+
+  (define (square x)
+    (* x x))
+
+  (define (inc x)
+    (+ x 1))
+
+  ((compose square inc) 6)
+#+END_SRC
+
+#+RESULTS:
+: 49
+
+*** Exercise 1.43
+#+BEGIN_SRC scheme
+  (define (id x)
+    x)
+
+  (define (repeated f n)
+    (define (repeated-iter fsum i)
+      (cond ((= n 0) id)
+            ((= i n) fsum)
+            (else (repeated-iter (lambda (x) (f (fsum x)))
+                                 (+ i 1)))))
+    (repeated-iter id 0))
+
+  (define (square x)
+    (* x x))
+
+  ((repeated square 2) 5)
+#+END_SRC
+
+#+RESULTS:
+: 625
+
+*** Exercise 1.44
+#+BEGIN_SRC scheme
+  (define (id x)
+    x)
+
+  (define (repeated f n)
+    (define (repeated-iter fsum i)
+      (cond ((= n 0) id)
+            ((= i n) fsum)
+            (else (repeated-iter (lambda (x) (f (fsum x)))
+                                 (+ i 1)))))
+    (repeated-iter id 0))
+
+  (define epsonlon 0.00001)
+
+  (define (smooth f)
+    (lambda (x)
+      (/ (+ (f (- x epsonlon)) (f x) (f (+ x epsonlon))) 3)))
+
+  (define (repeated-smooth f n)
+    ((repeated smooth n) f))
+
+  (define (square x)
+    (* x x))
+
+  ((repeated-smooth square 5) 5)
+#+END_SRC
+
+#+RESULTS:
+: 25.00000000033333
+
+*** Exercise 1.45
+#+BEGIN_SRC scheme
+  (define (id x) x)
+
+  (define tolerance 0.00001)
+
+  (define (repeated f n)
+    (define (repeated-iter fsum i)
+      (cond ((= n 0) id)
+            ((= i n) fsum)
+            (else (repeated-iter (lambda (x) (f (fsum x)))
+                                 (+ i 1)))))
+    (repeated-iter id 0))
+
+  (define (average x y)
+    (/ (+ x y)
+       2))
+
+  (define (average-damp f)
+    (lambda (x) (average x (f x))))
+
+  (define (average-n-times f n)
+    ((repeated average-damp n) f))
+
+  (define (power x n)
+    (define (power-iter i acc)
+      (if (= i n)
+          acc
+          (power-iter (+ i 1) (* acc x))))
+    (power-iter 0 1))
+
+  (define (lg2 n)
+    (define (lg2-iter acc remain)
+      (if (< remain 1)
+          acc
+          (lg2-iter (+ acc 1) (/ remain 2))))
+    (lg2-iter 0 (/ n 2)))
+
+  (define (n-th-root n x)
+    (define (fixed-point f guess)
+      (define next-guess ((average-n-times f (lg2 n)) guess))
+      (display next-guess)
+      (newline)
+      (if (> tolerance (abs (- guess next-guess)))
+          next-guess
+          (fixed-point f next-guess)))
+    (define (f y) (/ x (power y (- n 1))))
+    (fixed-point f 1.0))
+
+  (define (square x)
+    (* x x))
+
+  (n-th-root 5 32)
+#+END_SRC
+
+#+RESULTS:
+: 2.0000015129957607
+
+*** Exercise 1.46
+#+BEGIN_SRC scheme
+  (define (abs x)
+    (if (< x 0)
+        (- x)
+        x))
+
+  (define (iterative-improve good-enough? update-guess)
+    (define (iter-func guess)
+      (let ((last-guess guess)
+            (updated-guess (update-guess guess)))
+        (if (good-enough? updated-guess last-guess)
+            updated-guess
+            (iter-func updated-guess))))
+    iter-func)
+
+  (define (sqrt n)
+    (define (sqrt-good-enough? guess last-guess)
+      (if (< (abs (- (/ guess last-guess) 1)) 0.00001) #t #f))
+    (define (sqrt-update-guess guess)
+      (/ (+ guess (/ n guess)) 2))
+    ((iterative-improve sqrt-good-enough? sqrt-update-guess) 2.0))
+
+  (sqrt 100)
+#+END_SRC
+
+#+RESULTS:
+: 10.000000000107445
+
+#+BEGIN_SRC scheme
+  (define (f)
+    (define (g x y) (+ x y))
+    (lambda (x y) (g x y)))
+
+  ((f) 33 44)
+#+END_SRC
+
+#+RESULTS:
+: 77
+
+
+#+BEGIN_SRC scheme
+  (define (iterative-improve good-enough? update-guess)
+    (define (iter-func guess)
+      (let ((last-guess guess)
+            (updated-guess (update-guess guess)))
+        (if (good-enough? updated-guess last-guess)
+            updated-guess
+            (iter-func updated-guess))))
+    (lambda (guess) (iter-func guess)))
+
+  (define tolerance 0.00001)
+
+  (define (fixed-point f guess)
+    (define (fixed-point-good-enough? guess last-guess)
+      (> tolerance (abs (- last-guess guess))))
+    (define (fixed-point-update-guess guess)
+      (f guess))
+    ((iterative-improve fixed-point-good-enough? fixed-point-update-guess) guess))
+
+  (define (average x y)
+    (/ (+ x y) 2))
+
+  (define (sqrt x)
+    (fixed-point (lambda (y) (average y (/ x y))) 2.0))
+
+  (sqrt 100)
+#+END_SRC
+
+#+RESULTS:
+: 10.0

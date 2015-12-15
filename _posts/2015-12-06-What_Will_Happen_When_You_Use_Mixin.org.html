@@ -1,0 +1,112 @@
+---
+layout: post
+title: What Will Happen When You Use Mixin
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Story about mixin</h2>
+</div>
+
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">The official explain</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+The mixin technique is explained as a <b>code reusable way</b> to define the react components in <b>React official document</b>. It can make the different components share some common functionality. The mixin can overwrite the <b>life cycle methods</b>. If several mixins define the same life cycle method, all these methods are guaranteed to be called in the order mixins are listed.<br  />
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">The mixin mechanism</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<ol class="org-ol">
+<li><p>
+Define several <code>SpecPolicy</code>.<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js">[
+    DEFINE_ONCE,
+    DEFINE_MANY,  <span style="color: #969896; font-style: italic;">// </span><span style="color: #969896; font-style: italic;">means can be defined by either the component class or mixin object, but the methods must return =void=.</span>
+    OVERRIDE_BASE,
+    DEFINE_MANY_MERGED
+]
+</pre>
+</div></li>
+
+<li><p>
+Define object <code>ReactClassInterface</code> to set the <b>life cycle functions</b> spec policy.<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js">{
+    mixins: SpecPolicy.DEFINE_MANY,
+    statics: SpecPolicy.DEFINE_MANY,
+}
+</pre>
+</div></li>
+
+<li>For each mixin, the framework invoke the <code>mixSpecIntoComponent</code> method to do the follow things.<br  />
+<ol class="org-ol">
+<li>Create <code>MIXINS_KEY</code> to store the exist mixins.<br  /></li>
+<li>Recursively invoke the <code>mixSpecIntoComponent</code> if the current mixin has its own mixins.<br  /></li>
+</ol></li>
+
+<li>For each field:<br  />
+<ol class="org-ol">
+<li>In <code>validateMethodOverride</code> : get the method spec policy and check if any of them violate the policy;<br  /></li>
+<li>If the property is a function, and not a <code>ReactClassInterface</code> method, and not defined yet, and a props <code>autobind</code> of the current mixin is not <code>false</code>, then the function will be paste to the component's prototype and a hash map property of the prototype called <code>__reactAutoBindMap</code>.<br  /></li>
+<li>If it's already defined, deal with it using the spec policy.<br  /></li>
+<li>If it's not defined but maybe a <code>ReactClassInterface</code> method or not a function or the mixin <code>autobind</code> is <code>false</code>, then the field will only be paste to the component's prototype.<br  /></li>
+</ol></li>
+</ol>
+</div>
+</div>
+
+
+
+
+
+
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">Why using mixin?</h2>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">What's wrong with mixin?</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<ul class="org-ul">
+<li>The contract between a component and its mixins is implicit.<br  /></li>
+<li>Different mixins using method or field with same name will clash.<br  /></li>
+<li>The performance will make people confused if some function is defined in many time, for instance, <code>shouldComponentUpdate</code>.<br  /></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">The best practice to use mixin</h2>
+</div>
+
+
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11">PS</h2>
+<div class="outline-text-2" id="text-orgheadline11">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">State is evil</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+To think in React is to find the minimal amount of state necessary to represent your app, and calculate everything based on that. This is because state is unpredictable. Props are, for the most part, derived from other props and state, but state can be anything.<br  />
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">Can mixin define statics?</h3>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">ReactClass:322: <code>mixSpecIntoComponent(Constructor, mixins[i]);</code></h3>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">ReactClass:438: <code>function mixSpecIntoComponent(Constructor, spec) {...}</code></h3>
+</div>
+</div>

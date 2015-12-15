@@ -1,0 +1,80 @@
+#+STARTUP: entitiespretty
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+OPTIONS: \n:t
+#+BEGIN_HTML
+---
+layout: post
+title: What Will Happen When You Use Mixin
+---
+#+END_HTML
+
+* COMMENT requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'ob-js)
+#+END_SRC
+
+#+RESULTS:
+: ob-js
+
+
+* Story about mixin
+
+
+* The official explain
+The mixin technique is explained as a *code reusable way* to define the react components in *React official document*. It can make the different components share some common functionality. The mixin can overwrite the *life cycle methods*. If several mixins define the same life cycle method, all these methods are guaranteed to be called in the order mixins are listed.
+* The mixin mechanism
+
+
+
+1. Define several ~SpecPolicy~.
+   #+BEGIN_SRC js
+     [
+         DEFINE_ONCE,
+         DEFINE_MANY,  // means can be defined by either the component class or mixin object, but the methods must return =void=.
+         OVERRIDE_BASE,
+         DEFINE_MANY_MERGED
+     ]
+   #+END_SRC
+
+2. Define object ~ReactClassInterface~ to set the *life cycle functions* spec policy.
+   #+BEGIN_SRC js
+     {
+         mixins: SpecPolicy.DEFINE_MANY,
+         statics: SpecPolicy.DEFINE_MANY,
+     }
+   #+END_SRC
+
+3. For each mixin, the framework invoke the ~mixSpecIntoComponent~ method to do the follow things.
+   1) Create ~MIXINS_KEY~ to store the exist mixins.
+   2) Recursively invoke the ~mixSpecIntoComponent~ if the current mixin has its own mixins.
+
+4. For each field:
+   1) In ~validateMethodOverride~ : get the method spec policy and check if any of them violate the policy;
+   2) If the property is a function, and not a ~ReactClassInterface~ method, and not defined yet, and a props ~autobind~ of the current mixin is not ~false~, then the function will be paste to the component's prototype and a hash map property of the prototype called ~__reactAutoBindMap~.
+   3) If it's already defined, deal with it using the spec policy.
+   4) If it's not defined but maybe a ~ReactClassInterface~ method or not a function or the mixin ~autobind~ is ~false~, then the field will only be paste to the component's prototype.
+
+
+
+
+
+
+
+* Why using mixin?
+
+* What's wrong with mixin?
+- The contract between a component and its mixins is implicit.
+- Different mixins using method or field with same name will clash.
+- The performance will make people confused if some function is defined in many time, for instance, ~shouldComponentUpdate~.
+* The best practice to use mixin
+
+
+* PS
+** State is evil
+To think in React is to find the minimal amount of state necessary to represent your app, and calculate everything based on that. This is because state is unpredictable. Props are, for the most part, derived from other props and state, but state can be anything.
+** Can mixin define statics?
+
+** ReactClass:322: ~mixSpecIntoComponent(Constructor, mixins[i]);~
+** ReactClass:438: ~function mixSpecIntoComponent(Constructor, spec) {...}~

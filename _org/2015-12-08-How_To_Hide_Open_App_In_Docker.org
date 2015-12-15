@@ -1,0 +1,17 @@
+#+STARTUP: entitiespretty
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+OPTIONS: \n:t
+#+BEGIN_HTML
+---
+layout: post
+title: How to hide open app in docker
+---
+#+END_HTML
+
+Change / add the follow key pair in =/Applications/<app_name>.app/Contents/Info.plist=
+
+#+BEGIN_HTML
+<key>LSUIElement</key>
+<true/>
+#+END_HTML
