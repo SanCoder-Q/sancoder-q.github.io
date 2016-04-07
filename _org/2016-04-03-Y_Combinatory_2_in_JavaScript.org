@@ -1,0 +1,178 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: The Y Combinatory in JavaScript
+---
+#+END_HTML
+
+* COMMENT Requirement
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ob-js)
+  (setq-local org-babel-default-header-args:js '((:exports . "both")))
+#+END_SRC
+
+#+RESULTS:
+: ((:exports . both))
+
+* Reference
+
+[[http://www.ece.uc.edu/~franco/C511/html/Scheme/ycomb.html][The Y Combinator]]
+
+* Purpose
+
++ Using JavaScript to translate this blog.
++ Try to understand the theory behind Y.
+
+* Body
+
+在本文中, 我们将试图追溯递归理论的基石之一: ~Y Combinator~ 的起源. 你应该知道, 在一些情况下, 给一个函数命名并不是必须的.
+
+#+BEGIN_SRC js
+  return (x => x + 1)(6);
+#+END_SRC
+
+#+RESULTS:
+: 7
+
+这段代码使用匿名函数实现从 1 加到 6 的逻辑. 但是如果要实现的是递归逻辑该如何呢?
+
+#+BEGIN_SRC js
+  var fact = n => n ? n * fact(n - 1) : 1;
+  return fact(6);
+#+END_SRC
+
+#+RESULTS:
+: 720
+
+这段代码用于计算 ~阶乘~. 但是这样的递归需要 ~fact~ 这个名字以便实现中调用自己. 但是我们将会看到这不再是必须的. 我们会一步一步用 JavaScript 改变 ~fact~.
+
+** Step 1 最直接的方法是把 =fact= 这个名字通过参数传递进去, 例如
+
+#+BEGIN_SRC js
+  var op_maker = (f) => (x, y) => f(x, y);
+#+END_SRC
+
+外面的函数将要实现的逻辑名称作为参数传入, 内部的匿名函数用来将逻辑应用于返回函数的参数上. 让我们试试改写 ~fact~. 先试试这样:
+
+#+BEGIN_SRC js
+  var fact_maker = (procedure) => (n) => n ? n * procedure(n-1) : 1;
+
+  return fact_maker(fact_maker)(5);
+#+END_SRC
+
+#+RESULTS:
+: NaN
+
+但是, 显然这样不行. 尽管 ~fact_maker~ 是一个接受一个参数的过程, 但我们期望的是一个接受数字参数的过程, 而 ~fact_maker~ 则接受一个过程参数. 解决方法如下:
+
+#+BEGIN_SRC js
+  var fact_maker = (procedure) => (n) => n ? n * procedure(procedure)(n-1) : 1;
+
+  return fact_maker(fact_maker)(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+好吧, 我们成功的在实现中回避了名称, 但目前还是需要将 ~fact_maker~ 的名称作为参数传递进去. 让我们试着把它也去掉.
+
+** Step 2 之前我们为了用 ~procedure(procedure)~ 来表示 ~fact~, 从而使用了 ~fact_maker(fact_maker)~. 那么, 我们可以利用 =Step 1= 的结果, 将 ~fact_maker~ 写成以下形式:
+
+#+BEGIN_SRC js
+  var fact =
+      ((procedure) =>
+          (n) => n ? n * procedure(procedure)(n-1) : 1)((procedure) =>
+              (n) => n ? n * procedure(procedure)(n-1) : 1);
+
+  return fact(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+我们将定义的过程传递给的与自己一模一样的实现, 但无论如何, 这个过程不再需要名字了.
+
+下面, 我们将试图概括可以适用于所有过程的应用序 Y-combinator.
+
+** Step 3 首先, 我们要分离与阶乘相关的逻辑. 目标是将这些代码放在一起, 这样当用其他逻辑来代替它们的时候, 就能够形成一个新的递归. 这一步可能比较奇葩, 因为我们会使用代码去代替在设计上本应使用名字的地方. 步骤二中的函数是这样的:
+
+#+BEGIN_SRC js
+  var F = (n) => n ? n * procedure(procedure)(n-1) : 1;
+#+END_SRC
+
+与我们想要的不同, 这里的 ~procedure(procedure)~ 本应该是一个简单的过程. 因此, 我们用一个奇葩的方法来搞定它. 一般的, ~f(arg)~ 和 ~(x => f(x))(arg)~ 是等价的.
+后者比较奇怪, 因为我们将 ~arg~ 传入一个用来调用 ~f~ 的过程中. 为什么要写成这种怪模样呢? 瞧着, 这意味着:
+~procedure(procedure)(n-1)~ 和 ~(arg => procedure(procedure)(arg))(n-1)~ 是等价的. 带入 ~F~, 有
+
+#+BEGIN_SRC js
+  var F = ((func-arg) => (n) => n ? n * func-arg(n-1) : 1)(
+      (arg) => procedure(procedure)(arg));
+#+END_SRC
+
+这样我们将曾经是 ~var F = (n) = { ... <procedure> ... }~ 的形式改写成了 ~var F = ((func-arg) => (n) => { ... })(<procedure>)~ 的形式.
+
+** Step 4 现在我们结合 Step2 和 Step3 的结果, 可以得出:
+
+#+BEGIN_SRC js
+  var fact =
+      ((procedure) =>
+       ((func_arg) =>
+        (n) => n ? n * func_arg(n-1) : 1)
+       ((arg) => procedure(procedure)(arg)))(
+          ((procedure) =>
+           ((func_arg) =>
+            (n) => n ? n * func_arg(n-1) : 1)
+           ((arg) => procedure(procedure)(arg))))
+
+  return fact(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+可以看到以 ~func_arg~ 为参数的函数就是之前我们的阶乘函数, 将函数提出来:
+
+#+BEGIN_SRC js
+  var F = (func_arg) => (n) => n ? n * func_arg(n-1) : 1;
+
+  var fact = ((procedure) => F(arg => procedure(procedure)(arg)))(
+      (procedure) => F(arg => procedure(procedure)(arg)));
+
+  return fact(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+** Step 5 现在我们试着提出通用的 Y-Combinator
+
+#+BEGIN_SRC js
+  var Y = (F) => {
+      var W = (x) => F(arg => x(x)(arg));
+      return W(W);
+  };
+
+  var fact_maker = (fact) => (n) => n ? n * fact(n-1) : 1;
+
+  return Y(fact_maker)(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+可以看出, Y-Combinator 是一个非常通用的函数, 而 ~fact_maker~ 是可以 inline 编写的.
+
+#+BEGIN_SRC js
+  var Y = (F) => {
+      var W = (x) => F(arg => x(x)(arg));
+      return W(W);
+  };
+
+  return Y((fact) => (n) => n ? n * fact(n-1) : 1)(5);
+#+END_SRC
+
+#+RESULTS:
+: 120

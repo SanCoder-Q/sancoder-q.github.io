@@ -274,10 +274,44 @@ Lam\eacute 定理: 如果欧几里得算法需要 /k/ 步计算出一个对偶�
 
 *** 高阶函数做抽象
 First Class:
-- 可变量明媚
+- 可变量定义
 - 可作为过程参数
 - 可作为过程结果被返回
 - 可包含在数据结构中
+
+* 数据抽象导引
+** 序对 Pairs 与 表结构 list-structure
+#+BEGIN_SRC scheme
+  (define (make-rat n d)
+    (define (assign x)
+      (if (> x 0)
+          1
+          -1))
+    (let ((g (gcd n d))
+          (n (abs n))
+          (d (abs d))
+          (a (assign (* n d))))
+      (cons (* (/ n g) a) (/ d g))))
+
+  (define (numer x) (car x))
+
+  (define (denom x) (cdr x))
+
+  (define (print-rat x)
+    (newline)
+    (display (numer x))
+    (display "/")
+    (display (denom x)))
+
+  (define num (make-rat 4 -8))
+
+  (print-rat num)
+
+  num
+#+END_SRC
+
+#+RESULTS:
+: (-1 . 2)
 
 * LisP 语法
 ** define

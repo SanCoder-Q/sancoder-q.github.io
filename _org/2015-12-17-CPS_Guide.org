@@ -1,0 +1,250 @@
+#+STARTUP: entitiespretty
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+OPTIONS: \n:t
+#+BEGIN_HTML
+---
+layout: post
+title: Start to learn LisP
+---
+#+END_HTML
+
+* COMMENT requirement
+
+#+BEGIN_SRC emacs-lisp
+  (require 'yasnippet)
+  (require 'ob-scheme)
+  (require 'ob-js)
+  (require 'ob-scala)
+  (require 'ob-ruby)
+#+END_SRC
+
+#+RESULTS:
+: ob-ruby
+
+* What's CPS?
+Continuation-passing style is a magical, but simple style of *functional programming* in which control is passed explicitly in the form of a continuation.
+CPS is different from direct style programming which we usually use. The function written in CPS takes an extra argument: an explicit *continuation function* usually with only one argument. When the CPS function got a result which returned by the direct style function, it *returns* the result by calling the continuation function with the value as the argument. This means when invoking a CPS function, it requires a *callback function* to deal with the returned value. For example:
+
+- Scheme
+  + Direct style
+    #+BEGIN_SRC scheme
+      (define (square x)
+        (* x x))
+
+      (square 2)
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+  + CPS
+    #+BEGIN_SRC scheme
+      (define (identity x) x)
+
+      (define (square& x f)
+        (*& x x f))
+
+      (define (*& x y f)
+        (f (* x y)))
+
+      (square& 2 identify)
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+- JavaScript
+  + Direct style
+    #+BEGIN_SRC js
+      var square = _ => _ * _;
+      return square(2);
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+  + CPS
+    #+BEGIN_SRC js
+      var identity = _ => _;
+      var square = (_, f) => f(_ * _);
+      return square(2, identity);
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+- Scala
+  + Direct style
+    #+BEGIN_SRC scala
+      def square(x: Int): Int = x * x;
+      square(2);
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+
+  + CPS
+    #+BEGIN_SRC scala
+      def identity[A](x : A) : A = x;
+      def square(x: Int, f: Int => Int): Int = f(x * x);
+      square(2, identity[Int]);
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+- Ruby
+  + Direct style
+    #+BEGIN_SRC ruby
+      def square(x)
+        x * x
+      end
+
+      square(2)
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+  + CPS
+    #+BEGIN_SRC ruby
+      identity = -> (x) {x}
+      def square(x, f)
+        f.call(x * x)
+      end
+
+      square(2, identity)
+    #+END_SRC
+
+    #+RESULTS:
+    : 4
+
+Can you see it? You can just send the ~then function~ as a parameter of the current function, the ~then function~ will deal with the result, and in the end, give the new result to the next ~then function~ until we get what we want. Yes, when you do something like ~.then(...)~ or continus Ajax request, you are using CPS.
+
+The above logic is not pure CPS. It's just a description because we using the ~identity~ to get the final result but ~identity~ is not a CPS definition.
+
+* Why CPS?
+
+- To understand how compiler working while the function invoked.
+
+  + First let us define a normal function:
+    #+BEGIN_SRC js
+      function sum(x, y) {
+          return x + y;
+      }
+      function after(result) {
+          console.log(result);
+      }
+    #+END_SRC
+  + When you run something like this, what will happen?
+    #+BEGIN_SRC js
+      sum(1, 2);
+      after();
+    #+END_SRC
+  + Our computer will push the arguments ~2~, ~1~ and the memory address of ~after()~ into the stack in order. After the ~sum~ calculation and return, our computer will save the result in =RAX= (at least when the result is an integer), then jump back to the address we store in the stack and clear the arguments in stack (using something like ~ESP-8~).
+  + Let's define them in CPS:
+    #+BEGIN_SRC js
+      function sum(x, y, f) {
+          f(x + y);
+      }
+      function after(result, f) {
+          console.log(result);
+          f();
+      }
+    #+END_SRC
+  + When you run something like this, what will happen?
+    #+BEGIN_SRC js
+      sum(1, 2, (result)->{
+          after(result, identity);
+      });
+    #+END_SRC
+  + Function ~sum~ will pass the calculated result to a function defined in heap instead using stack, maybe just use stack to store the parameters. If the compiler or interpreter already knew the program is a CPS code, it's not necessary to store the function return address (, the memory address of the ~after~ in our case) into the stack. The code explicit to pass the return address and the result through the continuation function.
+
+
+  + What if you want do something in a pipeline?
+    #+BEGIN_SRC js
+      func1(para1, para2, (result1)-> {
+          func2(para3, result1, (result2) -> {
+              func3(result2, (result3) -> {
+                  func4(result3, identity);
+              });
+          });
+      });
+    #+END_SRC
+  + Sometimes we want have multiple continuations:
+    #+BEGIN_SRC js
+      function rest(url, success, failure) {
+          ...
+      }
+      rest(myUrl, (result) -> {
+          ...
+      }, (error) -> {
+          ...
+      });
+    #+END_SRC
+    Familiar, right?
+
+  + What if some step need do two things in the same time?
+    #+BEGIN_SRC js
+      function mainApp(f) {
+          func1((result1) -> {
+              func2(result1, identity);
+          });
+
+          func3((result3) -> {
+              func4(result3, identity);
+          });
+
+          f();
+      }
+    #+END_SRC
+      What? Is this break the CPS law? Does this means the complier or interpreter need to store ~func3~'s address in stack when invoking ~func1~? Relax, it's just way to tell the complier or interpreter to run ~func1~ and ~func3~ in parallel. This is a very simple CPS concurrent prototype model. And once you want to suspend the program, just store the continuation function.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+- Force the compiler or interpreter to run the code in order.
+- Give you a pipeline style to orgnize your logic.
+- Make every recurrence to tail recurrence.
+
+For instance:
+#+BEGIN_SRC js
+  var data = [1,2,3,4,5,6];
+
+  var reverseArray = (data) => {
+      var reverseArrayIter = (array, result) => {
+          var head = array.shift(),
+              tail = array;
+          if ( !head ) {
+              return result;
+          } else {
+              result.unshift(head);
+              return reverseArrayIter(tail, result)
+          }
+      };
+      return reverseArrayIter(data, []);
+  };
+
+  return reverseArray(data);
+#+END_SRC
+
+#+RESULTS:
+| 6 | 5 | 4 | 3 | 2 | 1 |
+
+* What language is encourage to use CPS?
+
+Any languages have *First Class Function* and *Tail Call Optimization*.

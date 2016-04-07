@@ -11,17 +11,17 @@ title: SICP Exercise Results
 
 * COMMENT requirement
 
+#+NAME: requirement
 #+BEGIN_SRC emacs-lisp
   (require 'yasnippet)
   (require 'ob-scheme)
 #+END_SRC
 
-#+RESULTS:
+#+RESULTS: requirement
 : ob-scheme
 
 * 1. Building Abstractions with Procedures
-** 1.1 The Elements of Programming
-*** Exercise 1.1
+** Exercise 1.1
 #+BEGIN_SRC scheme
   (list 10
         (+ 5 3 4)
@@ -32,7 +32,7 @@ title: SICP Exercise Results
 #+END_SRC
 
 #+RESULTS:
-: (10 12 8 3 6)
+| 10 | 12 | 8 | 3 | 6 |
 
 #+BEGIN_SRC scheme
   (define a 3)
@@ -54,7 +54,7 @@ title: SICP Exercise Results
 
 #+RESULTS:
 : (19 #f 4 16 6 16)
-*** Exercise 1.2
+** Exercise 1.2
 #+BEGIN_SRC scheme
   (/ (+ 5 4 (- 2 (- 3 (+ 6 (/ 4 5)))))
      (* 3 (- 6 2) (- 2 7)))
@@ -62,7 +62,7 @@ title: SICP Exercise Results
 
 #+RESULTS:
 : -37/150
-*** Exercise 1.3
+** Exercise 1.3
 #+BEGIN_SRC scheme
   (define (func a b c)
     (if (> a b)
@@ -77,8 +77,8 @@ title: SICP Exercise Results
 
 #+RESULTS:
 : 7
-*** Exercise 1.4
-*** Exercise 1.5
+** Exercise 1.4
+** Exercise 1.5
 #+BEGIN_SRC scheme
   (define (q) (q))
 #+END_SRC
@@ -86,9 +86,9 @@ This line means to define a *non-parameter recursive function*. So once it be ev
 The difference between =normal order= and =applicative order= is the first one will not eval anything before all the expression is expanded.
 So in this exercise, if the complier is using the =applicative order= to interpreter the code, it will crash.
 Another interest thing is =if= syntax. It's a high level structor with a specific process which means there is only one of the expression will be evaluated whatever the predicate is. Hence, if the coplier is using the =normal order=, the result will be 0.
-*** Exercise 1.6
+** Exercise 1.6
 Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and it will evaluate the predicate and the follow expression at the same time. So it should not be used to stop a recursive process.
-*** Exercise 1.7
+** Exercise 1.7
 #+BEGIN_SRC scheme
   (define (improve guess x)
     (/ (+ guess (/ x guess)) 2))
@@ -123,7 +123,7 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 #+RESULTS:
 : (100.00000025490743 10.000052895642693 0.010000000025490743 0)
 
-*** Exercise 1.8
+** Exercise 1.8
 #+BEGIN_SRC scheme
   (define (improve guess x)
     (/ (+ (/ x (* guess guess)) (* 2 guess)) 3))
@@ -157,7 +157,7 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 
 #+RESULTS:
 : (100.000072886219 3.0000005410641766 0.10000000198565878 0)
-*** Exercise 1.9
+** Exercise 1.9
 #+BEGIN_SRC scheme
   (define (inc x)
     (+ x 1))
@@ -197,7 +197,7 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 #+RESULTS:
 : ((9 9 9 9 9 9 9 9 9 9) (9 9 9 9 9 9))
 
-*** Exercise 1.10
+** Exercise 1.10
 #+BEGIN_SRC scheme
   (define (A x y)
     (cond ((= y 0) 0)
@@ -220,7 +220,7 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 #+RESULTS:
 : (1024 65536 65536)
 
-*** Exercise 1.11
+** Exercise 1.11
 - Tree Recursion
 #+BEGIN_SRC scheme
   (define (f n)
@@ -268,7 +268,7 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 
 #+RESULTS:
 : (2 4 11 25 59 142 335 796)
-*** Exercise 1.12
+** Exercise 1.12
 #+BEGIN_SRC scheme
   (define (pp n i)
     (if (or (= n i) (= i 1))
@@ -297,9 +297,9 @@ Same reason as the ~Exercise 1.6~, the =new-if= is using the =cond= syntax, and 
 
 #+RESULTS:
 : ((1 1) (1 2 1) (1 3 3 1) (1 4 6 4 1) (1 5 10 10 5 1))
-*** Exercise 1.13 1.14 1.15
+** Exercise 1.13 1.14 1.15
 What the hell!
-*** Exercise 1.16
+** Exercise 1.16
 #+BEGIN_SRC scheme
   (define (even? n)
     (= (remainder n 2) 0))
@@ -323,7 +323,7 @@ What the hell!
 
 #+RESULTS:
 : (32 256 1024 2048)
-*** Exercise 1.17 1.18
+** Exercise 1.17 1.18
 Using commutation law
 #+BEGIN_SRC scheme
   (define (even? n)
@@ -353,7 +353,7 @@ Using commutation law
 
 #+RESULTS:
 : (21 45 2109 2109)
-*** exercise 1.19
+** exercise 1.19
 q <- q^2^{} + 2pq
 p <- p^2 + q^2
 #+BEGIN_SRC scheme
@@ -387,7 +387,7 @@ p <- p^2 + q^2
 
 #+RESULTS:
 : (1 1 2 3 5)
-*** Exercise 1.20
+** Exercise 1.20
 
 正则序:
 #+BEGIN_SRC scheme
@@ -425,7 +425,7 @@ IF: 0
 GCD: 4
 SUM: 4
 
-*** Exercise 1.21
+** Exercise 1.21
 #+BEGIN_SRC scheme
   (define (square n)
     (* n n))
@@ -449,7 +449,7 @@ SUM: 4
 #+RESULTS:
 : (199 1999 7)
 
-*** Exercise 1.22
+** Exercise 1.22
 #+BEGIN_SRC scheme
   (define (my-return)
     (display "loading ...")
@@ -500,7 +500,7 @@ SUM: 4
         #f))
 
   (define (report-prime elapsed-time)
-    (display " *** ")
+    (display " ** ")
     (display elapsed-time))
 
   (define (next-odd n)
@@ -532,7 +532,7 @@ SUM: 4
 #+RESULTS:
 : (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
 
-*** Exercise 1.23
+** Exercise 1.23
 #+BEGIN_SRC scheme
   (define (square n)
     (* n n))
@@ -572,7 +572,7 @@ SUM: 4
         #f))
 
   (define (report-prime elapsed-time)
-    (display " *** ")
+    (display " ** ")
     (display elapsed-time))
 
   (define (next-odd n)
@@ -604,7 +604,7 @@ SUM: 4
 #+RESULTS:
 : (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
 
-*** Exercise 1.24
+** Exercise 1.24
 #+BEGIN_SRC scheme
   (define (square n)
     (* n n))
@@ -647,7 +647,7 @@ SUM: 4
         #f))
 
   (define (report-prime elapsed-time)
-    (display " *** ")
+    (display " ** ")
     (display elapsed-time))
 
   (define (next-odd n)
@@ -680,7 +680,7 @@ SUM: 4
 #+RESULTS:
 : (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
 
-*** Exercise 1.28
+** Exercise 1.28
 #+BEGIN_SRC scheme
   (define (square n)
     (* n n))
@@ -730,7 +730,7 @@ SUM: 4
         #f))
 
   (define (report-prime elapsed-time)
-    (display " *** ")
+    (display " ** ")
     (display elapsed-time))
 
   (define (next-odd n)
@@ -761,7 +761,7 @@ SUM: 4
 
 #+RESULTS:
 : (#<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified> #<unspecified>)
-*** Exercise 1.29
+** Exercise 1.29
 #+BEGIN_SRC scheme
   (define (sum term a next b)
     (if (> a b)
@@ -790,7 +790,7 @@ SUM: 4
 #+RESULTS:
 : (0.25000000000000006 0.25000000000000006)
 
-*** Exercise 1.30
+** Exercise 1.30
 #+BEGIN_SRC scheme
   (define (sum term a next b)
     (define (iter a result)
@@ -810,7 +810,7 @@ SUM: 4
 #+RESULTS:
 : (55 3025)
 
-*** Exercise 1.31
+** Exercise 1.31
 #+BEGIN_SRC scheme
   (define (product term a next b)
     (define (iter a result)
@@ -844,7 +844,7 @@ SUM: 4
 #+RESULTS:
 : (120 3.1415141265341364)
 
-*** Exercise 1.32
+** Exercise 1.32
 #+BEGIN_SRC scheme
   (define (accumulate combiner null-value term a next b)
     (define (iter a result)
@@ -868,7 +868,7 @@ SUM: 4
 #+RESULTS:
 | 55 |
 
-*** Exercise 1.33
+** Exercise 1.33
 #+BEGIN_SRC scheme
   (define (square n)
     (* n n))
@@ -936,9 +936,9 @@ SUM: 4
 
 #+RESULTS:
 | 55 | 18 | 20 |
-*** Exercise 1.34
+** Exercise 1.34
 Give a error to use ~2~ as a function.
-*** Exercise 1.35
+** Exercise 1.35
 #+BEGIN_SRC scheme
   (define tolerance 0.00001)
 
@@ -957,7 +957,7 @@ Give a error to use ~2~ as a function.
 #+RESULTS:
 : 1.6180327868852458
 
-*** Exercise 1.36
+** Exercise 1.36
 #+BEGIN_SRC scheme
   (define tolerance 0.00001)
 
@@ -990,7 +990,7 @@ Give a error to use ~2~ as a function.
 
 #+RESULTS:
 : 4.555536206185039
-*** Exercise 1.37
+** Exercise 1.37
 #+BEGIN_SRC scheme
   (define (cont-frac N D k)
     (define (cont-frac-recur i)
@@ -1048,7 +1048,7 @@ CPS iteration
 
 #+RESULTS:
 : 1.618033988749895
-*** Exercise 1.38
+** Exercise 1.38
 #+BEGIN_SRC scheme
   (define (identity x) x)
 
@@ -1074,7 +1074,7 @@ CPS iteration
 
 #+RESULTS:
 : 2.7182818284590455
-*** Exercise 1.39
+** Exercise 1.39
 #+BEGIN_SRC scheme
   (define (identity x) x)
 
@@ -1105,7 +1105,7 @@ CPS iteration
 #+RESULTS:
 | 0.9999999732051038 | 0.9999999732051039 |
 
-*** Exercise 1.40
+** Exercise 1.40
 #+BEGIN_SRC scheme
   (define tolerance 0.00001)
 
@@ -1147,7 +1147,7 @@ CPS iteration
 #+RESULTS:
 : -0.9999999999999863
 
-*** Exercise 1.41
+** Exercise 1.41
 #+BEGIN_SRC scheme
   (define (double f)
     (lambda (x) (f (f x))))
@@ -1161,7 +1161,7 @@ CPS iteration
 #+RESULTS:
 : 21
 
-*** Exercise 1.42
+** Exercise 1.42
 #+BEGIN_SRC scheme
   (define (compose f g)
     (lambda (x)
@@ -1179,7 +1179,7 @@ CPS iteration
 #+RESULTS:
 : 49
 
-*** Exercise 1.43
+** Exercise 1.43
 #+BEGIN_SRC scheme
   (define (id x)
     x)
@@ -1201,7 +1201,7 @@ CPS iteration
 #+RESULTS:
 : 625
 
-*** Exercise 1.44
+** Exercise 1.44
 #+BEGIN_SRC scheme
   (define (id x)
     x)
@@ -1232,7 +1232,7 @@ CPS iteration
 #+RESULTS:
 : 25.00000000033333
 
-*** Exercise 1.45
+** Exercise 1.45
 #+BEGIN_SRC scheme
   (define (id x) x)
 
@@ -1290,7 +1290,7 @@ CPS iteration
 #+RESULTS:
 : 2.0000015129957607
 
-*** Exercise 1.46
+** Exercise 1.46
 #+BEGIN_SRC scheme
   (define (abs x)
     (if (< x 0)
@@ -1361,3 +1361,1385 @@ CPS iteration
 
 #+RESULTS:
 : 10.0
+
+* Building Abstractions with Data
+** Exercise 2.1
+#+BEGIN_SRC scheme
+  (define (make-rat n d)
+    (define (assign x)
+      (if (> x 0)
+          1
+          -1))
+    (let ((g (gcd n d))
+          (n (abs n))
+          (d (abs d))
+          (a (assign (* n d))))
+      (cons (* (/ n g) a) (/ d g))))
+
+  (define (numer x) (car x))
+
+  (define (denom x) (cdr x))
+
+  (define (print-rat x)
+    (newline)
+    (display (numer x))
+    (display "/")
+    (display (denom x)))
+
+  (define num (make-rat 4 -8))
+
+  (print-rat num)
+
+  num
+#+END_SRC
+
+#+RESULTS:
+: (-1 . 2)
+
+** COMMENT Exercise 2.2
+#+BEGIN_SRC scheme
+  #| Point Definiation |#
+  (define (make-point x y)
+    (cons x y))
+
+  (define (x-point x)
+    (car x))
+
+  (define (y-point x)
+    (cdr x))
+
+  (define (print-point p)
+    (newline)
+    (display "(")
+    (display (x-point p))
+    (display ", ")
+    (display (y-point p))
+    (display ")"))
+
+  #| Segment Definiation |#
+  (define (make-segment x y)
+    (cons x y))
+
+  (define (start-segment x)
+    (car x))
+
+  (define (end-segment x)
+    (cdr x))
+
+  #| Implementation |#
+
+  (define (average x y)
+    (/ (+ x y) 2))
+
+  (define (midpoint-segment s)
+    (let ((p1 (start-segment s))
+          (p2 (end-segment s)))
+      (make-point (average (x-point p1) (x-point p2))
+                  (average (y-point p1) (y-point p2)))))
+
+  (define s (make-segment (make-point 10 20)
+                          (make-point 0 0)))
+
+  (print-point (midpoint-segment s))
+#+END_SRC
+
+#+RESULTS:
+: ((10 . 20) 0 . 0)
+
+** Exercise 2.3
+#+BEGIN_SRC scheme
+  #| Utils |#
+  (define (average x y)
+    (/ (+ x y) 2))
+
+  #| Point Definiation |#
+  (define (make-point x y)
+    (cons x y))
+
+  (define (x-point x)
+    (car x))
+
+  (define (y-point x)
+    (cdr x))
+
+  (define (print-point p)
+    (newline)
+    (display "(")
+    (display (x-point p))
+    (display ", ")
+    (display (y-point p))
+    (display ")"))
+
+  #| Segment Definiation |#
+  (define (make-segment x y)
+    (cons x y))
+
+  (define (start-segment x)
+    (car x))
+
+  (define (end-segment x)
+    (cdr x))
+
+
+  (define (midpoint-segment s)
+    (let ((p1 (start-segment s))
+          (p2 (end-segment s)))
+      (make-point (average (x-point p1) (x-point p2))
+                  (average (y-point p1) (y-point p2)))))
+
+  #| Point Rect Definiation |#
+  (define (make-point-rect p1 p2)
+    (cons p1 p2))
+
+  (define (height-rect r)
+    (abs (- (y-point (car r))
+            (y-point (cdr r)))))
+
+  (define (width-rect r)
+    (abs (- (x-point (car r))
+            (x-point (cdr r)))))
+
+  #| Implementation |#
+  (define (perimeter-rect r)
+    (* 2 (+ (height-rect r)
+            (width-rect r))))
+
+  (define (area-rect r)
+    (* (height-rect r)
+       (width-rect r)))
+
+  (define rect (make-point-rect (make-point -1 1)
+                                (make-point 5 -8)))
+
+  (list (perimeter-rect rect)
+        (area-rect rect))
+#+END_SRC
+
+#+RESULTS:
+| 30 | 54 |
+
+#+BEGIN_SRC scheme
+  #| Utils |#
+  (define (average x y)
+    (/ (+ x y) 2))
+
+  #| Point Definiation |#
+  (define (make-point x y)
+    (cons x y))
+
+  (define (x-point x)
+    (car x))
+
+  (define (y-point x)
+    (cdr x))
+
+  (define (print-point p)
+    (newline)
+    (display "(")
+    (display (x-point p))
+    (display ", ")
+    (display (y-point p))
+    (display ")"))
+
+  #| Segment Definiation |#
+  (define (make-segment x y)
+    (cons x y))
+
+  (define (start-segment x)
+    (car x))
+
+  (define (end-segment x)
+    (cdr x))
+
+
+  (define (midpoint-segment s)
+    (let ((p1 (start-segment s))
+          (p2 (end-segment s)))
+      (make-point (average (x-point p1) (x-point p2))
+                  (average (y-point p1) (y-point p2)))))
+
+  #| Point Rect Definiation |#
+  (define (make-pwh-rect p1 width height)
+    (cons p1 (cons width height)))
+
+  (define (height-rect r)
+    (cdr (cdr r)))
+
+  (define (width-rect r)
+    (car (cdr r)))
+
+  #| Implementation |#
+  (define (perimeter-rect r)
+    (* 2 (+ (height-rect r)
+            (width-rect r))))
+
+  (define (area-rect r)
+    (* (height-rect r)
+       (width-rect r)))
+
+  (define rect (make-pwh-rect (make-point -1 1)
+                              6
+                              9))
+
+  (list (perimeter-rect rect)
+        (area-rect rect))
+
+#+END_SRC
+
+#+RESULTS:
+| 30 | 54 |
+
+** Exercise 2.4
+Church Encoding
+#+BEGIN_SRC scheme
+  (define (cons x y)
+    (lambda (m) (m x y)))
+
+  (define (car pair)
+    (pair (lambda (x y) x)))
+
+  (define (cdr pair)
+    (pair (lambda (x y) y)))
+#+END_SRC
+
+** Exercise 2.5
+#+BEGIN_SRC scheme
+  (define (cons x y)
+    (* (expt 2 x) (expt 3 y)))
+
+  (define (integer-log x y)
+    (define (id x) x)
+    (define (integer-log-iter x f)
+      (let ((quot (/ x y)))
+        (if (integer? quot)
+            (integer-log-iter quot (lambda (x) (f (+ x 1))))
+            (f 0))))
+    (integer-log-iter x id))
+
+  (define (car x)
+    (integer-log x 2))
+
+  (define (cdr x)
+    (integer-log x 3))
+
+  (define pair (cons 2 3))
+
+  (list pair
+        (car pair)
+        (cdr pair))
+#+END_SRC
+
+#+RESULTS:
+| 108 | 2 | 3 |
+
+** Exercise 2.6
+#+BEGIN_SRC scheme
+  (define zero
+    (lambda (f) (lambda (x) x)))
+
+  (define (add-1 n)
+    (lambda (f) (lambda (x) (f ((n f) x)))))
+
+  (define one
+    (lambda (f) (lambda (x) (f x))))
+
+  (define two
+    (lambda (f) (lambda (x) (f (f x)))))
+
+  (define (add a b)
+    (lambda (f) (lambda (x)
+                  ((b f) ((a f) x)))))
+#+END_SRC
+
+** Exercise 2.7, 2.8, 2.9, 2.10, 2.11. 2.12, 2.13, 2.14, (2.15, 2.16)
+#+BEGIN_SRC scheme
+  #| Definition |#
+
+  (define (make-interval lower-bound upper-bound)
+    (cons lower-bound upper-bound))
+
+  (define (make-center-percent c pw)
+    (make-center-width c (* c pw)))
+
+  (define (make-center-width c w)
+    (make-interval (- c w) (+ c w)))
+
+  (define (lower-bound x)
+    (min (car x) (cdr x)))
+
+  (define (upper-bound x)
+    (max (car x) (cdr x)))
+
+  (define (interval-center x)
+    (/ (+ (lower-bound x) (upper-bound x)) 2))
+
+  (define (interval-width x)
+    (/ (- (upper-bound x) (lower-bound x)) 2.0))
+
+  (define (interval-percent x)
+    (/ (* 100 (interval-width x)) (interval-center x)))
+
+  (define (mul-interval-rough-percent x y)
+    (+ (interval-percent x) (interval-percent y)))
+
+  (define (state x)
+    (if (> (* (upper-bound x) (lower-bound x)) 0)
+        (if (> (lower-bound x) 0)
+            1
+            -1)
+        0))
+
+  (define (add-interval x y)
+    (make-interval (+ (lower-bound x) (lower-bound y))
+                   (+ (upper-bound x) (upper-bound y))))
+
+  (define (sub-interval x y)
+    (make-interval (- (lower-bound x) (upper-bound y))
+                   (- (upper-bound x) (lower-bound y))))
+
+  (define (mul-interval-1 x y)
+    (let ((p1 (* (lower-bound x) (lower-bound y)))
+          (p2 (* (lower-bound x) (upper-bound y)))
+          (p3 (* (upper-bound x) (lower-bound y)))
+          (p4 (* (upper-bound x) (upper-bound y))))
+      (make-interval (min p1 p2 p3 p4)
+                     (max p1 p2 p3 p4))))
+
+  (define (mul-interval x y)
+    (let ((x0 (lower-bound x))
+          (x1 (upper-bound x))
+          (y0 (lower-bound y))
+          (y1 (upper-bound y))
+          (xs (state x))
+          (ys (state y)))
+      (cond ((and (> xs 0) (> ys 0))
+             (make-interval (* x0 y0) (* x1 y1)))
+            ((and (> xs 0) (< ys 0))
+             (make-interval (* x1 y0) (* x0 y1)))
+            ((and (> xs 0) (= ys 0))
+             (make-interval (* x1 y0) (* x1 y1)))
+            ((and (< xs 0) (> ys 0))
+             (make-interval (* x0 y1) (* x1 y0)))
+            ((and (< xs 0) (< ys 0))
+             (make-interval (* x1 y1) (* x0 y0)))
+            ((and (< xs 0) (= ys 0))
+             (make-interval (* x1 y1) (* x0 y0)))
+            ((and (= xs 0) (> ys 0))
+             (make-interval (* x0 y1) (* x1 y1)))
+            ((and (= xs 0) (< ys 0))
+             (make-interval (* x1 y0) (* x0 y1)))
+            ((and (= xs 0) (= ys 0))
+             (make-interval (min (* x0 y1) (* x1 y0)) (max (* x0 y0) (* x1 y1)))))))
+
+  (define (div-interval x y)
+    (if (not (= (state y) 0))
+        (mul-interval x
+                      (make-interval (/ 1.0 (upper-bound y))
+                                     (/ 1.0 (lower-bound y))))
+        (throw 'cross-zero "Divided a cross-zero-interval!")))
+
+  #| Test |#
+  (define x1 (make-interval -1 3))
+  (define x2 (make-interval -2 4))
+  (define x3 (make-interval 2 4))
+  (define x4 (make-center-percent 10 0.03))
+  (define x5 (make-center-percent 5 0.001))
+  (define x6 (make-interval 1000 1001))
+  (define x7 (make-interval 2000 2005))
+
+
+  (define (show-bool bool)
+    (if bool "true"  "false"))
+
+  (list (add-interval x1 x2)
+        (sub-interval x1 x2)
+        (mul-interval x1 x2)
+        (catch 'cross-zero
+          (lambda () (div-interval x1 x2))
+          (lambda (key arg) (display arg) "NAN"))
+        (div-interval x1 x3)
+        (show-bool (= (interval-width (add-interval x1 x2))
+                      (+ (interval-width x1) (interval-width x2))))
+        (show-bool (= (interval-width (sub-interval x1 x2))
+                      (+ (interval-width x1) (interval-width x2))))
+        (abs (- (interval-percent (mul-interval x1 x2)) (mul-interval-rough-percent x1 x2)))
+        (abs (- (interval-percent (mul-interval x4 x5)) (mul-interval-rough-percent x4 x5)))
+        (interval-percent x6)
+        (interval-percent (add-interval x6 x6))
+        (sub-interval x6 x6)
+        (interval-percent (mul-interval x6 x6))
+        (interval-percent (div-interval x6 x6))
+        (interval-percent (div-interval x6 x7)))
+#+END_SRC
+
+#+RESULTS:
+: ((-3 . 7) (-5 . 5) (-6 . 12) NAN (-0.5 . 1.5) true true 200.0 9.299721008027007e-05 0.04997501249375312 0.04997501249375312 (-1 . 1) 0.09995000002497502 0.0999500000249789 0.17481884849158807)
+
+** Exercise 2.17
+#+BEGIN_SRC scheme
+  (define (last-pair list)
+    (let ((tail (cdr list)))
+      (if (null? tail)
+          (car list)
+          (last-pair tail))))
+
+  (last-pair (list 1 2 3 4))
+#+END_SRC
+
+#+RESULTS:
+: 4
+
+** Exercise 2.18
+#+BEGIN_SRC scheme
+  (define (reverse li)
+    (define (reverse-iter src dst)
+      (if (null? src)
+          dst
+          (reverse-iter (cdr src) (cons (car src) dst))))
+    (reverse-iter li (list)))
+
+  (reverse (list 1 2 3 4))
+#+END_SRC
+
+#+RESULTS:
+| 4 | 3 | 2 | 1 |
+
+** Exercise 2.19
+#+BEGIN_SRC scheme
+  (define (cc amount coin-values)
+    (cond ((= amount 0) 1)
+          ((or (< amount 0) (no-more? coin-values)) 0)
+          (else
+           (+ (cc amount
+                  (except-first-denomination coin-values))
+              (cc (- amount (first-denomination coin-values)) coin-values)))))
+
+  (define no-more? null?)
+
+  (define first-denomination car)
+
+  (define except-first-denomination cdr)
+
+  (define us-coins (list 50 25 10 5 1))
+
+  (define uk-coins (list 100 50 20 10 5 2 1 0.5))
+
+  (cc 100 us-coins)
+#+END_SRC
+
+#+RESULTS:
+: 292
+
+** Exercise 2.20
+#+BEGIN_SRC scheme
+  (define (identity x) x)
+
+  (define (same-parity n . li)
+    (define (same-parity-iter f li)
+      (if (null? li)
+          (f (list))
+          (if (zero? (remainder (- (car li) n) 2))
+              (same-parity-iter (lambda (x) (f (cons (car li) x))) (cdr li))
+              (same-parity-iter f (cdr li)))))
+    (cons n (same-parity-iter identity li)))
+
+  (list (same-parity 1 3 4 5 6 7 8)
+        (same-parity 2 3 4 5 6 7 8))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 3 | 5 | 7 |
+| 2 | 4 | 6 | 8 |
+
+** Exercise 2.21
+#+BEGIN_SRC scheme
+  (define (map li op)
+    (define (identity x) x)
+    (define (map-cps-iter src f)
+      (if (null? src)
+          (f (list))
+          (map-cps-iter (cdr src)
+                        (lambda (x)
+                          (f (cons (op (car src)) x))))))
+    (map-cps-iter li identity))
+
+  (define (square-list x)
+    (map x (lambda (x) (* x x))))
+
+  (define my-list (list 1 2 3 4))
+
+  (square-list my-list)
+#+END_SRC
+
+#+RESULTS:
+| 1 | 4 | 9 | 16 |
+
+** Exercise 2.22
+#+BEGIN_SRC scheme
+  (define (square-list items)
+    (define (iter things answer)
+      (if (null? things)
+          answer
+          (iter (cdr things)
+                (cons answer
+                      (square (car things))))))
+    (iter items (list)))
+
+  (define (square x) (* x x))
+
+  (define my-list (list 1 2 3 4))
+
+  (square-list my-list)
+#+END_SRC
+
+#+RESULTS:
+: ((((nil . 1) . 4) . 9) . 16)
+
+** Exercise 2.23
+#+BEGIN_SRC scheme
+  (define (for-each li op)
+    (define (for-each-iter src)
+      (if (not (null? src))
+          (begin
+            (op (car src))
+            (for-each-iter (cdr src)))))
+    (for-each-iter li))
+
+  (define my-list (list 1 2 3 4))
+
+  (for-each my-list (lambda (x) (newline) (display x)))
+#+END_SRC
+
+#+RESULTS:
+
+** Exercise 2.24
+#+BEGIN_SRC scheme
+(list 1 (list 2 (list 3 4)))
+#| (1 . (2 . (3 . 4))) |#
+#+END_SRC
+
+#+RESULTS:
+| 1 | (2 (3 4)) |
+
+** Exercise 2.25
+#+BEGIN_SRC scheme
+  (define l1 (list 1 3 (list 5 7) 9))
+  (define l2 (list (list 7)))
+  (define l3 (list 1 (list 2 (list 3 (list 4 (list 5 (list 6 7)))))))
+
+  (list
+   (car (cdr (car (cdr (cdr l1)))))
+   (car (car l2))
+   (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr (car (cdr l3)))))))))))))
+#+END_SRC
+
+#+RESULTS:
+| 7 | 7 | 7 |
+
+** Exercise 2.26
+#+BEGIN_SRC scheme
+  (define x (list 1 2 3))
+  (define y (list 4 5 6))
+
+  (define (append list1 list2)
+    (if (null? list1)
+        list2
+        (cons (car list1) (append (cdr list1) list2))))
+
+  (list
+   (append x y) #|(1 2 3 4 5 6)|#
+   (cons x y) #|((1 2 3) 4 5 6)|#
+   (list x y) #|((1 2 3) (4 5 6))|#
+   )
+#+END_SRC
+
+#+RESULTS:
+| 1       |       2 | 3 | 4 | 5 | 6 |
+| (1 2 3) |       4 | 5 | 6 |   |   |
+| (1 2 3) | (4 5 6) |   |   |   |   |
+
+** Exercise 2.27
+#+BEGIN_SRC scheme
+  (define x (list (list 1 2) (list 3 4)))
+
+  (define (reverse li)
+    (define (reverse-iter src dst)
+      (if (null? src)
+          dst
+          (reverse-iter (cdr src) (cons (car src) dst))))
+    (reverse-iter li (list)))
+
+  (define (deep-reverse li)
+    (define (reverse-iter src dst)
+      (if (null? src)
+          dst
+          (let ((head
+                 (if (pair? (car src))
+                     (reverse-iter (car src) (list))
+                     (car src))))
+            (reverse-iter (cdr src) (cons head dst)))))
+    (reverse-iter li (list)))
+
+  (list (reverse x)
+        (deep-reverse x))
+#+END_SRC
+
+#+RESULTS:
+| (3 4) | (1 2) |
+| (4 3) | (2 1) |
+
+** Exercise 2.28
+#+BEGIN_SRC scheme
+  (define (leaf? x)
+    (and (pair? x)
+         (not (pair? (car x)))))
+
+  (define (wrap? x)
+    (and (pair? x)
+         (null? (cdr x))
+         (pair? (car x))))
+
+  (define (append-cps x y f)
+    (cond ((null? x) (f y))
+          ((not (pair? x)) (f (cons x y)))
+          (else (append-cps (cdr x) y (lambda (r) (f (cons (car x) r)))))))
+
+  (define (fringe tree)
+    (define (id x) x)
+    (define (fringe-iter src f)
+      (cond ((null? src) '())
+            ((wrap? src) (fringe-iter (car src) f))
+            ((leaf? src) (if (null? (cdr src))
+                             (f (car src))
+                             (fringe-iter (cdr src) (lambda (x) (f (cons (car src) x))))))
+            (else (fringe-iter (car src) (lambda (x) (fringe-iter (cdr src)
+                                                                  (lambda (y) (append-cps x y f))))))))
+    (fringe-iter tree (lambda (x) (append-cps x '() id))))
+
+  (define x (list (list 1 2) (list 3 4)))
+
+ (fringe (list x x))
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 | 3 | 4 | 1 | 2 | 3 | 4 |
+
+** Exercise 2.29
+#+BEGIN_SRC scheme
+  (define (make-mobile left right)
+    (list left right))
+
+  (define (make-branch length structure)
+    (list length structure))
+
+  (define (left-branch mobile)
+    (car mobile))
+
+  (define (right-branch mobile)
+    (car (cdr mobile)))
+
+  (define (branch-length branch)
+    (car branch))
+
+  (define (branch-structure branch)
+    (car (cdr branch)))
+
+  (define (mobile? x)
+    (and (pair? x)
+         (branch? (left-branch x))
+         (branch? (right-branch x))))
+
+  (define (branch? x)
+    (and (pair? x)
+         (not (pair? (car x)))))
+
+  (define (total-weight mobile)
+    (define (id x) x)
+    (define (total-weight-cps x f)
+      (if (mobile? x)
+          (let ((ll (branch-length (left-branch x)))
+                (rl (branch-length (right-branch x)))
+                (ls (branch-structure (left-branch x)))
+                (rs (branch-structure (right-branch x))))
+            (total-weight-cps ls
+                              (lambda (lw) (total-weight-cps rs
+                                                             (lambda (rw) (f (+ lw rw)))))))
+          (f x)))
+    (total-weight-cps mobile id))
+
+  (define (torque x)
+    (if (branch? x)
+        (let ((bl (branch-length x))
+              (bs (branch-structure x)))
+          (* bl (total-weight bs)))))
+
+  (define (is-balence? mobile)
+    (define (id x) x)
+    (define (is-balence?-cps x f)
+      (if (mobile? x)
+          (let ((l (left-branch x))
+                (r (right-branch x))
+                (ll (branch-length (left-branch x)))
+                (rl (branch-length (right-branch x)))
+                (ls (branch-structure (left-branch x)))
+                (rs (branch-structure (right-branch x))))
+            (if (eq? (torque l) (torque r))
+                (is-balence?-cps ls
+                                 (lambda (lb) (is-balence?-cps rs
+                                                               (lambda (rb) (f (and lb rb))))))
+                (f #f)))
+          (f #t)))
+    (is-balence?-cps mobile id))
+  #|Test|#
+
+  (define m1 (make-mobile (make-branch 10 100)
+                          (make-branch 5 200)))
+
+  (define m2 (make-mobile (make-branch 3 100)
+                          (make-branch 4 50)))
+
+  (define m (make-mobile (make-branch 4 m1)
+                         (make-branch 8 m2)))
+
+  (list
+   (total-weight m1)
+   (total-weight m2)
+   (total-weight m)
+   (is-balence? m1)
+   (is-balence? m2)
+   (is-balence? m))
+#+END_SRC
+#+RESULTS:
+| 300 | 150 | 450 | t | f | f |
+
+** Exercise 2.30, 2.31
+#+BEGIN_SRC scheme
+  (define (recursive-map-tree tree op)
+    (cond ((null? tree) '())
+          ((not (pair? tree)) (op tree))
+          (else (cons (recursive-map-tree (car tree) op)
+                      (recursive-map-tree (cdr tree) op)))))
+
+  (define (iterative-map-tree tree op)
+    (define (id x) x)
+    (define (map-tree-cps x f)
+      (cond ((null? x) (f '()))
+            ((not (pair? x)) (f (op x)))
+            (else (map-tree-cps (car x)
+                                (lambda (lt) (map-tree-cps (cdr x)
+                                                           (lambda (rt) (f (cons lt rt)))))))))
+    (map-tree-cps tree id))
+  #|Test|#
+  (define t (list 1 (list 2 (list 3 4) 5) (list 6 7)))
+
+  (define (op x)
+    (* x x))
+
+  (list t
+        (recursive-map-tree t op)
+        (iterative-map-tree t op))
+#+END_SRC
+
+#+RESULTS:
+| 1 | (2 (3 4) 5)   | (6 7)   |
+| 1 | (4 (9 16) 25) | (36 49) |
+| 1 | (4 (9 16) 25) | (36 49) |
+
+** Exercise 2.32
+#+BEGIN_SRC scheme
+  (define (iterative-map-list li op)
+    (define (id x) x)
+    (define (map-list-cps x f)
+      (if (null? x)
+          (f '())
+          (map-list-cps (cdr x)
+                        (lambda (l)
+                          (cons (op (car x)) l)))))
+    (map-list-cps li id))
+
+  (define (subsets s)
+    (if (null? s)
+        (list s)
+        (let ((rest (subsets (cdr s))))
+          (append rest (iterative-map-list rest (lambda (x) (cons (car s) x)))))))
+  #|Test|#
+  (define s (list 1 2 3 (list 4 5) 6 7))
+
+  (subsets s)
+#+END_SRC
+
+#+RESULTS:
+|     7 |       |       |       |   |   |
+|     6 |     7 |       |       |   |   |
+| (4 5) |     6 |     7 |       |   |   |
+|     3 | (4 5) |     6 |     7 |   |   |
+|     2 |     3 | (4 5) |     6 | 7 |   |
+|     1 |     2 |     3 | (4 5) | 6 | 7 |
+
+** Exercise 2.33, 2.34
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (map p sequence)
+    (accumulate (lambda (x y) (cons (p x) y)) '() sequence))
+
+  (define (append seq1 seq2)
+    (accumulate cons seq2 seq1))
+
+  (define (length sequence)
+    (accumulate (lambda (x y) (+ y 1)) 0 sequence))
+
+  (define (horner-eval x coefficient-sequence)
+    (accumulate (lambda (this-coeff higher-terms)
+                  (+ this-coeff (* x higher-terms)))
+                0
+                coefficient-sequence))
+  #|Test|#
+
+  (define l1 (list 1 2 3 4 5))
+
+  (define l2 (list 6 7 8))
+
+  (define (f x) (+ x 1))
+
+  (list (map f l1)
+        (append l1 l2)
+        (length l1)
+        (horner-eval 0 (list 2 2 2))
+        (horner-eval 2 (list 2 2 2)))
+#+END_SRC
+
+#+RESULTS:
+| (2 3 4 5 6) | (1 2 3 4 5 6 7 8) | 5 | 2 | 14 |
+
+** Exercise 2.35
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (count-leaves t)
+    (accumulate (lambda (z x) (+ z x))
+                0
+                (map (lambda (x)
+                         (cond ((null? x) '())
+                               ((pair? x) (count-leaves x))
+                               (else 1))) t)))
+
+  #|Test|#
+  (define t (list (list 1 2) 3 4 (list 5 6) 7))
+
+  (count-leaves t)
+#+END_SRC
+
+#+RESULTS:
+: 7
+
+** Exercise 2.36
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (seqs-split seqs)
+    (define (li-id x y) (cons x y))
+    (define (seqs-split-cps seqs f)
+      (if (null? seqs)
+          (f '() '())
+          (seqs-split-cps (cdr seqs)
+                          (lambda (x y)
+                            (f (cons (car (car seqs)) x)
+                               (cons (cdr (car seqs)) y))))))
+    (seqs-split-cps seqs li-id))
+
+  (define (accumulate-n op init seqs)
+    (if (null? (car seqs))
+        '()
+        (let ((split-seqs (seqs-split seqs)))
+          (cons (accumulate op init (car split-seqs))
+                (accumulate-n op init (cdr split-seqs))))))
+
+  #|Test|#
+  (define li (list (list 1 2 3 4)
+                   (list 3 4 5 6)
+                   (list 5 6 7 8)))
+
+  (accumulate-n (lambda (z x)
+                  (+ z x))
+                0
+                li)
+#+END_SRC
+
+#+RESULTS:
+| 9 | 12 | 15 | 18 |
+
+** Exercise 2.37
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (seqs-split seqs)
+    (define (li-id x y) (cons x y))
+    (define (seqs-split-cps seqs f)
+      (if (null? seqs)
+          (f '() '())
+          (seqs-split-cps (cdr seqs)
+                          (lambda (x y)
+                            (f (cons (car (car seqs)) x)
+                               (cons (cdr (car seqs)) y))))))
+    (seqs-split-cps seqs li-id))
+
+  (define (accumulate-n op init seqs)
+    (if (null? (car seqs))
+        '()
+        (let ((split-seqs (seqs-split seqs)))
+          (cons (accumulate op init (car split-seqs))
+                (accumulate-n op init (cdr split-seqs))))))
+
+  (define (dot-product v w)
+    (accumulate + 0 (map * v w)))
+
+  (define (matrix-*-vector m v)
+    (map (lambda (w)
+           (dot-product w v)) m))
+
+  (define (transpose mat)
+    (accumulate-n cons '() mat))
+
+  (define (matrix-*-matrix m n)
+    (let ((cols (transpose n)))
+      (map (lambda (x)
+             (matrix-*-vector cols x))
+           m)))
+  #|Test|#
+  (define v (list 1 2 3 4))
+
+  (define w (list 2 4 6 8))
+
+  (define n (list (list 2 2) (list 3 3) (list 4 4) (list 5 5)))
+
+  (define m (list (list 1 1 1 1) w))
+
+  (list (dot-product v w)
+        (matrix-*-vector m v)
+        (transpose m)
+        (matrix-*-matrix m n))
+#+END_SRC
+
+#+RESULTS:
+| 60 | (10 60) | ((1 2) (1 4) (1 6) (1 8)) | ((14 14) (80 80)) |
+
+** Exercise 2.38
+#+BEGIN_SRC scheme
+  (define (fold-right op initial sequence)
+    (define (id x) x)
+    (define (fold-right-cps seq f)
+      (if (null? seq)
+          (f initial)
+          (fold-right-cps (cdr seq)
+                          (lambda (x)
+                            (f (op x (car seq)))))))
+    (fold-right-cps sequence id))
+
+  (define (fold-left op initial sequence)
+    (define (id x) x)
+    (define (fold-left-cps seq r f)
+      (if (null? seq)
+          (f r)
+          (fold-left-cps (cdr seq)
+                         (op r (car seq))
+                         f)))
+    (fold-left-cps sequence initial id))
+
+  #|Test|#
+  (define seq (list 1 2 3 4))
+
+  (list (fold-right (lambda (z x)
+                      (+ x (* 2 z))) 0 seq)
+        (fold-left (lambda (z x)
+                     (+ x (* 2 z))) 0 seq))
+#+END_SRC
+
+#+RESULTS:
+| 49 | 26 |
+
+** Exercise 2.39
+#+BEGIN_SRC scheme
+  (define (fold-right op initial sequence)
+    (define (id x) x)
+    (define (fold-right-cps seq f)
+      (if (null? seq)
+          (f initial)
+          (fold-right-cps (cdr seq)
+                          (lambda (x)
+                            (f (op x (car seq)))))))
+    (fold-right-cps sequence id))
+
+  (define (fold-left op initial sequence)
+    (define (id x) x)
+    (define (fold-left-cps seq r f)
+      (if (null? seq)
+          (f r)
+          (fold-left-cps (cdr seq)
+                         (op r (car seq))
+                         f)))
+    (fold-left-cps sequence initial id))
+
+  (define (reverse-right sequence)
+    (fold-right (lambda (z x)
+                  (append z (list x)))
+                '()
+                sequence))
+
+  (define (reverse-left sequence)
+    (fold-left (lambda (z x)
+                 (cons x z))
+               '()
+               sequence))
+
+  #|Test|#
+  (define li (list 1 2 3 4))
+
+  (list (reverse-right li)
+        (reverse-left li))
+#+END_SRC
+
+#+RESULTS:
+| 4 | 3 | 2 | 1 |
+| 4 | 3 | 2 | 1 |
+
+** Exercise 2.40
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (flatmap proc seq)
+    (accumulate append '() (map proc seq)))
+
+  (define (enumerate-interval x y)
+    (define (id x) x)
+    (define (enumerate-interval-cps x f)
+      (if (> x y)
+          (f '())
+          (enumerate-interval-cps (+ x 1)
+                                  (lambda (s)
+                                    (f (cons x s))))))
+    (enumerate-interval-cps x id))
+
+  (define (unique-pairs n)
+    (flatmap (lambda (x)
+               (map (lambda (y)
+                      (list y x))
+                    (enumerate-interval 1 (- x 1))))
+             (enumerate-interval 1 n)))
+
+  #|Test|#
+  (unique-pairs 5)
+#+END_SRC
+
+#+RESULTS:
+| 1 | 2 |
+| 1 | 3 |
+| 2 | 3 |
+| 1 | 4 |
+| 2 | 4 |
+| 3 | 4 |
+| 1 | 5 |
+| 2 | 5 |
+| 3 | 5 |
+| 4 | 5 |
+
+** Exercise 2.41
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (flatmap proc seq)
+    (accumulate append '() (map proc seq)))
+
+  (define (enumerate-interval x y)
+    (define (id x) x)
+    (define (enumerate-interval-cps x f)
+      (if (> x y)
+          (f '())
+          (enumerate-interval-cps (+ x 1)
+                                  (lambda (s)
+                                    (f (cons x s))))))
+    (enumerate-interval-cps x id))
+
+  (define (filter predicate seq)
+    (define (id x) x)
+    (define (filter-cps seq f)
+      (if (null? seq)
+          (f '())
+          (if (predicate (car seq))
+              (filter-cps (cdr seq) (lambda (x)
+                                      (f (cons (car seq) x))))
+              (filter-cps (cdr seq) f))))
+    (filter-cps seq id))
+
+  (define (tri-sum s n)
+    (flatmap (lambda (a)
+               (map (lambda (b)
+                      (list a b (- s a b)))
+                    (filter (lambda (x)
+                              (and (not (= x a))
+                                   (not (= (* 2 x) (- s a)))))
+                     (enumerate-interval (max 1 (- n a)) (min n (- s a))))))
+             (enumerate-interval 1 (min n s))))
+
+  #|Test|#
+  (tri-sum 8 5)
+#+END_SRC
+
+#+RESULTS:
+| 1 | 4 | 3 |
+| 1 | 5 | 2 |
+| 2 | 4 | 2 |
+| 2 | 5 | 1 |
+| 3 | 2 | 3 |
+| 3 | 4 | 1 |
+| 3 | 5 | 0 |
+| 4 | 1 | 3 |
+| 4 | 3 | 1 |
+| 5 | 1 | 2 |
+| 5 | 2 | 1 |
+| 5 | 3 | 0 |
+
+** Exercise 2.42
+#+BEGIN_SRC scheme
+  (define (accumulate op initial sequence)
+    (if (null? sequence)
+        initial
+        (op (car sequence)
+            (accumulate op initial (cdr sequence)))))
+
+  (define (flatmap proc seq)
+    (accumulate append '() (map proc seq)))
+
+  (define (enumerate-interval x y)
+    (define (id x) x)
+    (define (enumerate-interval-cps x f)
+      (if (> x y)
+          (f '())
+          (enumerate-interval-cps (+ x 1)
+                                  (lambda (s)
+                                    (f (cons x s))))))
+    (enumerate-interval-cps x id))
+
+  (define (filter predicate seq)
+    (define (id x) x)
+    (define (filter-cps seq f)
+      (if (null? seq)
+          (f '())
+          (if (predicate (car seq))
+              (filter-cps (cdr seq) (lambda (x)
+                                      (f (cons (car seq) x))))
+              (filter-cps (cdr seq) f))))
+    (filter-cps seq id))
+
+  (define (adjoin-position new k rest)
+    (append rest (list new)))
+
+  (define (list-get li n)
+    (if (= n 0)
+        (car li)
+        (list-get (cdr li) (- n 1))))
+
+  (define (safe? k positions)
+    (accumulate (lambda (x y)
+                  (and x y))
+                #t
+                (map (lambda (i)
+                       (let ((x (list-get positions (- k 1)))
+                             (y (list-get positions (- i 1))))
+                         (and (not (= x y))
+                              (not (= x (+ y (- k i))))
+                              (not (= x (- y (- k i)))))))
+                     (enumerate-interval 1 (- k 1)))))
+
+  (define (queens board-size)
+    (define (queen-cols k)
+      (if (= k 1) (map list (enumerate-interval 1 board-size))
+          (filter (lambda (positions) (safe? k positions))
+                  (flatmap (lambda (rest-of-queens)
+                             (map (lambda (new-row)
+                                    (adjoin-position new-row k rest-of-queens))
+                                  (enumerate-interval 1 board-size)))
+                           (queen-cols (- k 1))))))
+    (queen-cols board-size))
+
+  (queens 4)
+#+END_SRC
+
+#+RESULTS:
+| 2 | 4 | 1 | 3 |
+| 3 | 1 | 4 | 2 |
+
+** Exercise 2.42
+T^{2}
+
+** Exercise 2.53
+#+BEGIN_SRC scheme
+  (list
+   (list 'a 'b 'c) ; (a b c)
+   (list (list 'george)) ; ((george))
+   (cdr '((x1 x2) (y1 y2))) ; ((y1 y2))
+   (car '((x1 x2) (y1 y2))) ; (x1 x2)
+   (pair? (car '(a short list))) ; #f
+   (memq 'red '((red shoes) (blue socks))) ; #f
+   (memq 'red '(shoes red blue socks)) ; # (red blue socks)
+   )
+#+END_SRC
+
+#+RESULTS:
+| (a b c) | ((george)) | ((y1 y2)) | (x1 x2) | f | f | (red blue socks) |
+
+** Exercise 2.54
+#+BEGIN_SRC scheme
+  (define (equal? s1 s2)
+    (if (and (pair? s1) (pair? s2)) ; if they are all pairs
+        (and (eq? (car s1) (car s2)) (equal? (cdr s1) (cdr s2)))
+        (eq? s1 s2)))
+
+  ;; Test
+  (define li1 '(this is a list))
+
+  (define li2 '(this (is a) list))
+
+  (list (equal? li1 li1)
+        (equal? li1 li2))
+#+END_SRC
+
+#+RESULTS:
+| t | f |
+
+** Exercise 2.55
+#+BEGIN_SRC scheme
+  (car ''abracadabra)
+  (car (quote (quote abracadabra)))
+  (car (list 'quote 'abracadabra))
+  'quote
+#+END_SRC
+
+** Exercise 3.1
+#+BEGIN_SRC scheme
+  (define (make-accumulator init)
+    (define (accumulator increment)
+      (set! init (+ init increment))
+      init)
+    accumulator)
+
+  ;; Test
+  (define A (make-accumulator 5))
+  (list (A 10)
+        (A 10))
+#+END_SRC
+
+#+RESULTS:
+| 15 | 25 |
+
+** Exercise 3.2
+#+BEGIN_SRC scheme
+  (define (make-monitored f)
+    (define call-count 0)
+    (lambda (x)
+      (cond ((eq? x 'how-many-calls?)
+             call-count)
+            ((eq? x 'reset-count)
+             (begin (set! call-count 0)
+                    call-count))
+            (else (begin
+                    (set! call-count (+ call-count 1))
+                    (f x))))))
+
+  ;; Test
+  (define s (make-monitored sqrt))
+
+  (list (s 100)
+        (s 81)
+        (s 'how-many-calls?)
+        (s 'reset-count)
+        (s 25)
+        (s 'how-many-calls?))
+#+END_SRC
+
+#+RESULTS:
+| 10 | 9 | 2 | 0 | 5 | 1 |
+
+** Exercise 3.3, 3.4
+#+BEGIN_SRC scheme
+  (define (call-the-cops amount)
+    "Already called cops")
+
+  (define (make-account balance pwd)
+    (define psw-wrong-times 0)
+    (define (withdraw amount)
+      (if (>= balance amount)
+          (begin (set! balance (- balance amount))
+                 balance)
+          "Insufficient funds"))
+    (define (deposit amount)
+      (set! balance (+ balance amount))
+      balance)
+    (define (complain amount)
+      "!")
+    (define (dispatch p m)
+      (if (not (eq? pwd p))
+          (begin
+            (set! psw-wrong-times (+ psw-wrong-times 1))
+            (if (>= psw-wrong-times 7)
+                call-the-cops
+                complain))
+          (begin
+            (set! psw-wrong-times 0)
+            (cond ((eq? m 'withdraw) withdraw)
+                  ((eq? m 'deposit) deposit)
+                  (else (error "Unknown request -- MAKE-ACOUNT" m))))))
+    dispatch)
+
+  ;; Test
+
+  (define acc (make-account 100 'secret-password))
+
+  (list
+   ((acc 'secret-password 'withdraw) 50)
+   ((acc 'secret-password 'withdraw) 60)
+   ((acc 'secret-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'secret-password 'withdraw) 60)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40)
+   ((acc 'wrong-password 'deposit) 40))
+#+END_SRC
+
+#+RESULTS:
+| 50 | Insufficient funds | 90 | ! | ! | ! | ! | ! | ! | 30 | ! | ! | ! | ! | ! | ! | Already called cops |
+
+** Exercise

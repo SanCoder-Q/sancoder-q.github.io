@@ -1,0 +1,113 @@
+---
+layout: post
+title: Y Combinatory in JavaScript
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Senario: Max method</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+We need a max method &#x2026;
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">maxinum</span> = (arr) =&gt; {
+    <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">maxinum_iter</span> = (arr, max) =&gt; {
+        <span style="color: #b9ca4a;">if</span>(arr.length == 0)
+            <span style="color: #b9ca4a;">return</span> max;
+        <span style="color: #b9ca4a;">else</span>
+            <span style="color: #b9ca4a;">return</span> maxinum_iter(arr.slice(1), Math.max(arr[0], max));
+    };
+    <span style="color: #b9ca4a;">return</span> maxinum_iter(arr, 0);
+};
+
+<span style="color: #b9ca4a;">return</span> maxinum([1,3,5,7,2]);
+</pre>
+</div>
+
+<p>
+Why there is a weird function inside? Can we just return a number?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">maxinum</span> = (arr) =&gt; {
+    <span style="color: #b9ca4a;">return</span> ((arr, max) =&gt; {
+        <span style="color: #b9ca4a;">if</span>(arr.length == 0)
+            <span style="color: #b9ca4a;">return</span> max;
+        <span style="color: #b9ca4a;">else</span>
+            <span style="color: #b9ca4a;">return</span> &lt;maxinum_iter&gt;(arr.slice(1), Math.max(arr[0], max));
+    })(arr, 0);
+};
+
+<span style="color: #b9ca4a;">return</span> maxinum([1,3,5,7,2]);
+</pre>
+</div>
+
+<p>
+How to make maxinum_iter disappear?
+</p>
+
+<p>
+If there is a wrapper function that can pass the <code>maxinum_iter</code> itself into the implement, that would be fantastic;
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">Wrapper</span> (<span style="color: #e7c547;">maxinum_iter</span>) {
+    <span style="color: #b9ca4a;">return</span> (arr, max) =&gt; {
+        <span style="color: #b9ca4a;">if</span>(arr.length == 0)
+            <span style="color: #b9ca4a;">return</span> max;
+        <span style="color: #b9ca4a;">else</span>
+            <span style="color: #b9ca4a;">return</span> &lt;maxinum_iter&gt;(arr.slice(1), Math.max(arr[0], max));
+    }
+}
+</pre>
+</div>
+
+<p>
+Now the question is: How to pass <code>maxinum_iter</code> to <code>wrapper</code> even it just inside <code>wrapper</code>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">y_combinator</span> = (f) =&gt;
+    ((x) =&gt; f(x(x)))((x) =&gt; f(x(x)));
+</pre>
+</div>
+
+<p>
+We got a magic function called Y Combinator which can find the fixed point of a high-demention function <code>F(f)</code> so that <code>Y(F) = F(Y(F))</code>.
+In another word, if <code>Y(F)=fix_point_function</code>, then <code>F(fix_point_function)=fix_point_function</code>.
+</p>
+
+<p>
+So, if we use <code>Y</code> on the <code>Wrapper</code>, what could happen?
+<code>Y(Wrapper)=Wrapper(Y(Wrapper))</code>
+Then <code>Y(Wrapper)</code> will return the <code>fix_point_function</code> of <code>Wrapper</code> which let <code>maxinum_iter=Wrapper_body</code> which is the <code>maxinum_iter</code> we want.
+</p>
+
+<p>
+So &#x2026;
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">y_combinator</span> = (f) =&gt;
+    ((x) =&gt; f(x(x)))((x) =&gt; f(x(x)));
+
+<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Wrapper</span> = (maxinum_iter) =&gt; (arr) =&gt; {
+    <span style="color: #b9ca4a;">if</span>(arr.length == 0)
+        <span style="color: #b9ca4a;">return</span> 0;
+    <span style="color: #b9ca4a;">else</span>
+        <span style="color: #b9ca4a;">return</span> Math.max(maxinum_iter(arr.slice(1)), arr[0]);
+};
+
+<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">maxinum</span> = (arr) =&gt; y_combinator(Wrapper)(arr, 0);
+
+<span style="color: #b9ca4a;">return</span> maxinum([1,3,5,7,2]);
+</pre>
+</div>
+</div>
+</div>

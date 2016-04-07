@@ -1,0 +1,103 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: Y Combinatory in JavaScript
+---
+#+END_HTML
+
+* COMMENT Requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'ob-js)
+#+END_SRC
+
+#+RESULTS:
+: ob-js
+
+
+* Senario: Max method
+
+We need a max method ...
+
+#+BEGIN_SRC js
+  var maxinum = (arr) => {
+      var maxinum_iter = (arr, max) => {
+          if(arr.length == 0)
+              return max;
+          else
+              return maxinum_iter(arr.slice(1), Math.max(arr[0], max));
+      };
+      return maxinum_iter(arr, 0);
+  };
+
+  return maxinum([1,3,5,7,2]);
+#+END_SRC
+
+#+RESULTS:
+: 7
+
+Why there is a weird function inside? Can we just return a number?
+
+#+BEGIN_SRC js
+  var maxinum = (arr) => {
+      return ((arr, max) => {
+          if(arr.length == 0)
+              return max;
+          else
+              return <maxinum_iter>(arr.slice(1), Math.max(arr[0], max));
+      })(arr, 0);
+  };
+
+  return maxinum([1,3,5,7,2]);
+#+END_SRC
+
+How to make maxinum_iter disappear?
+
+If there is a wrapper function that can pass the ~maxinum_iter~ itself into the implement, that would be fantastic;
+
+#+BEGIN_SRC js
+  function Wrapper (maxinum_iter) {
+      return (arr, max) => {
+          if(arr.length == 0)
+              return max;
+          else
+              return <maxinum_iter>(arr.slice(1), Math.max(arr[0], max));
+      }
+  }
+#+END_SRC
+
+Now the question is: How to pass ~maxinum_iter~ to ~wrapper~ even it just inside ~wrapper~.
+
+#+BEGIN_SRC js
+  var y_combinator = (f) =>
+      ((x) => f(x(x)))((x) => f(x(x)));
+#+END_SRC
+
+We got a magic function called Y Combinator which can find the fixed point of a high-demention function ~F(f)~ so that ~Y(F) = F(Y(F))~.
+In another word, if ~Y(F)=fix_point_function~, then ~F(fix_point_function)=fix_point_function~.
+
+So, if we use ~Y~ on the ~Wrapper~, what could happen?
+~Y(Wrapper)=Wrapper(Y(Wrapper))~
+Then ~Y(Wrapper)~ will return the ~fix_point_function~ of ~Wrapper~ which let ~maxinum_iter=Wrapper_body~ which is the ~maxinum_iter~ we want.
+
+So ...
+
+#+BEGIN_SRC js
+  var y_combinator = (f) =>
+      ((x) => f(x(x)))((x) => f(x(x)));
+
+  var Wrapper = (maxinum_iter) => (arr) => {
+      if(arr.length == 0)
+          return 0;
+      else
+          return Math.max(maxinum_iter(arr.slice(1)), arr[0]);
+  };
+
+  var maxinum = (arr) => y_combinator(Wrapper)(arr, 0);
+
+  return maxinum([1,3,5,7,2]);
+#+END_SRC
+
+#+RESULTS:

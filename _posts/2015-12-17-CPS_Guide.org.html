@@ -1,0 +1,311 @@
+---
+layout: post
+title: Start to learn LisP
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">What's CPS?</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Continuation-passing style is a magical, but simple style of <b>functional programming</b> in which control is passed explicitly in the form of a continuation.<br  />
+CPS is different from direct style programming which we usually use. The function written in CPS takes an extra argument: an explicit <b>continuation function</b> usually with only one argument. When the CPS function got a result which returned by the direct style function, it <b>returns</b> the result by calling the continuation function with the value as the argument. This means when invoking a CPS function, it requires a <b>callback function</b> to deal with the returned value. For example:<br  />
+</p>
+
+<ul class="org-ul">
+<li>Scheme<br  />
+<ul class="org-ul">
+<li><p>
+Direct style<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">square</span> x)
+  (* x x))
+
+(square 2)
+</pre>
+</div></li>
+
+<li><p>
+CPS<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">identity</span> x) x)
+
+(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">square&amp;</span> x f)
+  (*&amp; x x f))
+
+(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">*&amp;</span> x y f)
+  (f (* x y)))
+
+(square&amp; 2 identify)
+</pre>
+</div></li>
+</ul></li>
+
+<li>JavaScript<br  />
+<ul class="org-ul">
+<li><p>
+Direct style<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">square</span> = _ =&gt; _ * _;
+<span style="color: #b9ca4a;">return</span> square(2);
+</pre>
+</div></li>
+
+<li><p>
+CPS<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">identity</span> = _ =&gt; _;
+<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">square</span> = (_, f) =&gt; f(_ * _);
+<span style="color: #b9ca4a;">return</span> square(2, identity);
+</pre>
+</div></li>
+</ul></li>
+
+<li>Scala<br  />
+<ul class="org-ul">
+<li><p>
+Direct style<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(<span style="color: #e7c547;">x</span>: <span style="color: #7aa6da;">Int</span>): <span style="color: #7aa6da;">Int </span>= x * x;
+square(2);
+</pre>
+</div></li>
+</ul></li>
+</ul>
+
+
+<ul class="org-ul">
+<li><p>
+CPS<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">identity</span>[<span style="color: #7aa6da;">A</span>](<span style="color: #e7c547;">x</span> : <span style="color: #7aa6da;">A</span>) : <span style="color: #7aa6da;">A </span>= x;
+<span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(<span style="color: #e7c547;">x</span>: <span style="color: #7aa6da;">Int</span>, <span style="color: #e7c547;">f</span>: <span style="color: #7aa6da;">Int =&gt; Int</span>): <span style="color: #7aa6da;">Int </span>= f(x * x);
+square(2, identity[Int]);
+</pre>
+</div></li>
+</ul>
+<ul class="org-ul">
+<li>Ruby<br  />
+<ul class="org-ul">
+<li><p>
+Direct style<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-ruby"><span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(x)
+  x * x
+<span style="color: #b9ca4a;">end</span>
+
+square(2)
+</pre>
+</div></li>
+
+<li><p>
+CPS<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-ruby">identity = -&gt; (x) {x}
+<span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(x, f)
+  f.call(x * x)
+<span style="color: #b9ca4a;">end</span>
+
+square(2, identity)
+</pre>
+</div></li>
+</ul></li>
+</ul>
+
+<p>
+Can you see it? You can just send the <code>then function</code> as a parameter of the current function, the <code>then function</code> will deal with the result, and in the end, give the new result to the next <code>then function</code> until we get what we want. Yes, when you do something like <code>.then(...)</code> or continus Ajax request, you are using CPS.<br  />
+</p>
+
+<p>
+The above logic is not pure CPS. It's just a description because we using the <code>identity</code> to get the final result but <code>identity</code> is not a CPS definition.<br  />
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Why CPS?</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ul class="org-ul">
+<li>To understand how compiler working while the function invoked.<br  />
+
+<ul class="org-ul">
+<li><p>
+First let us define a normal function:<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">sum</span>(<span style="color: #e7c547;">x</span>, <span style="color: #e7c547;">y</span>) {
+    <span style="color: #b9ca4a;">return</span> x + y;
+}
+<span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">after</span>(<span style="color: #e7c547;">result</span>) {
+    console.log(result);
+}
+</pre>
+</div></li>
+<li><p>
+When you run something like this, what will happen?<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js">sum(1, 2);
+after();
+</pre>
+</div></li>
+<li>Our computer will push the arguments <code>2</code>, <code>1</code> and the memory address of <code>after()</code> into the stack in order. After the <code>sum</code> calculation and return, our computer will save the result in <code>RAX</code> (at least when the result is an integer), then jump back to the address we store in the stack and clear the arguments in stack (using something like <code>ESP-8</code>).<br  /></li>
+<li><p>
+Let's define them in CPS:<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">sum</span>(<span style="color: #e7c547;">x</span>, <span style="color: #e7c547;">y</span>, <span style="color: #e7c547;">f</span>) {
+    f(x + y);
+}
+<span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">after</span>(<span style="color: #e7c547;">result</span>, <span style="color: #e7c547;">f</span>) {
+    console.log(result);
+    f();
+}
+</pre>
+</div></li>
+<li><p>
+When you run something like this, what will happen?<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js">sum(1, 2, (result)-&gt;{
+    after(result, identity);
+});
+</pre>
+</div></li>
+<li>Function <code>sum</code> will pass the calculated result to a function defined in heap instead using stack, maybe just use stack to store the parameters. If the compiler or interpreter already knew the program is a CPS code, it's not necessary to store the function return address (, the memory address of the <code>after</code> in our case) into the stack. The code explicit to pass the return address and the result through the continuation function.<br  /></li>
+</ul></li>
+</ul>
+
+
+<ul class="org-ul">
+<li><p>
+What if you want do something in a pipeline?<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js">func1(para1, para2, (result1)-&gt; {
+    func2(para3, result1, (result2) -&gt; {
+        func3(result2, (result3) -&gt; {
+            func4(result3, identity);
+        });
+    });
+});
+</pre>
+</div></li>
+<li><p>
+Sometimes we want have multiple continuations:<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">rest</span>(<span style="color: #e7c547;">url</span>, <span style="color: #e7c547;">success</span>, <span style="color: #e7c547;">failure</span>) {
+    ...
+}
+rest(myUrl, (result) -&gt; {
+    ...
+}, (error) -&gt; {
+    ...
+});
+</pre>
+</div>
+<p>
+Familiar, right?<br  />
+</p></li>
+
+<li><p>
+What if some step need do two things in the same time?<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">mainApp</span>(<span style="color: #e7c547;">f</span>) {
+    func1((result1) -&gt; {
+        func2(result1, identity);
+    });
+
+    func3((result3) -&gt; {
+        func4(result3, identity);
+    });
+
+    f();
+}
+</pre>
+</div>
+<p>
+What? Is this break the CPS law? Does this means the complier or interpreter need to store <code>func3</code>'s address in stack when invoking <code>func1</code>? Relax, it's just way to tell the complier or interpreter to run <code>func1</code> and <code>func3</code> in parallel. This is a very simple CPS concurrent prototype model. And once you want to suspend the program, just store the continuation function.<br  />
+</p></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ul class="org-ul">
+<li>Force the compiler or interpreter to run the code in order.<br  /></li>
+<li>Give you a pipeline style to orgnize your logic.<br  /></li>
+<li>Make every recurrence to tail recurrence.<br  /></li>
+</ul>
+
+<p>
+For instance:<br  />
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">data</span> = [1,2,3,4,5,6];
+
+<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">reverseArray</span> = (data) =&gt; {
+    <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">reverseArrayIter</span> = (array, result) =&gt; {
+        <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">head</span> = array.shift(),
+            tail = array;
+        <span style="color: #b9ca4a;">if</span> ( !head ) {
+            <span style="color: #b9ca4a;">return</span> result;
+        } <span style="color: #b9ca4a;">else</span> {
+            result.unshift(head);
+            <span style="color: #b9ca4a;">return</span> reverseArrayIter(tail, result)
+        }
+    };
+    <span style="color: #b9ca4a;">return</span> reverseArrayIter(data, []);
+};
+
+<span style="color: #b9ca4a;">return</span> reverseArray(data);
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">What language is encourage to use CPS?</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+Any languages have <b>First Class Function</b> and <b>Tail Call Optimization</b>.<br  />
+</p>
+</div>
+</div>

@@ -1,0 +1,257 @@
+---
+layout: post
+title: The Y Combinatory in JavaScript
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Reference</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+<a href="http://www.ece.uc.edu/~franco/C511/html/Scheme/ycomb.html">The Y Combinator</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Purpose</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ul class="org-ul">
+<li>Using JavaScript to translate this blog.</li>
+<li>Try to understand the theory behind Y.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">Body</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+在本文中, 我们将试图追溯递归理论的基石之一: <code>Y Combinator</code> 的起源. 你应该知道, 在一些情况下, 给一个函数命名并不是必须的.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">return</span> (x =&gt; x + 1)(6);
+</pre>
+</div>
+
+<pre class="example">
+7
+</pre>
+
+<p>
+这段代码使用匿名函数实现从 1 加到 6 的逻辑. 但是如果要实现的是递归逻辑该如何呢?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> = n =&gt; n ? n * fact(n - 1) : 1;
+<span style="color: #b9ca4a;">return</span> fact(6);
+</pre>
+</div>
+
+<pre class="example">
+720
+</pre>
+
+<p>
+这段代码用于计算 <code>阶乘</code>. 但是这样的递归需要 <code>fact</code> 这个名字以便实现中调用自己. 但是我们将会看到这不再是必须的. 我们会一步一步用 JavaScript 改变 <code>fact</code>.
+</p>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">Step 1 最直接的方法是把 <code>fact</code> 这个名字通过参数传递进去, 例如</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">op_maker</span> = (f) =&gt; (x, y) =&gt; f(x, y);
+</pre>
+</div>
+
+<pre class="example">
+undefined
+</pre>
+
+<p>
+外面的函数将要实现的逻辑名称作为参数传入, 内部的匿名函数用来将逻辑应用于返回函数的参数上. 让我们试试改写 <code>fact</code>. 先试试这样:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = (procedure) =&gt; (n) =&gt; n ? n * procedure(n-1) : 1;
+
+<span style="color: #b9ca4a;">return</span> fact_maker(fact_maker)(5);
+</pre>
+</div>
+
+<pre class="example">
+NaN
+</pre>
+
+<p>
+但是, 显然这样不行. 尽管 <code>fact_maker</code> 是一个接受一个参数的过程, 但我们期望的是一个接受数字参数的过程, 而 <code>fact_maker</code> 则接受一个过程参数. 解决方法如下:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = (procedure) =&gt; (n) =&gt; n ? n * procedure(procedure)(n-1) : 1;
+
+<span style="color: #b9ca4a;">return</span> fact_maker(fact_maker)(5);
+</pre>
+</div>
+
+<pre class="example">
+120
+</pre>
+
+<p>
+好吧, 我们成功的在实现中回避了名称, 但目前还是需要将 <code>fact_maker</code> 的名称作为参数传递进去. 让我们试着把它也去掉.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">Step 2 之前我们为了用 <code>procedure(procedure)</code> 来表示 <code>fact</code>, 从而使用了 <code>fact_maker(fact_maker)</code>. 那么, 我们可以利用 <code>Step 1</code> 的结果, 将 <code>fact_maker</code> 写成以下形式:</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> =
+    ((procedure) =&gt;
+        (n) =&gt; n ? n * procedure(procedure)(n-1) : 1)((procedure) =&gt;
+            (n) =&gt; n ? n * procedure(procedure)(n-1) : 1);
+
+<span style="color: #b9ca4a;">return</span> fact(5);
+</pre>
+</div>
+
+<pre class="example">
+120
+</pre>
+
+<p>
+我们将定义的过程传递给的与自己一模一样的实现, 但无论如何, 这个过程不再需要名字了.
+</p>
+
+<p>
+下面, 我们将试图概括可以适用于所有过程的应用序 Y-combinator.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">Step 3 首先, 我们要分离与阶乘相关的逻辑. 目标是将这些代码放在一起, 这样当用其他逻辑来代替它们的时候, 就能够形成一个新的递归. 这一步可能比较奇葩, 因为我们会使用代码去代替在设计上本应使用名字的地方. 步骤二中的函数是这样的:</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">F</span> = (n) =&gt; n ? n * procedure(procedure)(n-1) : 1;
+</pre>
+</div>
+
+<pre class="example">
+undefined
+</pre>
+
+<p>
+与我们想要的不同, 这里的 <code>procedure(procedure)</code> 本应该是一个简单的过程. 因此, 我们用一个奇葩的方法来搞定它. 一般的, <code>f(arg)</code> 和 <code>(x =&gt; f(x))(arg)</code> 是等价的.
+后者比较奇怪, 因为我们将 <code>arg</code> 传入一个用来调用 <code>f</code> 的过程中. 为什么要写成这种怪模样呢? 瞧着, 这意味着:
+<code>procedure(procedure)(n-1)</code> 和 <code>(arg =&gt; procedure(procedure)(arg))(n-1)</code> 是等价的. 带入 <code>F</code>, 有
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">F</span> = ((func-arg) =&gt; (n) =&gt; n ? n * func-arg(n-1) : 1)(
+    (arg) =&gt; procedure(procedure)(arg));
+</pre>
+</div>
+
+<p>
+这样我们将曾经是 <code>var F = (n) = { ... &lt;procedure&gt; ... }</code> 的形式改写成了 <code>var F = ((func-arg) =&gt; (n) =&gt; { ... })(&lt;procedure&gt;)</code> 的形式.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">Step 4 现在我们结合 Step2 和 Step3 的结果, 可以得出:</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> =
+    ((procedure) =&gt;
+     ((func_arg) =&gt;
+      (n) =&gt; n ? n * func_arg(n-1) : 1)
+     ((arg) =&gt; procedure(procedure)(arg)))(
+        ((procedure) =&gt;
+         ((func_arg) =&gt;
+          (n) =&gt; n ? n * func_arg(n-1) : 1)
+         ((arg) =&gt; procedure(procedure)(arg))))
+
+<span style="color: #b9ca4a;">return</span> fact(5);
+</pre>
+</div>
+
+<pre class="example">
+120
+</pre>
+
+<p>
+可以看到以 <code>func_arg</code> 为参数的函数就是之前我们的阶乘函数, 将函数提出来:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">F</span> = (func_arg) =&gt; (n) =&gt; n ? n * func_arg(n-1) : 1;
+
+<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> = ((procedure) =&gt; F(arg =&gt; procedure(procedure)(arg)))(
+    (procedure) =&gt; F(arg =&gt; procedure(procedure)(arg)));
+
+<span style="color: #b9ca4a;">return</span> fact(5);
+</pre>
+</div>
+
+<pre class="example">
+120
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">Step 5 现在我们试着提出通用的 Y-Combinator</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Y</span> = (F) =&gt; {
+    <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = (x) =&gt; F(arg =&gt; x(x)(arg));
+    <span style="color: #b9ca4a;">return</span> W(W);
+};
+
+<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = (fact) =&gt; (n) =&gt; n ? n * fact(n-1) : 1;
+
+<span style="color: #b9ca4a;">return</span> Y(fact_maker)(5);
+</pre>
+</div>
+
+<pre class="example">
+120
+</pre>
+
+<p>
+可以看出, Y-Combinator 是一个非常通用的函数, 而 <code>fact_maker</code> 是可以 inline 编写的.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Y</span> = (F) =&gt; {
+    <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = (x) =&gt; F(arg =&gt; x(x)(arg));
+    <span style="color: #b9ca4a;">return</span> W(W);
+};
+
+<span style="color: #b9ca4a;">return</span> Y((fact) =&gt; (n) =&gt; n ? n * fact(n-1) : 1)(5);
+</pre>
+</div>
+
+<pre class="example">
+120
+</pre>
+</div>
+</div>
+</div>
