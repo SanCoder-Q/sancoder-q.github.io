@@ -1,0 +1,128 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: How To Call A Overrided Parent Method
+---
+#+END_HTML
+
+* COMMENT Requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'ob-ruby)
+(require 'ob-java)
+(require 'ob-scala)
+#+END_SRC
+
+#+RESULTS:
+: ob-scala
+
+
+* In Ruby
+
+** Bind & Call
+#+BEGIN_SRC ruby
+  class Parent
+    def callee
+      puts 'parent method'
+    end
+  end
+
+  class Child < Parent
+    def callee
+      puts 'child method'
+    end
+
+    def caller
+      Parent.instance_method(:callee).bind(self).call
+    end
+  end
+#+END_SRC
+
+** Method alias
+#+BEGIN_SRC ruby
+  class Parent
+    def callee
+      puts 'parent method'
+    end
+  end
+
+  class Child < Parent
+    alias parent_callee callee
+
+    def callee
+      puts 'child method'
+    end
+
+    def caller
+      parent_callee
+    end
+  end
+#+END_SRC
+
+** Super method (ruby 2.2)
+#+BEGIN_SRC ruby
+  class Parent
+    def callee
+      puts 'parent method'
+    end
+  end
+
+  class Child < Parent
+    def callee
+      puts 'child method'
+    end
+
+    def caller
+      method(:callee).super_method.call
+    end
+  end
+#+END_SRC
+
+* In Java
+#+BEGIN_SRC java
+  abstract class Parent {
+      public void callee() {
+          System.out.println("parent method");
+      }
+  }
+
+  class Child extends Parent {
+      @Override
+      public void callee() {
+          System.out.println("child method");
+      }
+
+      public void caller() {
+          super.callee();
+      }
+  }
+
+  public class App {
+      public static void main(String[] args) {
+          new Child().caller();
+      }
+  }
+#+END_SRC
+
+* In Scala
+#+BEGIN_SRC scala
+  trait Parent {
+    def callee: Unit = Console println "parent method"
+  }
+
+  class Child extends Parent {
+    override def callee: Unit = Console println "child method"
+
+    def caller: Unit = super.callee
+  }
+#+END_SRC
+
+* In CoffeeScript
+
+* In C#
+
+* In C++
+
+* In Python

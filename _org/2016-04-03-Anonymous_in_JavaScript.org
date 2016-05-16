@@ -1,0 +1,371 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+PROPERTY: header-args :results append
+#+BEGIN_HTML
+---
+layout: post
+title: Anonymous Function in JavaScript
+---
+#+END_HTML
+
+* COMMENT Requirement
+
+#+BEGIN_SRC emacs-lisp
+  (require 'ob-js)
+#+END_SRC
+
+#+RESULTS:
+: ob-js
+
+
+* A ~normal function~ | 一个 ~普通函数~
+
+#+BEGIN_SRC js
+  function add(x, y) {
+    return x + y;
+  }
+
+  return add(1, 2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+* Make it Anonymous | 改为匿名函数
+
+#+BEGIN_SRC js
+  return (function(x, y) {
+    return x + y;
+  })(1, 2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+* A ES6 version ~normal function~ | 一个 ES6 语法的 ~普通函数~
+
+#+BEGIN_SRC js
+  var add = (x, y) => x + y;
+
+  return add(1, 2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+* Make it Anonymous | 改为匿名函数
+
+#+BEGIN_SRC js
+  return ((x, y) => x + y)(1, 2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+* A ES6 version ~high-order function~ | 一个 ES6 语法的 ~高阶函数~
+
+#+BEGIN_SRC js
+  var add = x => y => x + y;
+
+  return add(1)(2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+#+BEGIN_SRC js
+  var add = x => y => x + y;
+
+  var oneAdd = add(1);
+
+  return oneAdd(2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+** Postscripts:
+
+Curry
+
+* Make it Anonymous | 改为匿名函数
+
+#+BEGIN_SRC js
+  return (x => y => x + y)(1)(2);
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+* A ES6 version ~recursive function~ | 一个 ES6 语法的 ~递归函数~
+
+A ~factorial~ functiaon 一个 ~阶乘~ 函数 :
+ ~f(n) = n*(n-1)*(n-2)*...*3*2*1~ .
+
+#+BEGIN_SRC js
+  var fact = n => n != 0 ? n * fact(n-1) : 1;
+
+  return fact(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+* Now, how to make a ~recursive function~ *anonymous* ? | 怎样把 ~递归函数~ 改为 *匿名* 的呢?
+
+** First Try
+
+#+BEGIN_SRC js
+  return (n => n ? n * fact(n-1) : 1)(5);
+#+END_SRC
+
+#+RESULTS:
+
+显然, 最大的问题在于 ~递归函数~ 会在实现中用引用自身.
+
+** Second Try
+
+一个值得尝试的方法在于用 ~函数参数~ 将自身传入. 例如:
+
+#+BEGIN_SRC js
+  var fact_maker = (fact) => {
+    return (n) => {
+      if (n > 0)
+        return n * fact(n-1);
+      else
+        return 1;
+    };
+  };
+
+  return fact_maker(fact_maker)(5);
+#+END_SRC
+
+#+RESULTS:
+: NaN
+
+但是, ~fact_maker~ 需要一个以数字为参数的函数 ~fact~ 作为参数, 但我们给它传入了一个以函数为参数的函数 ~fact_maker~.
+
+** Third Try
+
+因此, 我们将传入的参数转化为以数字为参数的函数.
+
+#+BEGIN_SRC js
+  var fact_maker = (procedure) => {
+    return (n) => {
+      if (n > 0)
+        return n * procedure(procedure)(n-1);
+      else
+        return 1;
+    };
+  };
+
+  return fact_maker(fact_maker)(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+我们成功的从实现中移除了 ~fact~ 的名字, 程序输出的结果也与之前相同. 但是, 遗憾的是这个函数需要这样使用 ~fact_maker(fact_maker)~ 来获得相应的 ~fact~ 函数.
+
+** Refactor
+
+一种重构的方式是将其放入 ~fact_maker~ 的实现内部.
+
+#+BEGIN_SRC js
+  var fact_maker = ((procedure) => {
+    return (n) => {
+      if (n > 0)
+        return n * procedure(procedure)(n-1);
+      else
+        return 1;
+    };
+  })((procedure) => {
+    return (n) => {
+      if (n > 0)
+        return n * procedure(procedure)(n-1);
+      else
+        return 1;
+    };
+  });
+
+  return fact_maker(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+好多了, 对吧?
+
+** What's next?
+
+重构的目的之一是消除重复代码, 但是我们却创造了重复代码. 怎么办?
+
+通常, 我们可以用一个变量来代替重复的逻辑, 通过对变量的调用来消除重复. 但若要将 ~fact_maker~ 内的重复代码提出变量需要将 ~fact_maker~ 再提升为更高维的函数. 例如:
+
+#+BEGIN_SRC js
+  var fact_maker = () => {
+    var W = ((procedure) => {
+      return (n) => {
+        if (n > 0)
+          return n * procedure(procedure)(n-1);
+        else
+          return 1;
+      };
+    });
+
+    return W(W);
+  };
+
+  return fact_maker()(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+** Abstracting
+
+现在我们有了一个匿名的 ~fact~ 函数, 但当需要一个递归的 ~map~ 或者 ~fold~ 函数怎么办?
+
+我们需要对现有的 ~fact_maker~ 函数进行抽象, 将与 ~fact~ 相关的逻辑和其他逻辑分离.
+
+#+BEGIN_SRC js
+  var fact_maker = () => {
+    var W = procedure =>
+        (fun_arg => {
+         return n => {
+           if (n > 0)
+             return n * fun_arg(n-1);
+           else
+             return 1;
+         };
+        })(arg => procedure(procedure)(arg));
+    return W(W);
+  };
+
+  return fact_maker()(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+** Keep abstracting
+
+现在我们需要把与 ~fact~ 相关的逻辑作为参数传入, 这样当这样的递归逻辑变化时, 我们依然能够将其作为参数传入来得到我们的 *匿名递归函数*
+
+#+BEGIN_SRC js
+  var fact_related = fact => n => n ? n * fact(n-1) : 1;
+
+  var anonym_maker = F => {
+    var W = procedure =>
+        (fun_arg => F(fun_arg))
+             (arg => procedure(procedure)(arg));
+    return W(W);
+  };
+
+  return anonym_maker(fact => n => n ? n * fact(n-1) : 1)(5);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+* Fixed point
+
++ A fixed point of a function ~f~ is a value that doesn't change under the application of the function ~f~.
+
++ Y-Combinator:
+
+  - Discovered by *Haskell B. Curry*.
+
+  - A combinator is a particular type of higher-order function that may be used in defining functions without using variables.
+
+  - It represents a solution to the fixed point equation: ~f(x) = x~.
+
+  - Function ~y~, when applied to an arbitrary function ~f~, yields the same result as ~f~ applied to the result of applying ~y~ to ~f~.
+
+#+BEGIN_SRC js
+  var Y = F => {
+    var W = x => (f => F(f))(
+      arg => x(x)(arg));
+    return W(W);
+  };
+
+  var fact = Y(fact => n => n ? n * fact(n-1) : 1);
+
+  return fact(5);
+#+END_SRC
+
+#+RESULTS:
+
+* How about the recursion function with two parameters? | 如果递归函数需要两个参数呢?
+#+BEGIN_SRC js
+  var fact = (n, result) => n ? fact(n-1, n*result) : result;
+
+  return fact(5, 1);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+注意到我们 ~Y-Combinator~ 里的 ~arg~ 其实代表着 ~procedure(procedure)~ 的参数, 也就是 ~fact~ 的参数. 因此 :
+
+#+BEGIN_SRC js
+  var Y = F => {
+    var W = x => (f => F(f))(
+      (arg1, arg2) => x(x)(arg1, arg2));
+    return W(W);
+  };
+
+  return Y(fact => (n, result) => n ? fact(n-1, n*result) : result)(5, 1);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+* How about the recursion function with three or four or more parameters? | 如果递归函数需要三个或四个或更多参数呢?
+
+我们不能每次都创造一个的 Y-Combinator 来适应不用的参数数量, 一种可行的办法是利用 ~JavaScript~ 的 ~arguments~ 和 ~apply~ 方法.
+
+#+BEGIN_SRC js
+  var Y = F => {
+    var W = x => (f => F(f))(function() {
+      return x(x).apply(null, arguments);
+    });
+    return W(W);
+  };
+  return Y(fact => (n, result) => n ? fact(n-1, n*result) : result)(5, 1);
+#+END_SRC
+
+#+RESULTS:
+: 120
+
+#+BEGIN_SRC js
+  var Y = F => {
+    var W = x => (f => F(f))((...args) => x(x).apply(null, args));
+    return W(W);
+  };
+  return Y(fact => (n, result) => n ? fact(n-1, n*result) : result)(5, 1);
+#+END_SRC
+
+#+RESULTS:
+
+* How about a CPS recursion function? | 如果是一个 CPS 递归函数呢?
+
+
+
+#+BEGIN_SRC js
+  var identity = x => x;
+
+  var Fact = (n, f) => {
+    if(n == 0)
+      return f(n);
+    else
+      return Fact(n-1, (x) => {
+        return n*f(x);
+      });
+  };
+
+  return Fact(5, identity);
+#+END_SRC
+
+#+RESULTS:
+: 0
