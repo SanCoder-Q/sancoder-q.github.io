@@ -4,7 +4,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: Anonymous Function in JavaScript
+title: Anonymous Functions in JavaScript
 ---
 #+END_HTML
 

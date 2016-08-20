@@ -4,20 +4,20 @@ title: Using Scheme For Church Encoding
 ---
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Boolean &amp; Logic</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> Boolean &amp; Logic</h2>
+<div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 
-<pre class="src src-scheme"><span style="color: #999999; font-style: italic;">;; </span><span style="color: #999999; font-style: italic;">Boolean &amp; Logic</span>
-(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">TRUE</span> x y) x)
+<pre class="src src-scheme"><span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">Boolean &amp; Logic</span>
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">TRUE</span> x y) x)
 
-(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">FALSE</span> x y) y)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">FALSE</span> x y) y)
 
-(<span style="color: #99cc99;">define</span> (<span style="color: #f99157;">IF</span> e then else)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">IF</span> e then else)
   (e then else))
 
-(list (IF TRUE <span style="color: #66cccc;">"true"</span> <span style="color: #66cccc;">"false"</span>)
-      (IF FALSE <span style="color: #66cccc;">"true"</span> <span style="color: #66cccc;">"false"</span>))
+(list (<span style="color: #d1f1a9;">IF</span> TRUE <span style="color: #99ffff;">"true"</span> <span style="color: #99ffff;">"false"</span>)
+      (<span style="color: #d1f1a9;">IF</span> FALSE <span style="color: #99ffff;">"true"</span> <span style="color: #99ffff;">"false"</span>))
 </pre>
 </div>
 </div>

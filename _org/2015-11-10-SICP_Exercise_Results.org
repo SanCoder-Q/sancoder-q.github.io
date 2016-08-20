@@ -2741,5 +2741,3 @@ T^{2}
 
 #+RESULTS:
 | 50 | Insufficient funds | 90 | ! | ! | ! | ! | ! | ! | 30 | ! | ! | ! | ! | ! | ! | Already called cops |
-
-** Exercise

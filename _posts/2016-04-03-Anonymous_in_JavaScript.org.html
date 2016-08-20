@@ -1,30 +1,30 @@
 ---
 layout: post
-title: Anonymous Function in JavaScript
+title: Anonymous Functions in JavaScript
 ---
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">A <code>normal function</code> | 一个 <code>普通函数</code></h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> A <code>normal function</code> | 一个 <code>普通函数</code></h2>
+<div class="outline-text-2" id="text-1">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">add</span>(<span style="color: #e7c547;">x</span>, <span style="color: #e7c547;">y</span>) {
-  <span style="color: #b9ca4a;">return</span> x + y;
+<pre class="src src-js"><span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">add</span>(<span style="color: #ffeead;">x</span>, <span style="color: #ffeead;">y</span>) {
+  <span style="color: #d1f1a9;">return</span> x + y;
 }
 
-<span style="color: #b9ca4a;">return</span> add(1, 2);
+<span style="color: #d1f1a9;">return</span> add(1, 2);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Make it Anonymous | 改为匿名函数</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Make it Anonymous | 改为匿名函数</h2>
+<div class="outline-text-2" id="text-2">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">return</span> (<span style="color: #b9ca4a;">function</span>(<span style="color: #e7c547;">x</span>, <span style="color: #e7c547;">y</span>) {
-  <span style="color: #b9ca4a;">return</span> x + y;
+<pre class="src src-js"><span style="color: #d1f1a9;">return</span> (<span style="color: #d1f1a9;">function</span>(<span style="color: #ffeead;">x</span>, <span style="color: #ffeead;">y</span>) {
+  <span style="color: #d1f1a9;">return</span> x + y;
 })(1, 2);
 </pre>
 </div>
@@ -32,54 +32,54 @@ title: Anonymous Function in JavaScript
 </div>
 
 <div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">A ES6 version <code>normal function</code> | 一个 ES6 语法的 <code>普通函数</code></h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> A ES6 version <code>normal function</code> | 一个 ES6 语法的 <code>普通函数</code></h2>
+<div class="outline-text-2" id="text-3">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">add</span> = (x, y) =&gt; x + y;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">add</span> = (x, y) =&gt; x + y;
 
-<span style="color: #b9ca4a;">return</span> add(1, 2);
+<span style="color: #d1f1a9;">return</span> add(1, 2);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">Make it Anonymous | 改为匿名函数</h2>
-<div class="outline-text-2" id="text-orgheadline4">
+<h2 id="orgheadline4"><span class="section-number-2">4</span> Make it Anonymous | 改为匿名函数</h2>
+<div class="outline-text-2" id="text-4">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">return</span> ((x, y) =&gt; x + y)(1, 2);
+<pre class="src src-js"><span style="color: #d1f1a9;">return</span> ((x, y) =&gt; x + y)(1, 2);
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">A ES6 version <code>high-order function</code> | 一个 ES6 语法的 <code>高阶函数</code></h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">5</span> A ES6 version <code>high-order function</code> | 一个 ES6 语法的 <code>高阶函数</code></h2>
+<div class="outline-text-2" id="text-5">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">add</span> = x =&gt; y =&gt; x + y;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">add</span> = x =&gt; y =&gt; x + y;
 
-<span style="color: #b9ca4a;">return</span> add(1)(2);
+<span style="color: #d1f1a9;">return</span> add(1)(2);
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">add</span> = x =&gt; y =&gt; x + y;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">add</span> = x =&gt; y =&gt; x + y;
 
-<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">oneAdd</span> = add(1);
+<span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">oneAdd</span> = add(1);
 
-<span style="color: #b9ca4a;">return</span> oneAdd(2);
+<span style="color: #d1f1a9;">return</span> oneAdd(2);
 </pre>
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">Postscripts:</h3>
-<div class="outline-text-3" id="text-orgheadline6">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">5.1</span> Postscripts:</h3>
+<div class="outline-text-3" id="text-5-1">
 <p>
 Curry
 </p>
@@ -88,19 +88,19 @@ Curry
 </div>
 
 <div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7">Make it Anonymous | 改为匿名函数</h2>
-<div class="outline-text-2" id="text-orgheadline7">
+<h2 id="orgheadline7"><span class="section-number-2">6</span> Make it Anonymous | 改为匿名函数</h2>
+<div class="outline-text-2" id="text-6">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">return</span> (x =&gt; y =&gt; x + y)(1)(2);
+<pre class="src src-js"><span style="color: #d1f1a9;">return</span> (x =&gt; y =&gt; x + y)(1)(2);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline8" class="outline-2">
-<h2 id="orgheadline8">A ES6 version <code>recursive function</code> | 一个 ES6 语法的 <code>递归函数</code></h2>
-<div class="outline-text-2" id="text-orgheadline8">
+<h2 id="orgheadline8"><span class="section-number-2">7</span> A ES6 version <code>recursive function</code> | 一个 ES6 语法的 <code>递归函数</code></h2>
+<div class="outline-text-2" id="text-7">
 <p>
 A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
  <code>f(n) = n*(n-1)*(n-2)*...*3*2*1</code> .
@@ -108,23 +108,23 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> = n =&gt; n != 0 ? n * fact(n-1) : 1;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact</span> = n =&gt; n != 0 ? n * fact(n-1) : 1;
 
-<span style="color: #b9ca4a;">return</span> fact(5);
+<span style="color: #d1f1a9;">return</span> fact(5);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline16" class="outline-2">
-<h2 id="orgheadline16">Now, how to make a <code>recursive function</code> <b>anonymous</b> ? | 怎样把 <code>递归函数</code> 改为 <b>匿名</b> 的呢?</h2>
-<div class="outline-text-2" id="text-orgheadline16">
+<h2 id="orgheadline16"><span class="section-number-2">8</span> Now, how to make a <code>recursive function</code> <b>anonymous</b> ? | 怎样把 <code>递归函数</code> 改为 <b>匿名</b> 的呢?</h2>
+<div class="outline-text-2" id="text-8">
 </div><div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">First Try</h3>
-<div class="outline-text-3" id="text-orgheadline9">
+<h3 id="orgheadline9"><span class="section-number-3">8.1</span> First Try</h3>
+<div class="outline-text-3" id="text-8-1">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">return</span> (n =&gt; n ? n * fact(n-1) : 1)(5);
+<pre class="src src-js"><span style="color: #d1f1a9;">return</span> (n =&gt; n ? n * fact(n-1) : 1)(5);
 </pre>
 </div>
 
@@ -135,24 +135,24 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 </div>
 
 <div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">Second Try</h3>
-<div class="outline-text-3" id="text-orgheadline10">
+<h3 id="orgheadline10"><span class="section-number-3">8.2</span> Second Try</h3>
+<div class="outline-text-3" id="text-8-2">
 <p>
 一个值得尝试的方法在于用 <code>函数参数</code> 将自身传入. 例如:
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = (fact) =&gt; {
-  <span style="color: #b9ca4a;">return</span> (n) =&gt; {
-    <span style="color: #b9ca4a;">if</span> (n &gt; 0)
-      <span style="color: #b9ca4a;">return</span> n * fact(n-1);
-    <span style="color: #b9ca4a;">else</span>
-      <span style="color: #b9ca4a;">return</span> 1;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact_maker</span> = (fact) =&gt; {
+  <span style="color: #d1f1a9;">return</span> (n) =&gt; {
+    <span style="color: #d1f1a9;">if</span> (n &gt; 0)
+      <span style="color: #d1f1a9;">return</span> n * fact(n-1);
+    <span style="color: #d1f1a9;">else</span>
+      <span style="color: #d1f1a9;">return</span> 1;
   };
 };
 
-<span style="color: #b9ca4a;">return</span> fact_maker(fact_maker)(5);
+<span style="color: #d1f1a9;">return</span> fact_maker(fact_maker)(5);
 </pre>
 </div>
 
@@ -163,24 +163,24 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 </div>
 
 <div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11">Third Try</h3>
-<div class="outline-text-3" id="text-orgheadline11">
+<h3 id="orgheadline11"><span class="section-number-3">8.3</span> Third Try</h3>
+<div class="outline-text-3" id="text-8-3">
 <p>
 因此, 我们将传入的参数转化为以数字为参数的函数.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = (procedure) =&gt; {
-  <span style="color: #b9ca4a;">return</span> (n) =&gt; {
-    <span style="color: #b9ca4a;">if</span> (n &gt; 0)
-      <span style="color: #b9ca4a;">return</span> n * procedure(procedure)(n-1);
-    <span style="color: #b9ca4a;">else</span>
-      <span style="color: #b9ca4a;">return</span> 1;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact_maker</span> = (procedure) =&gt; {
+  <span style="color: #d1f1a9;">return</span> (n) =&gt; {
+    <span style="color: #d1f1a9;">if</span> (n &gt; 0)
+      <span style="color: #d1f1a9;">return</span> n * procedure(procedure)(n-1);
+    <span style="color: #d1f1a9;">else</span>
+      <span style="color: #d1f1a9;">return</span> 1;
   };
 };
 
-<span style="color: #b9ca4a;">return</span> fact_maker(fact_maker)(5);
+<span style="color: #d1f1a9;">return</span> fact_maker(fact_maker)(5);
 </pre>
 </div>
 
@@ -191,31 +191,31 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 </div>
 
 <div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">Refactor</h3>
-<div class="outline-text-3" id="text-orgheadline12">
+<h3 id="orgheadline12"><span class="section-number-3">8.4</span> Refactor</h3>
+<div class="outline-text-3" id="text-8-4">
 <p>
 一种重构的方式是将其放入 <code>fact_maker</code> 的实现内部.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = ((procedure) =&gt; {
-  <span style="color: #b9ca4a;">return</span> (n) =&gt; {
-    <span style="color: #b9ca4a;">if</span> (n &gt; 0)
-      <span style="color: #b9ca4a;">return</span> n * procedure(procedure)(n-1);
-    <span style="color: #b9ca4a;">else</span>
-      <span style="color: #b9ca4a;">return</span> 1;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact_maker</span> = ((procedure) =&gt; {
+  <span style="color: #d1f1a9;">return</span> (n) =&gt; {
+    <span style="color: #d1f1a9;">if</span> (n &gt; 0)
+      <span style="color: #d1f1a9;">return</span> n * procedure(procedure)(n-1);
+    <span style="color: #d1f1a9;">else</span>
+      <span style="color: #d1f1a9;">return</span> 1;
   };
 })((procedure) =&gt; {
-  <span style="color: #b9ca4a;">return</span> (n) =&gt; {
-    <span style="color: #b9ca4a;">if</span> (n &gt; 0)
-      <span style="color: #b9ca4a;">return</span> n * procedure(procedure)(n-1);
-    <span style="color: #b9ca4a;">else</span>
-      <span style="color: #b9ca4a;">return</span> 1;
+  <span style="color: #d1f1a9;">return</span> (n) =&gt; {
+    <span style="color: #d1f1a9;">if</span> (n &gt; 0)
+      <span style="color: #d1f1a9;">return</span> n * procedure(procedure)(n-1);
+    <span style="color: #d1f1a9;">else</span>
+      <span style="color: #d1f1a9;">return</span> 1;
   };
 });
 
-<span style="color: #b9ca4a;">return</span> fact_maker(5);
+<span style="color: #d1f1a9;">return</span> fact_maker(5);
 </pre>
 </div>
 
@@ -226,8 +226,8 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 </div>
 
 <div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">What's next?</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<h3 id="orgheadline13"><span class="section-number-3">8.5</span> What's next?</h3>
+<div class="outline-text-3" id="text-8-5">
 <p>
 重构的目的之一是消除重复代码, 但是我们却创造了重复代码. 怎么办?
 </p>
@@ -238,28 +238,28 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = () =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = ((procedure) =&gt; {
-    <span style="color: #b9ca4a;">return</span> (n) =&gt; {
-      <span style="color: #b9ca4a;">if</span> (n &gt; 0)
-        <span style="color: #b9ca4a;">return</span> n * procedure(procedure)(n-1);
-      <span style="color: #b9ca4a;">else</span>
-        <span style="color: #b9ca4a;">return</span> 1;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact_maker</span> = () =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = ((procedure) =&gt; {
+    <span style="color: #d1f1a9;">return</span> (n) =&gt; {
+      <span style="color: #d1f1a9;">if</span> (n &gt; 0)
+        <span style="color: #d1f1a9;">return</span> n * procedure(procedure)(n-1);
+      <span style="color: #d1f1a9;">else</span>
+        <span style="color: #d1f1a9;">return</span> 1;
     };
   });
 
-  <span style="color: #b9ca4a;">return</span> W(W);
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
 
-<span style="color: #b9ca4a;">return</span> fact_maker()(5);
+<span style="color: #d1f1a9;">return</span> fact_maker()(5);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="orgheadline14">Abstracting</h3>
-<div class="outline-text-3" id="text-orgheadline14">
+<h3 id="orgheadline14"><span class="section-number-3">8.6</span> Abstracting</h3>
+<div class="outline-text-3" id="text-8-6">
 <p>
 现在我们有了一个匿名的 <code>fact</code> 函数, 但当需要一个递归的 <code>map</code> 或者 <code>fold</code> 函数怎么办?
 </p>
@@ -270,44 +270,44 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_maker</span> = () =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = procedure =&gt;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact_maker</span> = () =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = procedure =&gt;
       (fun_arg =&gt; {
-       <span style="color: #b9ca4a;">return</span> n =&gt; {
-         <span style="color: #b9ca4a;">if</span> (n &gt; 0)
-           <span style="color: #b9ca4a;">return</span> n * fun_arg(n-1);
-         <span style="color: #b9ca4a;">else</span>
-           <span style="color: #b9ca4a;">return</span> 1;
+       <span style="color: #d1f1a9;">return</span> n =&gt; {
+         <span style="color: #d1f1a9;">if</span> (n &gt; 0)
+           <span style="color: #d1f1a9;">return</span> n * fun_arg(n-1);
+         <span style="color: #d1f1a9;">else</span>
+           <span style="color: #d1f1a9;">return</span> 1;
        };
       })(arg =&gt; procedure(procedure)(arg));
-  <span style="color: #b9ca4a;">return</span> W(W);
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
 
-<span style="color: #b9ca4a;">return</span> fact_maker()(5);
+<span style="color: #d1f1a9;">return</span> fact_maker()(5);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">Keep abstracting</h3>
-<div class="outline-text-3" id="text-orgheadline15">
+<h3 id="orgheadline15"><span class="section-number-3">8.7</span> Keep abstracting</h3>
+<div class="outline-text-3" id="text-8-7">
 <p>
 现在我们需要把与 <code>fact</code> 相关的逻辑作为参数传入, 这样当这样的递归逻辑变化时, 我们依然能够将其作为参数传入来得到我们的 <b>匿名递归函数</b>
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact_related</span> = fact =&gt; n =&gt; n ? n * fact(n-1) : 1;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact_related</span> = fact =&gt; n =&gt; n ? n * fact(n-1) : 1;
 
-<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">anonym_maker</span> = F =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = procedure =&gt;
+<span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">anonym_maker</span> = F =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = procedure =&gt;
       (fun_arg =&gt; F(fun_arg))
            (arg =&gt; procedure(procedure)(arg));
-  <span style="color: #b9ca4a;">return</span> W(W);
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
 
-<span style="color: #b9ca4a;">return</span> anonym_maker(fact =&gt; n =&gt; n ? n * fact(n-1) : 1)(5);
+<span style="color: #d1f1a9;">return</span> anonym_maker(fact =&gt; n =&gt; n ? n * fact(n-1) : 1)(5);
 </pre>
 </div>
 </div>
@@ -315,8 +315,8 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 </div>
 
 <div id="outline-container-orgheadline17" class="outline-2">
-<h2 id="orgheadline17">Fixed point</h2>
-<div class="outline-text-2" id="text-orgheadline17">
+<h2 id="orgheadline17"><span class="section-number-2">9</span> Fixed point</h2>
+<div class="outline-text-2" id="text-9">
 <ul class="org-ul">
 <li>A fixed point of a function <code>f</code> is a value that doesn't change under the application of the function <code>f</code>.</li>
 
@@ -335,28 +335,28 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Y</span> = F =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = x =&gt; (f =&gt; F(f))(
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">Y</span> = F =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = x =&gt; (f =&gt; F(f))(
     arg =&gt; x(x)(arg));
-  <span style="color: #b9ca4a;">return</span> W(W);
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
 
-<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> = Y(fact =&gt; n =&gt; n ? n * fact(n-1) : 1);
+<span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact</span> = Y(fact =&gt; n =&gt; n ? n * fact(n-1) : 1);
 
-<span style="color: #b9ca4a;">return</span> fact(5);
+<span style="color: #d1f1a9;">return</span> fact(5);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline18" class="outline-2">
-<h2 id="orgheadline18">How about the recursion function with two parameters? | 如果递归函数需要两个参数呢?</h2>
-<div class="outline-text-2" id="text-orgheadline18">
+<h2 id="orgheadline18"><span class="section-number-2">10</span> How about the recursion function with two parameters? | 如果递归函数需要两个参数呢?</h2>
+<div class="outline-text-2" id="text-10">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">fact</span> = (n, result) =&gt; n ? fact(n-1, n*result) : result;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">fact</span> = (n, result) =&gt; n ? fact(n-1, n*result) : result;
 
-<span style="color: #b9ca4a;">return</span> fact(5, 1);
+<span style="color: #d1f1a9;">return</span> fact(5, 1);
 </pre>
 </div>
 
@@ -366,66 +366,66 @@ A <code>factorial</code> functiaon 一个 <code>阶乘</code> 函数 :
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Y</span> = F =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = x =&gt; (f =&gt; F(f))(
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">Y</span> = F =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = x =&gt; (f =&gt; F(f))(
     (arg1, arg2) =&gt; x(x)(arg1, arg2));
-  <span style="color: #b9ca4a;">return</span> W(W);
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
 
-<span style="color: #b9ca4a;">return</span> Y(fact =&gt; (n, result) =&gt; n ? fact(n-1, n*result) : result)(5, 1);
+<span style="color: #d1f1a9;">return</span> Y(fact =&gt; (n, result) =&gt; n ? fact(n-1, n*result) : result)(5, 1);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline19" class="outline-2">
-<h2 id="orgheadline19">How about the recursion function with three or four or more parameters? | 如果递归函数需要三个或四个或更多参数呢?</h2>
-<div class="outline-text-2" id="text-orgheadline19">
+<h2 id="orgheadline19"><span class="section-number-2">11</span> How about the recursion function with three or four or more parameters? | 如果递归函数需要三个或四个或更多参数呢?</h2>
+<div class="outline-text-2" id="text-11">
 <p>
 我们不能每次都创造一个的 Y-Combinator 来适应不用的参数数量, 一种可行的办法是利用 <code>JavaScript</code> 的 <code>arguments</code> 和 <code>apply</code> 方法.
 </p>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Y</span> = F =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = x =&gt; (f =&gt; F(f))(<span style="color: #b9ca4a;">function</span>() {
-    <span style="color: #b9ca4a;">return</span> x(x).apply(<span style="color: #7aa6da;">null</span>, <span style="color: #7aa6da;">arguments</span>);
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">Y</span> = F =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = x =&gt; (f =&gt; F(f))(<span style="color: #d1f1a9;">function</span>() {
+    <span style="color: #d1f1a9;">return</span> x(x).apply(<span style="color: #bbdaff;">null</span>, <span style="color: #bbdaff;">arguments</span>);
   });
-  <span style="color: #b9ca4a;">return</span> W(W);
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
-<span style="color: #b9ca4a;">return</span> Y(fact =&gt; (n, result) =&gt; n ? fact(n-1, n*result) : result)(5, 1);
+<span style="color: #d1f1a9;">return</span> Y(fact =&gt; (n, result) =&gt; n ? fact(n-1, n*result) : result)(5, 1);
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Y</span> = F =&gt; {
-  <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">W</span> = x =&gt; (f =&gt; F(f))((...args) =&gt; x(x).apply(<span style="color: #7aa6da;">null</span>, args));
-  <span style="color: #b9ca4a;">return</span> W(W);
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">Y</span> = F =&gt; {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">W</span> = x =&gt; (f =&gt; F(f))((...args) =&gt; x(x).apply(<span style="color: #bbdaff;">null</span>, args));
+  <span style="color: #d1f1a9;">return</span> W(W);
 };
-<span style="color: #b9ca4a;">return</span> Y(fact =&gt; (n, result) =&gt; n ? fact(n-1, n*result) : result)(5, 1);
+<span style="color: #d1f1a9;">return</span> Y(fact =&gt; (n, result) =&gt; n ? fact(n-1, n*result) : result)(5, 1);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline20" class="outline-2">
-<h2 id="orgheadline20">How about a CPS recursion function? | 如果是一个 CPS 递归函数呢?</h2>
-<div class="outline-text-2" id="text-orgheadline20">
+<h2 id="orgheadline20"><span class="section-number-2">12</span> How about a CPS recursion function? | 如果是一个 CPS 递归函数呢?</h2>
+<div class="outline-text-2" id="text-12">
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">identity</span> = x =&gt; x;
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">identity</span> = x =&gt; x;
 
-<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">Fact</span> = (n, f) =&gt; {
-  <span style="color: #b9ca4a;">if</span>(n == 0)
-    <span style="color: #b9ca4a;">return</span> f(n);
-  <span style="color: #b9ca4a;">else</span>
-    <span style="color: #b9ca4a;">return</span> Fact(n-1, (x) =&gt; {
-      <span style="color: #b9ca4a;">return</span> n*f(x);
+<span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">Fact</span> = (n, f) =&gt; {
+  <span style="color: #d1f1a9;">if</span>(n == 0)
+    <span style="color: #d1f1a9;">return</span> f(n);
+  <span style="color: #d1f1a9;">else</span>
+    <span style="color: #d1f1a9;">return</span> Fact(n-1, (x) =&gt; {
+      <span style="color: #d1f1a9;">return</span> n*f(x);
     });
 };
 
-<span style="color: #b9ca4a;">return</span> Fact(5, identity);
+<span style="color: #d1f1a9;">return</span> Fact(5, identity);
 </pre>
 </div>
 </div>

@@ -3,7 +3,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: How To Call A Overrided Parent Method
+title: How To Call A Overrided Parent Method (WIP)
 ---
 #+END_HTML
 
@@ -13,10 +13,11 @@ title: How To Call A Overrided Parent Method
 (require 'ob-ruby)
 (require 'ob-java)
 (require 'ob-scala)
+(require 'ob-coffee)
 #+END_SRC
 
 #+RESULTS:
-: ob-scala
+: ob-coffee
 
 
 * In Ruby
@@ -120,6 +121,19 @@ title: How To Call A Overrided Parent Method
 #+END_SRC
 
 * In CoffeeScript
+
+#+BEGIN_SRC coffee
+class Parent
+  callee: ->
+    console.log "parent method"
+
+class Child extends Parent
+  callee: ->
+    console.log "child method"
+
+  caller: ->
+    @constructor.__super__.constructor.prototype.callee.call @
+#+END_SRC
 
 * In C#
 

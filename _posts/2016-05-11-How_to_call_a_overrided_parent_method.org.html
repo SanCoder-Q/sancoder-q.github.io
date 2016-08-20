@@ -1,0 +1,168 @@
+---
+layout: post
+title: How To Call A Overrided Parent Method (WIP)
+---
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4"><span class="section-number-2">1</span> In Ruby</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1"><span class="section-number-3">1.1</span> Bind &amp; Call</h3>
+<div class="outline-text-3" id="text-1-1">
+<div class="org-src-container">
+
+<pre class="src src-ruby"><span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Parent</span>
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span>
+    <span style="color: #ebbbff;">puts</span> <span style="color: #99ffff;">'parent method'</span>
+  <span style="color: #d1f1a9;">end</span>
+<span style="color: #d1f1a9;">end</span>
+
+<span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Child</span> &lt; <span style="color: #bbdaff;">Parent</span>
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span>
+    <span style="color: #ebbbff;">puts</span> <span style="color: #99ffff;">'child method'</span>
+  <span style="color: #d1f1a9;">end</span>
+
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">caller</span>
+    <span style="color: #bbdaff;">Parent</span>.instance_method(<span style="color: #bbdaff;">:callee</span>).bind(<span style="color: #d1f1a9;">self</span>).call
+  <span style="color: #d1f1a9;">end</span>
+<span style="color: #d1f1a9;">end</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2"><span class="section-number-3">1.2</span> Method alias</h3>
+<div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
+
+<pre class="src src-ruby"><span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Parent</span>
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span>
+    <span style="color: #ebbbff;">puts</span> <span style="color: #99ffff;">'parent method'</span>
+  <span style="color: #d1f1a9;">end</span>
+<span style="color: #d1f1a9;">end</span>
+
+<span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Child</span> &lt; <span style="color: #bbdaff;">Parent</span>
+  <span style="color: #d1f1a9;">alias</span> parent_callee callee
+
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span>
+    <span style="color: #ebbbff;">puts</span> <span style="color: #99ffff;">'child method'</span>
+  <span style="color: #d1f1a9;">end</span>
+
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">caller</span>
+    parent_callee
+  <span style="color: #d1f1a9;">end</span>
+<span style="color: #d1f1a9;">end</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">1.3</span> Super method (ruby 2.2)</h3>
+<div class="outline-text-3" id="text-1-3">
+<div class="org-src-container">
+
+<pre class="src src-ruby"><span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Parent</span>
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span>
+    <span style="color: #ebbbff;">puts</span> <span style="color: #99ffff;">'parent method'</span>
+  <span style="color: #d1f1a9;">end</span>
+<span style="color: #d1f1a9;">end</span>
+
+<span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Child</span> &lt; <span style="color: #bbdaff;">Parent</span>
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span>
+    <span style="color: #ebbbff;">puts</span> <span style="color: #99ffff;">'child method'</span>
+  <span style="color: #d1f1a9;">end</span>
+
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">caller</span>
+    method(<span style="color: #bbdaff;">:callee</span>).super_method.call
+  <span style="color: #d1f1a9;">end</span>
+<span style="color: #d1f1a9;">end</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5"><span class="section-number-2">2</span> In Java</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #d1f1a9;">abstract</span> <span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Parent</span> {
+    <span style="color: #d1f1a9;">public</span> <span style="color: #bbdaff;">void</span> <span style="color: #ffc58f;">callee</span>() {
+        System.out.println(<span style="color: #99ffff;">"parent method"</span>);
+    }
+}
+
+<span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Child</span> <span style="color: #d1f1a9;">extends</span> <span style="color: #bbdaff;">Parent</span> {
+    <span style="color: #bbdaff;">@Override</span>
+    <span style="color: #d1f1a9;">public</span> <span style="color: #bbdaff;">void</span> <span style="color: #ffc58f;">callee</span>() {
+        System.out.println(<span style="color: #99ffff;">"child method"</span>);
+    }
+
+    <span style="color: #d1f1a9;">public</span> <span style="color: #bbdaff;">void</span> <span style="color: #ffc58f;">caller</span>() {
+        <span style="color: #d1f1a9;">super</span>.callee();
+    }
+}
+
+<span style="color: #d1f1a9;">public</span> <span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">App</span> {
+    <span style="color: #d1f1a9;">public</span> <span style="color: #d1f1a9;">static</span> <span style="color: #bbdaff;">void</span> <span style="color: #ffc58f;">main</span>(<span style="color: #bbdaff;">String</span>[] <span style="color: #ffeead;">args</span>) {
+        <span style="color: #d1f1a9;">new</span> <span style="color: #bbdaff;">Child</span>().caller();
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">3</span> In Scala</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d1f1a9;">trait</span> <span style="color: #bbdaff;">Parent</span> {
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span><span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Unit</span> <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">Console</span> println <span style="color: #99ffff;">"parent method"</span>
+}
+
+<span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Child</span> <span style="color: #d1f1a9;">extends</span> <span style="color: #bbdaff;">Parent</span> {
+  <span style="color: #ebbbff;">override</span> <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">callee</span><span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Unit</span> <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">Console</span> println <span style="color: #99ffff;">"child method"</span>
+
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">caller</span><span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Unit</span> <span style="color: #d1f1a9;">=</span> <span style="color: #d1f1a9;">super</span>.callee
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7"><span class="section-number-2">4</span> In CoffeeScript</h2>
+<div class="outline-text-2" id="text-4">
+<div class="org-src-container">
+
+<pre class="src src-coffee">class Parent
+  callee: -&gt;
+    console.log "parent method"
+
+class Child extends Parent
+  callee: -&gt;
+    console.log "child method"
+
+  caller: -&gt;
+    @constructor.__super__.constructor.prototype.callee.call @
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8"><span class="section-number-2">5</span> In C#</h2>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9"><span class="section-number-2">6</span> In C++</h2>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10"><span class="section-number-2">7</span> In Python</h2>
+</div>

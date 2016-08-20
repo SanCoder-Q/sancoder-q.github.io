@@ -1,0 +1,30 @@
+---
+layout: post
+title: Tips In Learning Scala
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> Require &amp; Assert</h2>
+<div class="outline-text-2" id="text-1">
+<div class="org-src-container">
+
+<pre class="src src-scala">require(chars.nonEmpty, <span style="color: #99ffff;">"what?"</span>) <span style="color: #7285b7; font-style: italic;">// </span><span style="color: #7285b7; font-style: italic;">IllegalArgumentException</span>
+
+assert(chars.nonEmpty, <span style="color: #99ffff;">"what?"</span>) <span style="color: #7285b7; font-style: italic;">// </span><span style="color: #7285b7; font-style: italic;">AssertionError</span>
+
+assume(chars.nonEmpty, <span style="color: #99ffff;">"what?"</span>) <span style="color: #7285b7; font-style: italic;">// </span><span style="color: #7285b7; font-style: italic;">AssertionError</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Define a prefix method</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">unary_!</span> <span style="color: #d1f1a9;">=</span> ??? <span style="color: #7285b7; font-style: italic;">// </span><span style="color: #7285b7; font-style: italic;">Use `unary_` as prefix to define a prefix operator</span>
+</pre>
+</div>
+</div>
+</div>

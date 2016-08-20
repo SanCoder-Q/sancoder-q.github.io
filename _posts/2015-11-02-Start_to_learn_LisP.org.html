@@ -4,17 +4,17 @@ title: Start to learn LisP
 ---
 
 <div id="outline-container-orgheadline8" class="outline-2">
-<h2 id="orgheadline8">Content</h2>
-<div class="outline-text-2" id="text-orgheadline8">
+<h2 id="orgheadline8"><span class="section-number-2">1</span> Content</h2>
+<div class="outline-text-2" id="text-1">
 <ul class="org-ul">
-<li><a href="#orgheadline1">Why LisP</a><br  /></li>
-<li><a href="#orgheadline2">Rules of LisP</a><br  />
+<li><a href="#orgheadline1">2</a><br  /></li>
+<li><a href="#orgheadline2">3</a><br  />
 <ul class="org-ul">
-<li><a href="#orgheadline3">表达式与组合式</a><br  /></li>
-<li><a href="#orgheadline4">命名 α-Conversion</a><br  /></li>
-<li><a href="#orgheadline5">替换 β-Reduction</a><br  /></li>
-<li><a href="#orgheadline6">条件与谓词</a><br  /></li>
-<li><a href="#orgheadline7">Abstration of procedures 过程抽象</a><br  /></li>
+<li><a href="#orgheadline3">3.0.1</a><br  /></li>
+<li><a href="#orgheadline4">3.0.2</a><br  /></li>
+<li><a href="#orgheadline5">3.0.3</a><br  /></li>
+<li><a href="#orgheadline6">3.0.4</a><br  /></li>
+<li><a href="#orgheadline7">3.0.5</a><br  /></li>
 </ul></li>
 </ul>
 </div>
@@ -23,8 +23,8 @@ title: Start to learn LisP
 
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Why LisP</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="orgheadline1"><span class="section-number-2">2</span> Why LisP</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 因为 LisP 有着：<br  />
 </p>
@@ -39,11 +39,11 @@ title: Start to learn LisP
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Rules of LisP</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<h2 id="orgheadline2"><span class="section-number-2">3</span> Rules of LisP</h2>
+<div class="outline-text-2" id="text-3">
 </div><div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3">表达式与组合式</h4>
-<div class="outline-text-4" id="text-orgheadline3">
+<h4 id="orgheadline3"><span class="section-number-4">3.0.1</span> 表达式与组合式</h4>
+<div class="outline-text-4" id="text-3-0-1">
 <div class="org-src-container">
 
 <pre class="src src-scheme">(+ 1 3)
@@ -65,11 +65,11 @@ title: Start to learn LisP
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">命名 α-Conversion</h4>
-<div class="outline-text-4" id="text-orgheadline4">
+<h4 id="orgheadline4"><span class="section-number-4">3.0.2</span> 命名 α-Conversion</h4>
+<div class="outline-text-4" id="text-3-0-2">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">f</span> x) (+ x x))
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">f</span> x) (+ x x))
 (f 1)
 </pre>
 </div>
@@ -81,37 +81,37 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">替换 β-Reduction</h4>
-<div class="outline-text-4" id="text-orgheadline5">
+<h4 id="orgheadline5"><span class="section-number-4">3.0.3</span> 替换 β-Reduction</h4>
+<div class="outline-text-4" id="text-3-0-3">
 <div class="org-src-container">
 
-<pre class="src src-scheme">((<span style="color: #b9ca4a;">lambda</span> (x) (+ x x)) 1)
+<pre class="src src-scheme">((<span style="color: #d1f1a9;">lambda</span> (x) (+ x x)) 1)
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6">条件与谓词</h4>
-<div class="outline-text-4" id="text-orgheadline6">
+<h4 id="orgheadline6"><span class="section-number-4">3.0.4</span> 条件与谓词</h4>
+<div class="outline-text-4" id="text-3-0-4">
 <p>
 条件谓词判断语法: <b>cond</b><br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">cond</span> (<span style="color: #7aa6da;">&lt;predicate&gt;</span> <span style="color: #7aa6da;">&lt;expression&gt;</span>)
-      (<span style="color: #7aa6da;">&lt;predicate&gt;</span> <span style="color: #7aa6da;">&lt;expression&gt;</span>)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">cond</span> (<span style="color: #bbdaff;">&lt;predicate&gt;</span> <span style="color: #bbdaff;">&lt;expression&gt;</span>)
+      (<span style="color: #bbdaff;">&lt;predicate&gt;</span> <span style="color: #bbdaff;">&lt;expression&gt;</span>)
       ...
-      [(<span style="color: #b9ca4a;">else</span> <span style="color: #7aa6da;">&lt;expression&gt;</span>)])
+      [(<span style="color: #d1f1a9;">else</span> <span style="color: #bbdaff;">&lt;expression&gt;</span>)])
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">abs</span> x)
-  (<span style="color: #b9ca4a;">cond</span> ((&gt; x 0) x)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">abs</span> x)
+  (<span style="color: #d1f1a9;">cond</span> ((&gt; x 0) x)
         ((= x 0) 0)
-        (<span style="color: #b9ca4a;">else</span> (- x))))
+        (<span style="color: #d1f1a9;">else</span> (- x))))
 (abs -3)
 </pre>
 </div>
@@ -121,14 +121,14 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">if</span> <span style="color: #7aa6da;">&lt;predicate&gt;</span> <span style="color: #7aa6da;">&lt;consequent&gt;</span> <span style="color: #7aa6da;">&lt;alternative&gt;</span>)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">if</span> <span style="color: #bbdaff;">&lt;predicate&gt;</span> <span style="color: #bbdaff;">&lt;consequent&gt;</span> <span style="color: #bbdaff;">&lt;alternative&gt;</span>)
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">abs</span> x)
-  (<span style="color: #b9ca4a;">if</span> (&lt; x 0) (- x) x))
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">abs</span> x)
+  (<span style="color: #d1f1a9;">if</span> (&lt; x 0) (- x) x))
 (abs -3)
 </pre>
 </div>
@@ -138,34 +138,34 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">and</span> <span style="color: #7aa6da;">&lt;expression&gt;</span> ... <span style="color: #7aa6da;">&lt;expression&gt;</span>)
-(<span style="color: #b9ca4a;">or</span> <span style="color: #7aa6da;">&lt;expression&gt;</span> ... <span style="color: #7aa6da;">&lt;expression&gt;</span>)
-(not <span style="color: #7aa6da;">&lt;expression&gt;</span>)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">and</span> <span style="color: #bbdaff;">&lt;expression&gt;</span> ... <span style="color: #bbdaff;">&lt;expression&gt;</span>)
+(<span style="color: #d1f1a9;">or</span> <span style="color: #bbdaff;">&lt;expression&gt;</span> ... <span style="color: #bbdaff;">&lt;expression&gt;</span>)
+(not <span style="color: #bbdaff;">&lt;expression&gt;</span>)
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">((<span style="color: #b9ca4a;">lambda</span> (x y) (<span style="color: #b9ca4a;">and</span> x y)) 1 1)
+<pre class="src src-scheme">((<span style="color: #d1f1a9;">lambda</span> (x y) (<span style="color: #d1f1a9;">and</span> x y)) 1 1)
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">((<span style="color: #b9ca4a;">lambda</span> (x y) (<span style="color: #b9ca4a;">or</span> x y)) 1 0)
+<pre class="src src-scheme">((<span style="color: #d1f1a9;">lambda</span> (x y) (<span style="color: #d1f1a9;">or</span> x y)) 1 0)
 </pre>
 </div>
 
 <div class="org-src-container">
 
-<pre class="src src-scheme">((<span style="color: #b9ca4a;">lambda</span> (x) (not x)) (&gt; 1 0))
+<pre class="src src-scheme">((<span style="color: #d1f1a9;">lambda</span> (x) (not x)) (&gt; 1 0))
 </pre>
 </div>
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">Abstration of procedures 过程抽象</h4>
-<div class="outline-text-4" id="text-orgheadline7">
+<h4 id="orgheadline7"><span class="section-number-4">3.0.5</span> Abstration of procedures 过程抽象</h4>
+<div class="outline-text-4" id="text-3-0-5">
 <ul class="org-ul">
 <li>Local<br  />
 <ul class="org-ul">
@@ -180,8 +180,8 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">foo</span>)
-  (<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">bar</span>) 2)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">foo</span>)
+  (<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">bar</span>) 2)
   (bar))
 (foo)
 </pre>
@@ -191,31 +191,31 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">foo</span> x)
-  (<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">bar</span>) (+ 2 x))
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">foo</span> x)
+  (<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">bar</span>) (+ 2 x))
   (bar))
 (foo 2)
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">Procedure &amp; Process</h3>
-<div class="outline-text-3" id="text-orgheadline9">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">3.1</span> Procedure &amp; Process</h3>
+<div class="outline-text-3" id="text-3-1">
 <p>
 过程是一种处理过程的演化(Procedure is a pattern for the local evolution of a computational process.)<br  />
 </p>
 </div>
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">Linear Recursion and Iteration</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">3.1.1</span> Linear Recursion and Iteration</h4>
+<div class="outline-text-4" id="text-3-1-1">
 <ul class="org-ul">
 <li>线性递归处理 Linear Recursion Process (<b>NOT Procedure!!</b>)<br  /></li>
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">factorial</span> n)
-  (<span style="color: #b9ca4a;">if</span> (= n 1)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">factorial</span> n)
+  (<span style="color: #d1f1a9;">if</span> (= n 1)
       1
       (* n (factorial (- n 1)))))
 (factorial 3)
@@ -227,12 +227,12 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">fact-iter</span> c i n)
-  (<span style="color: #b9ca4a;">if</span> (&gt; i n)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">fact-iter</span> c i n)
+  (<span style="color: #d1f1a9;">if</span> (&gt; i n)
       c
       (fact-iter (* c i) (+ i 1) n)))
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">factorial</span> n)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">factorial</span> n)
   (fact-iter 1 1 n))
 
 (factorial 3)
@@ -246,9 +246,9 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </div>
 </div>
 
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">Tree Recursion 树形递归</h4>
-<div class="outline-text-4" id="text-orgheadline11">
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">3.1.2</span> Tree Recursion 树形递归</h4>
+<div class="outline-text-4" id="text-3-1-2">
 <ul class="org-ul">
 <li>Fibonacci Sequence 斐波那契数列<br  /></li>
 </ul>
@@ -257,10 +257,10 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">fib</span> n)
-  (<span style="color: #b9ca4a;">cond</span> ((= n 0) 0)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">fib</span> n)
+  (<span style="color: #d1f1a9;">cond</span> ((= n 0) 0)
         ((= n 1) 1)
-        (<span style="color: #b9ca4a;">else</span> (+ (fib (- n 1))
+        (<span style="color: #d1f1a9;">else</span> (+ (fib (- n 1))
                  (fib (- n 2))))))
 
 (list (fib 2)
@@ -277,13 +277,13 @@ LisP 使用应用序而非正则序来对组合式求值<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">iter-fib</span> c lc n)
-  (<span style="color: #b9ca4a;">if</span> (= n 0)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">iter-fib</span> c lc n)
+  (<span style="color: #d1f1a9;">if</span> (= n 0)
       lc
       (iter-fib (+ c lc)
                 c
                 (- n 1))))
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">fib</span> n)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">fib</span> n)
   (iter-fib 1 0 n))
 
 (list (fib 2)
@@ -309,13 +309,13 @@ k<sub>1</sub>f(n) &le; &Theta;(f(n)) &le; k<sub>2</sub>f(n)<br  />
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">gcd-iter</span> x y)
-  (<span style="color: #b9ca4a;">if</span> (= y 0)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">gcd-iter</span> x y)
+  (<span style="color: #d1f1a9;">if</span> (= y 0)
       x
       (gcd-iter y (remainder x y))))
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">gcd</span> x y)
-  (<span style="color: #b9ca4a;">if</span> (&gt; x y)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">gcd</span> x y)
+  (<span style="color: #d1f1a9;">if</span> (&gt; x y)
       (gcd-iter x y)
       (gcd-iter y x)))
 
@@ -330,9 +330,9 @@ Lam&eacute; 定理: 如果欧几里得算法需要 <i>k</i> 步计算出一个�
 </div>
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12">高阶函数做抽象</h4>
-<div class="outline-text-4" id="text-orgheadline12">
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">3.1.3</span> 高阶函数做抽象</h4>
+<div class="outline-text-4" id="text-3-1-3">
 <p>
 First Class:<br  />
 </p>
@@ -348,35 +348,35 @@ First Class:<br  />
 </div>
 
 <div id="outline-container-orgheadline14" class="outline-2">
-<h2 id="orgheadline14">数据抽象导引</h2>
-<div class="outline-text-2" id="text-orgheadline14">
+<h2 id="orgheadline14"><span class="section-number-2">4</span> 数据抽象导引</h2>
+<div class="outline-text-2" id="text-4">
 </div><div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">序对 Pairs 与 表结构 list-structure</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<h3 id="orgheadline13"><span class="section-number-3">4.1</span> 序对 Pairs 与 表结构 list-structure</h3>
+<div class="outline-text-3" id="text-4-1">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">make-rat</span> n d)
-  (<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">assign</span> x)
-    (<span style="color: #b9ca4a;">if</span> (&gt; x 0)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">make-rat</span> n d)
+  (<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">assign</span> x)
+    (<span style="color: #d1f1a9;">if</span> (&gt; x 0)
         1
         -1))
-  (<span style="color: #b9ca4a;">let</span> ((g (gcd n d))
+  (<span style="color: #d1f1a9;">let</span> ((g (gcd n d))
         (n (abs n))
         (d (abs d))
         (a (assign (* n d))))
     (cons (* (/ n g) a) (/ d g))))
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">numer</span> x) (car x))
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">numer</span> x) (car x))
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">denom</span> x) (cdr x))
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">denom</span> x) (cdr x))
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">print-rat</span> x)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">print-rat</span> x)
   (newline)
   (display (numer x))
-  (display <span style="color: #70c0b1;">"/"</span>)
+  (display <span style="color: #99ffff;">"/"</span>)
   (display (denom x)))
 
-(<span style="color: #b9ca4a;">define</span> <span style="color: #e78c45;">num</span> (make-rat 4 -8))
+(<span style="color: #d1f1a9;">define</span> <span style="color: #ffc58f;">num</span> (make-rat 4 -8))
 
 (print-rat num)
 
@@ -388,24 +388,24 @@ num
 </div>
 
 <div id="outline-container-orgheadline21" class="outline-2">
-<h2 id="orgheadline21">LisP 语法</h2>
-<div class="outline-text-2" id="text-orgheadline21">
+<h2 id="orgheadline21"><span class="section-number-2">5</span> LisP 语法</h2>
+<div class="outline-text-2" id="text-5">
 </div><div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17">define</h3>
-<div class="outline-text-3" id="text-orgheadline17">
+<h3 id="orgheadline17"><span class="section-number-3">5.1</span> define</h3>
+<div class="outline-text-3" id="text-5-1">
 </div><div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15">定义 <b>变量</b></h4>
-<div class="outline-text-4" id="text-orgheadline15">
+<h4 id="orgheadline15"><span class="section-number-4">5.1.1</span> 定义 <b>变量</b></h4>
+<div class="outline-text-4" id="text-5-1-1">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> <span style="color: #e78c45;">A</span> 3)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> <span style="color: #ffc58f;">A</span> 3)
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">getValue</span>)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">getValue</span>)
   (newline)
-  (display <span style="color: #70c0b1;">"Call getValue ...\n"</span>)
+  (display <span style="color: #99ffff;">"Call getValue ...\n"</span>)
   3)
 
-(<span style="color: #b9ca4a;">define</span> <span style="color: #e78c45;">B</span> (getValue))
+(<span style="color: #d1f1a9;">define</span> <span style="color: #ffc58f;">B</span> (getValue))
 
 (list A B)
 </pre>
@@ -413,17 +413,17 @@ num
 </div>
 </div>
 <div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16"><b>函数</b> 定义</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+<h4 id="orgheadline16"><span class="section-number-4">5.1.2</span> <b>函数</b> 定义</h4>
+<div class="outline-text-4" id="text-5-1-2">
 <ul class="org-ul">
 <li>语法糖定义<br  /></li>
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">func</span> param)
-  (display <span style="color: #70c0b1;">"The function call need a pair of parentheses.\n"</span>)
-  (display <span style="color: #70c0b1;">"This can be a block called sequentially.\n"</span>)
-  (display <span style="color: #70c0b1;">"The value of last expression will be the return value of func.\n"</span>)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">func</span> param)
+  (display <span style="color: #99ffff;">"The function call need a pair of parentheses.\n"</span>)
+  (display <span style="color: #99ffff;">"This can be a block called sequentially.\n"</span>)
+  (display <span style="color: #99ffff;">"The value of last expression will be the return value of func.\n"</span>)
   (+ param 1))
 
 (list (func 1))
@@ -435,10 +435,10 @@ num
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> <span style="color: #e78c45;">func</span> (<span style="color: #b9ca4a;">lambda</span> (param)
-               (display <span style="color: #70c0b1;">"The function call need a pair of parentheses.\n"</span>)
-               (display <span style="color: #70c0b1;">"This can be a block called sequentially.\n"</span>)
-               (display <span style="color: #70c0b1;">"The value of last expression will be the return value of func.\n"</span>)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> <span style="color: #ffc58f;">func</span> (<span style="color: #d1f1a9;">lambda</span> (param)
+               (display <span style="color: #99ffff;">"The function call need a pair of parentheses.\n"</span>)
+               (display <span style="color: #99ffff;">"This can be a block called sequentially.\n"</span>)
+               (display <span style="color: #99ffff;">"The value of last expression will be the return value of func.\n"</span>)
                (+ param 1)))
 
 (list (func 1))
@@ -448,15 +448,15 @@ num
 </div>
 </div>
 <div id="outline-container-orgheadline19" class="outline-3">
-<h3 id="orgheadline19">if</h3>
-<div class="outline-text-3" id="text-orgheadline19">
+<h3 id="orgheadline19"><span class="section-number-3">5.2</span> if</h3>
+<div class="outline-text-3" id="text-5-2">
 </div><div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18">当 <code>if</code> 语句不包含 <code>else</code> 时, 返回 <code>unspecified</code>.</h4>
-<div class="outline-text-4" id="text-orgheadline18">
+<h4 id="orgheadline18"><span class="section-number-4">5.2.1</span> 当 <code>if</code> 语句不包含 <code>else</code> 时, 返回 <code>unspecified</code>.</h4>
+<div class="outline-text-4" id="text-5-2-1">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">whatif</span> bool)
-  (<span style="color: #b9ca4a;">if</span> bool
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">whatif</span> bool)
+  (<span style="color: #d1f1a9;">if</span> bool
      1))
 
 (list (whatif (&gt; 3 2))
@@ -467,17 +467,17 @@ num
 </div>
 </div>
 <div id="outline-container-orgheadline20" class="outline-3">
-<h3 id="orgheadline20">let 语法糖</h3>
-<div class="outline-text-3" id="text-orgheadline20">
+<h3 id="orgheadline20"><span class="section-number-3">5.3</span> let 语法糖</h3>
+<div class="outline-text-3" id="text-5-3">
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">let</span> ((<span style="color: #7aa6da;">&lt;var1&gt;</span> <span style="color: #7aa6da;">&lt;exp1&gt;</span>)
-      (<span style="color: #7aa6da;">&lt;var2&gt;</span> <span style="color: #7aa6da;">&lt;exp2&gt;</span>)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">let</span> ((<span style="color: #bbdaff;">&lt;var1&gt;</span> <span style="color: #bbdaff;">&lt;exp1&gt;</span>)
+      (<span style="color: #bbdaff;">&lt;var2&gt;</span> <span style="color: #bbdaff;">&lt;exp2&gt;</span>)
       .
       .
       .
-      (<span style="color: #7aa6da;">&lt;varn&gt;</span> <span style="color: #7aa6da;">&lt;expn&gt;</span>))
-  <span style="color: #7aa6da;">&lt;exp-body&gt;</span>)
+      (<span style="color: #bbdaff;">&lt;varn&gt;</span> <span style="color: #bbdaff;">&lt;expn&gt;</span>))
+  <span style="color: #bbdaff;">&lt;exp-body&gt;</span>)
 </pre>
 </div>
 </div>

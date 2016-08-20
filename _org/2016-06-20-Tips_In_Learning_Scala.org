@@ -1,0 +1,33 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: Tips In Learning Scala
+---
+#+END_HTML
+
+* COMMENT Requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'ob-scala)
+#+END_SRC
+
+#+RESULTS:
+: ob-scala
+
+* Require & Assert
+
+#+BEGIN_SRC scala
+require(chars.nonEmpty, "what?") // IllegalArgumentException
+
+assert(chars.nonEmpty, "what?") // AssertionError
+
+assume(chars.nonEmpty, "what?") // AssertionError
+#+END_SRC
+
+* Define a prefix method
+
+#+BEGIN_SRC scala
+def unary_! = ??? // Use `unary_` as prefix to define a prefix operator
+#+END_SRC

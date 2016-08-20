@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Start to learn LisP
+title: CPS Guide
 ---
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">What's CPS?</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> What's CPS?</h2>
+<div class="outline-text-2" id="text-1">
 <p>
 Continuation-passing style is a magical, but simple style of <b>functional programming</b> in which control is passed explicitly in the form of a continuation.<br  />
 CPS is different from direct style programming which we usually use. The function written in CPS takes an extra argument: an explicit <b>continuation function</b> usually with only one argument. When the CPS function got a result which returned by the direct style function, it <b>returns</b> the result by calling the continuation function with the value as the argument. This means when invoking a CPS function, it requires a <b>callback function</b> to deal with the returned value. For example:<br  />
@@ -19,7 +19,7 @@ Direct style<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">square</span> x)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">square</span> x)
   (* x x))
 
 (square 2)
@@ -31,12 +31,12 @@ CPS<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scheme">(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">identity</span> x) x)
+<pre class="src src-scheme">(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">identity</span> x) x)
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">square&amp;</span> x f)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">square&amp;</span> x f)
   (*&amp; x x f))
 
-(<span style="color: #b9ca4a;">define</span> (<span style="color: #e78c45;">*&amp;</span> x y f)
+(<span style="color: #d1f1a9;">define</span> (<span style="color: #ffc58f;">*&amp;</span> x y f)
   (f (* x y)))
 
 (square&amp; 2 identify)
@@ -51,8 +51,8 @@ Direct style<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">square</span> = _ =&gt; _ * _;
-<span style="color: #b9ca4a;">return</span> square(2);
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">square</span> = _ =&gt; _ * _;
+<span style="color: #d1f1a9;">return</span> square(2);
 </pre>
 </div></li>
 
@@ -61,9 +61,9 @@ CPS<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">identity</span> = _ =&gt; _;
-<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">square</span> = (_, f) =&gt; f(_ * _);
-<span style="color: #b9ca4a;">return</span> square(2, identity);
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">identity</span> = _ =&gt; _;
+<span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">square</span> = (_, f) =&gt; f(_ * _);
+<span style="color: #d1f1a9;">return</span> square(2, identity);
 </pre>
 </div></li>
 </ul></li>
@@ -75,8 +75,8 @@ Direct style<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scala"><span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(<span style="color: #e7c547;">x</span>: <span style="color: #7aa6da;">Int</span>): <span style="color: #7aa6da;">Int </span>= x * x;
-square(2);
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">square</span>(x<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Int</span>)<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Int</span> <span style="color: #d1f1a9;">=</span> x * x;
+square(<span style="color: #bbdaff;">2</span>);
 </pre>
 </div></li>
 </ul></li>
@@ -89,9 +89,9 @@ CPS<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-scala"><span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">identity</span>[<span style="color: #7aa6da;">A</span>](<span style="color: #e7c547;">x</span> : <span style="color: #7aa6da;">A</span>) : <span style="color: #7aa6da;">A </span>= x;
-<span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(<span style="color: #e7c547;">x</span>: <span style="color: #7aa6da;">Int</span>, <span style="color: #e7c547;">f</span>: <span style="color: #7aa6da;">Int =&gt; Int</span>): <span style="color: #7aa6da;">Int </span>= f(x * x);
-square(2, identity[Int]);
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">identity</span>[<span style="color: #bbdaff;">A</span>](x <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">A</span>) <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">A</span> <span style="color: #d1f1a9;">=</span> x;
+<span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">square</span>(x<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Int</span>, f<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Int</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">Int</span>)<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Int</span> <span style="color: #d1f1a9;">=</span> f(x * x);
+square(<span style="color: #bbdaff;">2</span>, identity[<span style="color: #bbdaff;">Int</span>]);
 </pre>
 </div></li>
 </ul>
@@ -103,9 +103,9 @@ Direct style<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-ruby"><span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(x)
+<pre class="src src-ruby"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">square</span>(x)
   x * x
-<span style="color: #b9ca4a;">end</span>
+<span style="color: #d1f1a9;">end</span>
 
 square(2)
 </pre>
@@ -117,9 +117,9 @@ CPS<br  />
 <div class="org-src-container">
 
 <pre class="src src-ruby">identity = -&gt; (x) {x}
-<span style="color: #b9ca4a;">def</span> <span style="color: #e78c45;">square</span>(x, f)
+<span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">square</span>(x, f)
   f.call(x * x)
-<span style="color: #b9ca4a;">end</span>
+<span style="color: #d1f1a9;">end</span>
 
 square(2, identity)
 </pre>
@@ -138,8 +138,8 @@ The above logic is not pure CPS. It's just a description because we using the <c
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Why CPS?</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> Why CPS?</h2>
+<div class="outline-text-2" id="text-2">
 <ul class="org-ul">
 <li>To understand how compiler working while the function invoked.<br  />
 
@@ -149,10 +149,10 @@ First let us define a normal function:<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">sum</span>(<span style="color: #e7c547;">x</span>, <span style="color: #e7c547;">y</span>) {
-    <span style="color: #b9ca4a;">return</span> x + y;
+<pre class="src src-js"><span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">sum</span>(<span style="color: #ffeead;">x</span>, <span style="color: #ffeead;">y</span>) {
+    <span style="color: #d1f1a9;">return</span> x + y;
 }
-<span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">after</span>(<span style="color: #e7c547;">result</span>) {
+<span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">after</span>(<span style="color: #ffeead;">result</span>) {
     console.log(result);
 }
 </pre>
@@ -172,10 +172,10 @@ Let's define them in CPS:<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">sum</span>(<span style="color: #e7c547;">x</span>, <span style="color: #e7c547;">y</span>, <span style="color: #e7c547;">f</span>) {
+<pre class="src src-js"><span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">sum</span>(<span style="color: #ffeead;">x</span>, <span style="color: #ffeead;">y</span>, <span style="color: #ffeead;">f</span>) {
     f(x + y);
 }
-<span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">after</span>(<span style="color: #e7c547;">result</span>, <span style="color: #e7c547;">f</span>) {
+<span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">after</span>(<span style="color: #ffeead;">result</span>, <span style="color: #ffeead;">f</span>) {
     console.log(result);
     f();
 }
@@ -216,7 +216,7 @@ Sometimes we want have multiple continuations:<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">rest</span>(<span style="color: #e7c547;">url</span>, <span style="color: #e7c547;">success</span>, <span style="color: #e7c547;">failure</span>) {
+<pre class="src src-js"><span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">rest</span>(<span style="color: #ffeead;">url</span>, <span style="color: #ffeead;">success</span>, <span style="color: #ffeead;">failure</span>) {
     ...
 }
 rest(myUrl, (result) -&gt; {
@@ -235,7 +235,7 @@ What if some step need do two things in the same time?<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">function</span> <span style="color: #e78c45;">mainApp</span>(<span style="color: #e7c547;">f</span>) {
+<pre class="src src-js"><span style="color: #d1f1a9;">function</span> <span style="color: #ffc58f;">mainApp</span>(<span style="color: #ffeead;">f</span>) {
     func1((result1) -&gt; {
         func2(result1, identity);
     });
@@ -279,31 +279,31 @@ For instance:<br  />
 </p>
 <div class="org-src-container">
 
-<pre class="src src-js"><span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">data</span> = [1,2,3,4,5,6];
+<pre class="src src-js"><span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">data</span> = [1,2,3,4,5,6];
 
-<span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">reverseArray</span> = (data) =&gt; {
-    <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">reverseArrayIter</span> = (array, result) =&gt; {
-        <span style="color: #b9ca4a;">var</span> <span style="color: #e7c547;">head</span> = array.shift(),
+<span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">reverseArray</span> = (data) =&gt; {
+    <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">reverseArrayIter</span> = (array, result) =&gt; {
+        <span style="color: #d1f1a9;">var</span> <span style="color: #ffeead;">head</span> = array.shift(),
             tail = array;
-        <span style="color: #b9ca4a;">if</span> ( !head ) {
-            <span style="color: #b9ca4a;">return</span> result;
-        } <span style="color: #b9ca4a;">else</span> {
+        <span style="color: #d1f1a9;">if</span> ( !head ) {
+            <span style="color: #d1f1a9;">return</span> result;
+        } <span style="color: #d1f1a9;">else</span> {
             result.unshift(head);
-            <span style="color: #b9ca4a;">return</span> reverseArrayIter(tail, result)
+            <span style="color: #d1f1a9;">return</span> reverseArrayIter(tail, result)
         }
     };
-    <span style="color: #b9ca4a;">return</span> reverseArrayIter(data, []);
+    <span style="color: #d1f1a9;">return</span> reverseArrayIter(data, []);
 };
 
-<span style="color: #b9ca4a;">return</span> reverseArray(data);
+<span style="color: #d1f1a9;">return</span> reverseArray(data);
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">What language is encourage to use CPS?</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> What language is encourage to use CPS?</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 Any languages have <b>First Class Function</b> and <b>Tail Call Optimization</b>.<br  />
 </p>

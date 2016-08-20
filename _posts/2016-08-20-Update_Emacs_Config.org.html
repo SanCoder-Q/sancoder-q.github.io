@@ -1,0 +1,788 @@
+---
+layout: post
+title: Literal Programming for Emacs Configure
+---
+
+<p>
+Ever since I used Emacs, I was using the config template from my friend <a href="http://blog.oyanglul.us">Ouyang Jichao</a> without truely understand everything. That why I started to reconfig all the settings. Now I have a quite different configuration file, and I am happy to share it to the public.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> High level solution</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>Dependency and package management
+<ul class="org-ul">
+<li>使用 Cask &amp; Pallet 管理 Emacs 的依赖. (Pallet 用来自动同步在 Emacs 中安装的依赖到 Cask 文件中)</li>
+<li>描述文件: <a href="https://github.com/SanCoder-Q/.emacs.d/blob/master/Cask">Cask</a></li>
+</ul></li>
+
+<li>Bootstrap
+<ul class="org-ul">
+<li>步骤:
+<ol class="org-ol">
+<li><a href="#orgtarget1">通过初始化 Cask 加载依赖</a></li>
+<li><a href="#orgtarget2">初始化 org-mode, 利用 org-babel 将本文中的配置导出为 config.el 文件并 evaluate.</a></li>
+</ol></li>
+<li>描述文件: <a href="https://github.com/SanCoder-Q/.emacs.d/blob/master/init.el">init.el</a></li>
+</ul></li>
+</ul>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> General configuration</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Initialization
+<ul class="org-ul">
+<li>Cask loading <a id="orgtarget1"></a></li>
+</ul></li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">require</span> '<span style="color: #bbdaff;">cask</span> <span style="color: #99ffff;">"/usr/local/Cellar/cask/0.7.2_1/cask.el"</span>)
+(cask-initialize)
+(<span style="color: #d1f1a9;">require</span> '<span style="color: #bbdaff;">pallet</span>)
+(pallet-mode t)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Org config loading <a id="orgtarget2"></a></li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">require</span> '<span style="color: #bbdaff;">org</span>)
+(<span style="color: #d1f1a9;">setq</span> org-confirm-babel-evaluate nil)
+(org-babel-load-file <span style="color: #99ffff;">"~/.emacs.d/config.org"</span>)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>开启 Emacs server 模式</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(server-start)
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>编辑设置</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(global-superword-mode 1) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#23558; camel case &#21644;&#20197; `-` &#36830;&#25509;&#30340;&#23383;&#31526;&#30475;&#20316;&#19968;&#20010; word</span>
+(delete-selection-mode 1) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#31896;&#36148;&#21518;&#21462;&#28040;&#36873;&#25321;</span>
+(global-auto-revert-mode 1) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#24403;&#22806;&#37096;&#21464;&#26356;&#25991;&#26723;&#21518;&#33258;&#21160;&#26356;&#26032;&#24403;&#21069;&#25991;&#26723;</span>
+(electric-indent-mode t) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#25991;&#26723;&#33258;&#21160;&#32553;&#36827;</span>
+(global-linum-mode t) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#26174;&#31034;&#34892;&#21495;</span>
+
+(<span style="color: #d1f1a9;">setq-default</span> auto-save-default nil <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20851;&#38381; Auto-save</span>
+              auto-save-list-file-prefix nil <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20572;&#27490;&#21019;&#24314; auto-save-list &#25991;&#20214;&#22841;</span>
+              indent-tabs-mode nil <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20351;&#29992;&#31354;&#26684;&#20195;&#26367; tab</span>
+              ring-bell-function 'ignore <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20851;&#38381; alarm bell</span>
+              make-backup-files nil) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20851;&#38381;&#33258;&#21160;&#21019;&#24314;&#22791;&#20221;&#25991;&#20214;</span>
+
+(<span style="color: #d1f1a9;">setq</span> kill-buffer-query-functions
+      (remq 'process-kill-buffer-query-function
+            kill-buffer-query-functions)) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#21462;&#28040;&#20851;&#38381;&#25991;&#20214;&#26102;&#30340;&#30830;&#35748;</span>
+
+(<span style="color: #d1f1a9;">require</span> '<span style="color: #bbdaff;">pager</span>) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20351;&#29992; pager.el &#20195;&#26367;&#31995;&#32479;&#30340;&#32763;&#39029;, &#38656;&#35201;&#22312; key map &#37324;&#26367;&#25442;</span>
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> Style configuration</h2>
+<div class="outline-text-2" id="text-3">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(load-theme 'sanityinc-tomorrow-blue t) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20462;&#25913;&#20027;&#39064;</span>
+(set-frame-parameter (selected-frame) 'alpha '(95 . 80)) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#35774;&#32622;&#32972;&#26223;&#36879;&#26126;, &#20998;&#21035;&#20026; Emacs active &#21644; unactive &#26102;&#30340;&#36879;&#26126;&#24230;</span>
+(set-background-color <span style="color: #99ffff;">"#000620"</span>) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#21152;&#28145;&#32972;&#26223;&#39068;&#33394; (&#20026;&#20102;&#20351;&#32972;&#26223;&#39068;&#33394;&#24212;&#29992;&#21040;&#25152;&#26377; mode &#38656;&#35201;&#20462;&#25913;theme&#25991;&#20214;&#20013;&#30340;&#32972;&#26223;&#39068;&#33394;)</span>
+
+(set-default-font <span style="color: #99ffff;">"Envy Code R"</span>) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20462;&#25913;&#40664;&#35748;&#23383;&#20307;</span>
+(set-face-attribute 'default nil <span style="color: #ebbbff;">:height</span> 200) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20462;&#25913;&#40664;&#35748;&#23383;&#20307;&#32553;&#25918;&#22823;&#23567;</span>
+(tool-bar-mode -1) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20851;&#38381;&#19978;&#26041;&#30340;&#24037;&#20855;&#26639;</span>
+(scroll-bar-mode -1) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#20851;&#38381;&#21491;&#20391;&#30340;&#28378;&#21160;&#26465;</span>
+(show-paren-mode t) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#39640;&#20142;&#26174;&#31034; pair &#30340;&#25324;&#21495;</span>
+
+(<span style="color: #d1f1a9;">setq</span> split-width-threshold 1
+      split-height-threshold nil) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#35774;&#32622;&#40664;&#35748;&#20998;&#23631;&#20026;&#22402;&#30452;&#20998;&#23631;</span>
+
+(ocodo-svg-modelines-init) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#28210;&#26579; mode-line</span>
+(smt/set-theme 'ocodo-mesh-aqua-smt) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#35774;&#32622; mode-line &#20027;&#39064;</span>
+
+(on-screen-global-mode 1) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#32763;&#39029;&#30340;&#20107;&#21518;&#21152;&#19968;&#26465;&#23567;&#40657;&#32447;</span>
+(<span style="color: #d1f1a9;">setq</span> on-screen-highlight-method 'narrow-line)
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4"><span class="section-number-2">4</span> Key modification</h2>
+<div class="outline-text-2" id="text-4">
+<ul class="org-ul">
+<li>Meta key 设为 <code>Command</code></li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">when</span> (eq system-type 'darwin)
+  (<span style="color: #d1f1a9;">setq</span> mac-option-modifier 'super)
+  (<span style="color: #d1f1a9;">setq</span> mac-command-modifier 'meta))
+</pre>
+</div>
+
+<ul class="org-ul">
+<li>Keymap</li>
+</ul>
+<table id="orgtable1" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Keys</th>
+<th scope="col" class="org-left">Command</th>
+<th scope="col" class="org-left">Category</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">M-q</td>
+<td class="org-left">'save-buffers-kill-terminal</td>
+<td class="org-left">General</td>
+<td class="org-left">Kill emacs</td>
+</tr>
+
+<tr>
+<td class="org-left">M-z</td>
+<td class="org-left">'undo</td>
+<td class="org-left">General</td>
+<td class="org-left">Undo</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-z</td>
+<td class="org-left">'redo</td>
+<td class="org-left">General</td>
+<td class="org-left">Redo</td>
+</tr>
+
+<tr>
+<td class="org-left">C-M-&lt;return&gt;</td>
+<td class="org-left">'set-mark-command</td>
+<td class="org-left">General</td>
+<td class="org-left">Set mark</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x &lt;return&gt;</td>
+<td class="org-left">'pop-to-mark-command</td>
+<td class="org-left">General</td>
+<td class="org-left">Jump back</td>
+</tr>
+
+<tr>
+<td class="org-left">M-&lt;backspace&gt;</td>
+<td class="org-left">'kill-whole-line</td>
+<td class="org-left">General</td>
+<td class="org-left">Kill whole line</td>
+</tr>
+
+<tr>
+<td class="org-left">M-k</td>
+<td class="org-left">'delete-other-windows</td>
+<td class="org-left">General</td>
+<td class="org-left">Only keep the current window</td>
+</tr>
+
+<tr>
+<td class="org-left">M-c</td>
+<td class="org-left">'kill-ring-save</td>
+<td class="org-left">General</td>
+<td class="org-left">Copy region or current line</td>
+</tr>
+
+<tr>
+<td class="org-left">C-7</td>
+<td class="org-left">'er/contract-region</td>
+<td class="org-left">General</td>
+<td class="org-left">Shrink select</td>
+</tr>
+
+<tr>
+<td class="org-left">C-8</td>
+<td class="org-left">'er/expand-region</td>
+<td class="org-left">General</td>
+<td class="org-left">Expand select</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x b</td>
+<td class="org-left">'helm-for-files</td>
+<td class="org-left">Helm</td>
+<td class="org-left">Using helm buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">M-x</td>
+<td class="org-left">'helm-M-x</td>
+<td class="org-left">Helm</td>
+<td class="org-left">Using helm command buffer instead of native command buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c h m</td>
+<td class="org-left">'helm-imenu</td>
+<td class="org-left">Helm</td>
+<td class="org-left">Show the document menu in mini buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">M-s</td>
+<td class="org-left">'helm-occur</td>
+<td class="org-left">Helm</td>
+<td class="org-left">Search the text in current doc by giving in mini buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x C-f</td>
+<td class="org-left">'helm-find-files</td>
+<td class="org-left">Helm</td>
+<td class="org-left">Find file by showing the candidates in mini buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">M-y</td>
+<td class="org-left">'helm-show-kill-ring</td>
+<td class="org-left">Helm</td>
+<td class="org-left">Yank by showing the clipboard in mini buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">&lt;f7&gt;</td>
+<td class="org-left">'toggle-window-split</td>
+<td class="org-left">Customize</td>
+<td class="org-left">Toggle the split window between vertical and horizontal</td>
+</tr>
+
+<tr>
+<td class="org-left">C-v</td>
+<td class="org-left">'pager-page-down</td>
+<td class="org-left">Pager</td>
+<td class="org-left">Using pager.el instead of native page scroll</td>
+</tr>
+
+<tr>
+<td class="org-left">M-v</td>
+<td class="org-left">'pager-page-up</td>
+<td class="org-left">Pager</td>
+<td class="org-left">Using pager.el instead of native page scroll</td>
+</tr>
+
+<tr>
+<td class="org-left">C-&lt;</td>
+<td class="org-left">'mc/mark-previous-like-this</td>
+<td class="org-left">M-Cursor</td>
+<td class="org-left">Multiple select above</td>
+</tr>
+
+<tr>
+<td class="org-left">C-&gt;</td>
+<td class="org-left">'mc/mark-next-like-this</td>
+<td class="org-left">M-Cursor</td>
+<td class="org-left">Multiple select below</td>
+</tr>
+
+<tr>
+<td class="org-left">C-*</td>
+<td class="org-left">'mc/mark-all-like-this</td>
+<td class="org-left">M-Cursor</td>
+<td class="org-left">Multiple select all</td>
+</tr>
+</tbody>
+</table>
+
+<ul class="org-ul">
+<li>Key translation</li>
+</ul>
+<p>
+使用 Emacs <a href="http://ergoemacs.org/emacs_manual/elisp/Ctl_002dChar-Syntax.html">控制符号</a> 描述
+</p>
+<table id="orgtable2" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">From</th>
+<th scope="col" class="org-left">To</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">?\C-h</td>
+<td class="org-left">?\C-?</td>
+<td class="org-left">C-h for delete</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5"><span class="section-number-2">5</span> User Settings</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+用户设置, 放一些不想密码或敏感内容
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">when</span> (file-readable-p <span style="color: #99ffff;">".user.el"</span>) (load <span style="color: #99ffff;">".user.el"</span>))
+</pre>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26"><span class="section-number-2">6</span> Modes</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12"><span class="section-number-3">6.1</span> General</h3>
+<div class="outline-text-3" id="text-6-1">
+</div><div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">6.1.1</span> Helm</h4>
+<div class="outline-text-4" id="text-6-1-1">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">require</span> '<span style="color: #bbdaff;">helm-config</span>)
+(helm-mode 1)
+(helm-autoresize-mode t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7"><span class="section-number-4">6.1.2</span> Projectile</h4>
+<div class="outline-text-4" id="text-6-1-2">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(projectile-global-mode)
+(helm-projectile-on)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8"><span class="section-number-4">6.1.3</span> Company</h4>
+<div class="outline-text-4" id="text-6-1-3">
+<p>
+Complete anything. Emacs 自动补全插件.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(add-hook 'after-init-hook 'global-company-mode)
+(<span style="color: #d1f1a9;">with-eval-after-load</span> 'company
+  (add-to-list 'company-backends 'company-files t))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9"><span class="section-number-4">6.1.4</span> Ispell &amp; Flyspell</h4>
+<div class="outline-text-4" id="text-6-1-4">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">with-eval-after-load</span> 'company
+  (add-to-list 'company-backends 'company-ispell t))
+(add-hook 'org-mode-hook 'flyspell-mode)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10"><span class="section-number-4">6.1.5</span> Editorconfig</h4>
+<div class="outline-text-4" id="text-6-1-5">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">require</span> '<span style="color: #bbdaff;">editorconfig</span>)
+(editorconfig-mode 1)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="section-number-4">6.1.6</span> Indent Setting</h4>
+<div class="outline-text-4" id="text-6-1-6">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">setq</span> web-mode-markup-indent-offset 2)
+(<span style="color: #d1f1a9;">setq</span> web-mode-code-indent-offset 2)
+(<span style="color: #d1f1a9;">setq</span> js2-basic-offset 2)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25"><span class="section-number-3">6.2</span> Language aspect</h3>
+<div class="outline-text-3" id="text-6-2">
+</div><div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15"><span class="section-number-4">6.2.1</span> Org</h4>
+<div class="outline-text-4" id="text-6-2-1">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(org-indent-mode t)
+(<span style="color: #d1f1a9;">setq</span> org-use-sub-superscripts '{}) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#26174;&#24335;&#30340;&#20351;&#29992;A_{B}&#26469;&#34920;&#31034;B&#26159;A&#30340;&#35282;&#26631;</span>
+(<span style="color: #d1f1a9;">setq</span> org-export-with-sub-superscripts '{}) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#26174;&#24335;&#30340;&#20351;&#29992;A_{B}&#26469;&#34920;&#31034;B&#26159;A&#30340;&#35282;&#26631;</span>
+(<span style="color: #d1f1a9;">setq-default</span> org-cycle-emulate-tab 'white) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">Tab &#38190;&#20165;&#22312;&#31354;&#30333;&#34892;&#20013;&#20026;&#36755;&#20837; tab, &#20854;&#20182;&#24773;&#20917;&#22343;&#20026;&#23637;&#24320;&#25110;&#20851;&#38381; section</span>
+(add-hook 'org-mode-hook 'visual-line-mode) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#22238;&#34892;</span>
+(set-face-attribute 'org-level-1 nil <span style="color: #ebbbff;">:height</span> 1.6 <span style="color: #ebbbff;">:bold</span> t)
+(set-face-attribute 'org-level-2 nil <span style="color: #ebbbff;">:height</span> 1.4 <span style="color: #ebbbff;">:bold</span> t)
+(set-face-attribute 'org-level-3 nil <span style="color: #ebbbff;">:height</span> 1.2 <span style="color: #ebbbff;">:bold</span> t)
+</pre>
+</div>
+</div>
+
+<ol class="org-ol"><li><a id="orgheadline13"></a>Source block template<br  /><div class="outline-text-5" id="text-6-2-1-1">
+<table id="orgtable3" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Alias</th>
+<th scope="col" class="org-left">Actual source</th>
+<th scope="col" class="org-left">Header arguments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">e</td>
+<td class="org-left">emacs-lisp</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">j</td>
+<td class="org-left">js</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">s</td>
+<td class="org-left">scala</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">r</td>
+<td class="org-left">ruby</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">h</td>
+<td class="org-left">haskell</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">S</td>
+<td class="org-left">scheme</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">sh</td>
+<td class="org-left">shell-script</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div></li>
+
+<li><a id="orgheadline14"></a>Publish<br  /><div class="outline-text-5" id="text-6-2-1-2">
+<p>
+Emacs 2.5 需要单独安装 htmlize 来支持代码发布的语法高亮功能!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">setq</span> org-html-validation-link nil)
+(<span style="color: #d1f1a9;">setq</span> org-export-html-coding-system 'utf-8-unix)
+(<span style="color: #d1f1a9;">setq</span> org-publish-use-timestamps-flag nil) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#27599;&#27425;&#37325;&#26032;&#21457;&#24067;html</span>
+(<span style="color: #d1f1a9;">setq</span> org-publish-project-alist
+      '((<span style="color: #99ffff;">"blog"</span>
+         <span style="color: #ebbbff;">:base-directory</span> <span style="color: #99ffff;">"~/Dev/blog/sancoder-q.github.io/_org/"</span>
+         <span style="color: #ebbbff;">:base-extension</span> <span style="color: #99ffff;">"org"</span>
+         <span style="color: #ebbbff;">:publishing-directory</span> <span style="color: #99ffff;">"~/Dev/blog/sancoder-q.github.io/_posts"</span>
+         <span style="color: #ebbbff;">:html-extension</span> <span style="color: #99ffff;">"org.html"</span>
+         <span style="color: #ebbbff;">:sub-superscript</span> <span style="color: #99ffff;">"{}"</span>
+         <span style="color: #ebbbff;">:htmlized-source</span> t
+         <span style="color: #ebbbff;">:recursive</span> t
+         <span style="color: #ebbbff;">:publishing-function</span> org-html-publish-to-html
+         <span style="color: #ebbbff;">:section-numbers</span> 4
+         <span style="color: #ebbbff;">:with-toc</span> nil
+         <span style="color: #ebbbff;">:body-only</span> t)))
+</pre>
+</div>
+</div></li></ol>
+</div>
+
+
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16"><span class="section-number-4">6.2.2</span> Emacs-lisp</h4>
+<div class="outline-text-4" id="text-6-2-2">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(define-key emacs-lisp-mode-map (kbd <span style="color: #99ffff;">"C-c C-c"</span>) 'eval-buffer)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17"><span class="section-number-4">6.2.3</span> HTML</h4>
+<div class="outline-text-4" id="text-6-2-3">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.html?\\'"</span> . web-mode))
+(eval-after-load <span style="color: #99ffff;">"web-mode"</span>
+  '(<span style="color: #d1f1a9;">setq</span> web-mode-enable-auto-expanding t))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20"><span class="section-number-4">6.2.4</span> JavaScript</h4>
+<div class="outline-text-4" id="text-6-2-4">
+</div><ol class="org-ol"><li><a id="orgheadline18"></a>Tern<br  /><div class="outline-text-5" id="text-6-2-4-1">
+<p>
+Tern 是一款 Javascript 代码分析工具. Tern-mode 在后台打开 tern server, 通过中间件与 emacs 通信, 实现 JS 代码补全和跳转.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">with-eval-after-load</span> 'company
+  (add-to-list 'company-backends 'company-tern))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline19"></a>js2-mode<br  /><div class="outline-text-5" id="text-6-2-4-2">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.js\\'"</span> . js2-mode))
+(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.jsx\\'"</span> . js2-jsx-mode))
+</pre>
+</div>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21"><span class="section-number-4">6.2.5</span> C#</h4>
+<div class="outline-text-4" id="text-6-2-5">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.cs\\'"</span> . csharp-mode))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24"><span class="section-number-4">6.2.6</span> Scala</h4>
+<div class="outline-text-4" id="text-6-2-6">
+</div><ol class="org-ol"><li><a id="orgheadline22"></a>scala-mode<br  /><div class="outline-text-5" id="text-6-2-6-1">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.sbt\\'"</span> . scala-mode))
+(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.sc\\'"</span> . scala-mode))
+(add-to-list 'auto-mode-alist '(<span style="color: #99ffff;">"\\.scala\\'"</span> . scala-mode))
+</pre>
+</div>
+</div></li>
+
+<li><a id="orgheadline23"></a>ensime<br  /><div class="outline-text-5" id="text-6-2-6-2">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp"><span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">(require 'ensime)</span>
+<span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">(add-hook 'scala-mode-hook 'ensime-mode)</span>
+</pre>
+</div>
+</div></li></ol>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline30" class="outline-2">
+<h2 id="orgheadline30"><span class="section-number-2">7</span> Customize</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-orgheadline27" class="outline-3">
+<h3 id="orgheadline27"><span class="section-number-3">7.1</span> Toggle window split</h3>
+<div class="outline-text-3" id="text-7-1">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">defun</span> <span style="color: #ffc58f;">toggle-window-split</span> ()
+  (<span style="color: #d1f1a9;">interactive</span>)
+  (<span style="color: #d1f1a9;">if</span> (= (count-windows) 2)
+      (<span style="color: #d1f1a9;">let*</span> ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (<span style="color: #d1f1a9;">and</span> (&lt;= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (&lt;= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (<span style="color: #d1f1a9;">if</span> (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (<span style="color: #d1f1a9;">let</span> ((first-win (selected-window)))
+          (funcall splitter)
+          (<span style="color: #d1f1a9;">if</span> this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (<span style="color: #d1f1a9;">if</span> this-win-2nd (other-window 1))))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28"><span class="section-number-3">7.2</span> sudo-editor</h3>
+<div class="outline-text-3" id="text-7-2">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">defun</span> <span style="color: #ffc58f;">sudo-edit</span> (<span style="color: #bbdaff;">&amp;optional</span> arg)
+  <span style="color: #ebbbff;">"Edit currently visited file as root.</span>
+
+<span style="color: #ebbbff;">With a prefix ARG prompt for a file to visit.</span>
+<span style="color: #ebbbff;">Will also prompt for a file to visit if current</span>
+<span style="color: #ebbbff;">buffer is not visiting a file."</span>
+  (<span style="color: #d1f1a9;">interactive</span> <span style="color: #99ffff;">"P"</span>)
+  (<span style="color: #d1f1a9;">if</span> (<span style="color: #d1f1a9;">or</span> arg (not buffer-file-name))
+      (find-file (concat <span style="color: #99ffff;">"/sudo:root@localhost:"</span>
+                         (ido-read-file-name <span style="color: #99ffff;">"Find file(as root): "</span>)))
+    (find-alternate-file (concat <span style="color: #99ffff;">"/sudo:root@localhost:"</span> buffer-file-name))))
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29"><span class="section-number-3">7.3</span> y-ret-or-n-p</h3>
+<div class="outline-text-3" id="text-7-3">
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(<span style="color: #d1f1a9;">defun</span> <span style="color: #ffc58f;">y-ret-or-n-p</span> (prompt)
+  (<span style="color: #d1f1a9;">let</span> ((answer 'recenter)
+        (padded (<span style="color: #d1f1a9;">lambda</span> (prompt <span style="color: #bbdaff;">&amp;optional</span> dialog)
+                  (<span style="color: #d1f1a9;">let</span> ((l (length prompt)))
+                    (concat prompt
+                            (<span style="color: #d1f1a9;">if</span> (<span style="color: #d1f1a9;">or</span> (zerop l) (eq ?\s (aref prompt (1- l))))
+                                <span style="color: #99ffff;">""</span> <span style="color: #99ffff;">" "</span>)
+                            (<span style="color: #d1f1a9;">if</span> dialog <span style="color: #99ffff;">""</span> <span style="color: #99ffff;">"(y [RET] or n) "</span>))))))
+    (<span style="color: #d1f1a9;">cond</span>
+     (noninteractive
+      (<span style="color: #d1f1a9;">setq</span> prompt (funcall padded prompt))
+      (<span style="color: #d1f1a9;">let</span> ((temp-prompt prompt))
+        (<span style="color: #d1f1a9;">while</span> (not (memq answer '(act skip)))
+          (<span style="color: #d1f1a9;">let</span> ((str (read-string temp-prompt)))
+            (<span style="color: #d1f1a9;">cond</span> ((member str '(<span style="color: #99ffff;">""</span> <span style="color: #99ffff;">"y"</span> <span style="color: #99ffff;">"Y"</span>)) (<span style="color: #d1f1a9;">setq</span> answer 'act))
+                  ((member str '(<span style="color: #99ffff;">"n"</span> <span style="color: #99ffff;">"N"</span>)) (<span style="color: #d1f1a9;">setq</span> answer 'skip))
+                  (t (<span style="color: #d1f1a9;">setq</span> temp-prompt (concat <span style="color: #99ffff;">"Please answer y [RET] or n.  "</span>
+                                               prompt))))))))
+     ((<span style="color: #d1f1a9;">and</span> (display-popup-menus-p)
+           last-input-event             <span style="color: #7285b7; font-style: italic;">; </span><span style="color: #7285b7; font-style: italic;">not during startup</span>
+           (listp last-nonmenu-event)
+           use-dialog-box)
+      (<span style="color: #d1f1a9;">setq</span> prompt (funcall padded prompt t)
+            answer (x-popup-dialog t `(,prompt (<span style="color: #99ffff;">"Yes"</span> . act) (<span style="color: #99ffff;">"No"</span> . skip)))))
+     (t
+      (<span style="color: #d1f1a9;">setq</span> prompt (funcall padded prompt))
+      (<span style="color: #d1f1a9;">while</span>
+          (<span style="color: #d1f1a9;">let*</span> ((scroll-actions '(recenter scroll-up scroll-down
+                                            scroll-other-window scroll-other-window-down))
+                 (key
+                  (<span style="color: #d1f1a9;">let</span> ((cursor-in-echo-area t))
+                    (<span style="color: #d1f1a9;">when</span> minibuffer-auto-raise
+                      (raise-frame (window-frame (minibuffer-window))))
+                    (read-key (propertize (<span style="color: #d1f1a9;">if</span> (memq answer scroll-actions)
+                                              prompt
+                                            (concat <span style="color: #99ffff;">"Please answer y [RET] or n.  "</span>
+                                                    prompt))
+                                          'face 'minibuffer-prompt)))))
+            (<span style="color: #d1f1a9;">setq</span> answer (lookup-key query-replace-map (vector key) t))
+            (<span style="color: #d1f1a9;">cond</span>
+             ((memq answer '(skip act exit)) nil)
+             ((eq answer 'recenter)
+              (recenter) t)
+             ((eq answer 'scroll-up)
+              (<span style="color: #d1f1a9;">ignore-errors</span> (scroll-up-command)) t)
+             ((eq answer 'scroll-down)
+              (<span style="color: #d1f1a9;">ignore-errors</span> (scroll-down-command)) t)
+             ((eq answer 'scroll-other-window)
+              (<span style="color: #d1f1a9;">ignore-errors</span> (scroll-other-window)) t)
+             ((eq answer 'scroll-other-window-down)
+              (<span style="color: #d1f1a9;">ignore-errors</span> (scroll-other-window-down)) t)
+             ((<span style="color: #d1f1a9;">or</span> (memq answer '(exit-prefix quit)) (eq key ?\e))
+              (<span style="color: #ff9da4; font-weight: bold;">signal</span> 'quit nil) t)
+             (t t)))
+        (ding)
+        (discard-input))))
+    (<span style="color: #d1f1a9;">let</span> ((ret (memq answer '(act exit))))
+      (<span style="color: #d1f1a9;">unless</span> noninteractive
+        (message <span style="color: #99ffff;">"%s%c"</span> prompt (<span style="color: #d1f1a9;">if</span> ret ?y ?n)))
+      ret)))
+
+(<span style="color: #d1f1a9;">defalias</span> '<span style="color: #ffc58f;">yes-or-no-p</span> 'y-ret-or-n-p) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#36716;&#25442; yes/no &#38382;&#39064;&#20026; y/n &#38382;&#39064;</span>
+(<span style="color: #d1f1a9;">defalias</span> '<span style="color: #ffc58f;">y-or-n-p</span> 'y-ret-or-n-p) <span style="color: #7285b7; font-style: italic;">;; </span><span style="color: #7285b7; font-style: italic;">&#36716;&#25442; yes/no &#38382;&#39064;&#20026; y/n &#38382;&#39064;</span>
+</pre>
+</div>
+</div>
+</div>
+</div>

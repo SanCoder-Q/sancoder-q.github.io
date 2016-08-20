@@ -4,21 +4,21 @@ title: What Will Happen When You Use Mixin
 ---
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Story about mixin</h2>
+<h2 id="orgheadline1"><span class="section-number-2">1</span> Story about mixin</h2>
 </div>
 
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">The official explain</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> The official explain</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 The mixin technique is explained as a <b>code reusable way</b> to define the react components in <b>React official document</b>. It can make the different components share some common functionality. The mixin can overwrite the <b>life cycle methods</b>. If several mixins define the same life cycle method, all these methods are guaranteed to be called in the order mixins are listed.<br  />
 </p>
 </div>
 </div>
 <div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">The mixin mechanism</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> The mixin mechanism</h2>
+<div class="outline-text-2" id="text-3">
 <ol class="org-ol">
 <li><p>
 Define several <code>SpecPolicy</code>.<br  />
@@ -27,7 +27,7 @@ Define several <code>SpecPolicy</code>.<br  />
 
 <pre class="src src-js">[
     DEFINE_ONCE,
-    DEFINE_MANY,  <span style="color: #969896; font-style: italic;">// </span><span style="color: #969896; font-style: italic;">means can be defined by either the component class or mixin object, but the methods must return =void=.</span>
+    DEFINE_MANY,  <span style="color: #7285b7; font-style: italic;">// </span><span style="color: #7285b7; font-style: italic;">means can be defined by either the component class or mixin object, but the methods must return =void=.</span>
     OVERRIDE_BASE,
     DEFINE_MANY_MERGED
 ]
@@ -70,12 +70,12 @@ Define object <code>ReactClassInterface</code> to set the <b>life cycle function
 
 
 <div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">Why using mixin?</h2>
+<h2 id="orgheadline4"><span class="section-number-2">4</span> Why using mixin?</h2>
 </div>
 
 <div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">What's wrong with mixin?</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<h2 id="orgheadline5"><span class="section-number-2">5</span> What's wrong with mixin?</h2>
+<div class="outline-text-2" id="text-5">
 <ul class="org-ul">
 <li>The contract between a component and its mixins is implicit.<br  /></li>
 <li>Different mixins using method or field with same name will clash.<br  /></li>
@@ -84,29 +84,29 @@ Define object <code>ReactClassInterface</code> to set the <b>life cycle function
 </div>
 </div>
 <div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">The best practice to use mixin</h2>
+<h2 id="orgheadline6"><span class="section-number-2">6</span> The best practice to use mixin</h2>
 </div>
 
 
 <div id="outline-container-orgheadline11" class="outline-2">
-<h2 id="orgheadline11">PS</h2>
-<div class="outline-text-2" id="text-orgheadline11">
+<h2 id="orgheadline11"><span class="section-number-2">7</span> PS</h2>
+<div class="outline-text-2" id="text-7">
 </div><div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">State is evil</h3>
-<div class="outline-text-3" id="text-orgheadline7">
+<h3 id="orgheadline7"><span class="section-number-3">7.1</span> State is evil</h3>
+<div class="outline-text-3" id="text-7-1">
 <p>
 To think in React is to find the minimal amount of state necessary to represent your app, and calculate everything based on that. This is because state is unpredictable. Props are, for the most part, derived from other props and state, but state can be anything.<br  />
 </p>
 </div>
 </div>
 <div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">Can mixin define statics?</h3>
+<h3 id="orgheadline8"><span class="section-number-3">7.2</span> Can mixin define statics?</h3>
 </div>
 
 <div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">ReactClass:322: <code>mixSpecIntoComponent(Constructor, mixins[i]);</code></h3>
+<h3 id="orgheadline9"><span class="section-number-3">7.3</span> ReactClass:322: <code>mixSpecIntoComponent(Constructor, mixins[i]);</code></h3>
 </div>
 <div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">ReactClass:438: <code>function mixSpecIntoComponent(Constructor, spec) {...}</code></h3>
+<h3 id="orgheadline10"><span class="section-number-3">7.4</span> ReactClass:438: <code>function mixSpecIntoComponent(Constructor, spec) {...}</code></h3>
 </div>
 </div>
