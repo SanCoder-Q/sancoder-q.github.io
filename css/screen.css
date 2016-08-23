@@ -87,7 +87,7 @@ ul.posts a {
 .site {
   font-size: 110%;
   text-align: justify;
-  width: 42em;
+  width: 800px;
   margin: 3em auto 2em auto;
   line-height: 1.5em;
 }
@@ -184,11 +184,12 @@ ul.posts a {
 }
 
 #post h1, h2, h3, h4 {
-  margin: 10px 0;
+  margin: 30px 0 20px 0;
 }
 
 #post h1 {
-  font-size: 200%
+  font-size: 200%;
+  margin-bottom: 40px;
 }
 #post h2 {
   font-size: 150%
@@ -203,6 +204,12 @@ ul.posts a {
 #post img {
   max-width: 100%;
 }
+
+#post table {
+  margin: 20px 0;
+  width: 100%;
+}
+
 
 #post pre {
   border: 1px solid #ddd;
