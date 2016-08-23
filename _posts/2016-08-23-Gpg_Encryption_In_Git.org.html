@@ -1,0 +1,101 @@
+---
+layout: post
+title: Gpg Encryption of Git Commit
+---
+
+
+<p>
+In April, Github announce to support Gpg encryption when submitting the commit. When you use Gpg with your commit, you will get a cool lable <code>Verified</code> on your commit in github page proving that your commit has been Gpg encrypted.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> What's Gpg?</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Gpg is short for "GNU Privacy Guard". Gpg (or GnuPG) is a free hybird encryption software for cryptographic data transmission and cryptographic digital signature.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> How can I use Gpg?</h2>
+<div class="outline-text-2" id="text-2">
+<div class="org-src-container">
+
+<pre class="src src-shell-script">brew install gnupg
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">3</span> How can use Gpg to encrypt my commit?</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3"><span class="section-number-3">3.1</span> Generate a new key pair</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Before encryption, a public/private key pair is needed. Generate it using the follow command in your terminal.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-shell-script">gpg --gen-key
+</pre>
+</div>
+<p>
+You will be asked a series questions. After that, you will get a new key pair. You can using the follow command to list all your key pair.
+N.B. Make sure the email address is as same as the email address in your git config. You can view it using <code>git config user.email</code>.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-shell-script">gpg --list-secret-keys --keyid-format LONG
+</pre>
+</div>
+
+<p>
+The result will like this:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-shell-script">/your/home/.gnupg/secring.gpg
+----------------------------------
+sec   &lt;LENGTH&gt;R/&lt;SECRET_KEYID&gt; &lt;DATE&gt;
+uid   &lt;NAME&gt; &lt;EMAIL&gt;
+ssb   &lt;LENGTH&gt;R/&lt;SECRET_SUB_KEYID&gt; &lt;DATE&gt;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">3.2</span> Upload your public key to github</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+You will need to export the public key of your key pair.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-shell-script">gpg --armor --export &lt;sec-key&gt;
+</pre>
+</div>
+
+<p>
+Then copy the lines between <code>-----BEGIN PGP PUBLIC KEY BLOCK-----</code> and <code>-----END PGP PUBLIC KEY BLOCK-----</code> in your github setting.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5"><span class="section-number-3">3.3</span> Encrypt your commit</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+You need to explicitly tell git to encrypt your commit.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-shell-script">git commit -S -m <span style="color: #99ffff;">"your commit message"</span>
+</pre>
+</div>
+</div>
+</div>
+</div>

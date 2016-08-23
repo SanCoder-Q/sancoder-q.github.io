@@ -1,0 +1,54 @@
+#+STARTUP: showall indent
+#+STARTUP: hidestars
+#+BEGIN_HTML
+---
+layout: post
+title: Gpg Encryption of Git Commit
+---
+#+END_HTML
+
+
+In April, Github announce to support Gpg encryption when submitting the commit. When you use Gpg with your commit, you will get a cool lable =Verified= on your commit in github page proving that your commit has been Gpg encrypted.
+
+** What's Gpg?
+Gpg is short for "GNU Privacy Guard". Gpg (or GnuPG) is a free hybird encryption software for cryptographic data transmission and cryptographic digital signature.
+
+** How can I use Gpg?
+#+BEGIN_SRC shell-script
+  brew install gnupg
+#+END_SRC
+
+** How can use Gpg to encrypt my commit?
+*** Generate a new key pair
+Before encryption, a public/private key pair is needed. Generate it using the follow command in your terminal.
+#+BEGIN_SRC shell-script
+  gpg --gen-key
+#+END_SRC
+You will be asked a series questions. After that, you will get a new key pair. You can using the follow command to list all your key pair.
+N.B. Make sure the email address is as same as the email address in your git config. You can view it using ~git config user.email~.
+#+BEGIN_SRC shell-script
+  gpg --list-secret-keys --keyid-format LONG
+#+END_SRC
+
+The result will like this:
+#+BEGIN_SRC shell-script
+  /your/home/.gnupg/secring.gpg
+  ----------------------------------
+  sec   <LENGTH>R/<SECRET_KEYID> <DATE>
+  uid   <NAME> <EMAIL>
+  ssb   <LENGTH>R/<SECRET_SUB_KEYID> <DATE>
+#+END_SRC
+
+*** Upload your public key to github
+You will need to export the public key of your key pair.
+#+BEGIN_SRC shell-script
+  gpg --armor --export <sec-key>
+#+END_SRC
+
+Then copy the lines between =-----BEGIN PGP PUBLIC KEY BLOCK-----= and =-----END PGP PUBLIC KEY BLOCK-----= in your github setting.
+
+*** Encrypt your commit
+You need to explicitly tell git to encrypt your commit.
+#+BEGIN_SRC shell-script
+  git commit -S -m "your commit message"
+#+END_SRC
