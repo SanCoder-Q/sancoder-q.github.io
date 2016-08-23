@@ -10,6 +10,8 @@ title: Gpg Encryption of Git Commit
 
 In April, Github announce to support Gpg encryption when submitting the commit. When you use Gpg with your commit, you will get a cool lable =Verified= on your commit in github page proving that your commit has been Gpg encrypted.
 
+[[/images/Pasted image at 2016_08_23 10_27 AM.png]]
+
 ** What's Gpg?
 Gpg is short for "GNU Privacy Guard". Gpg (or GnuPG) is a free hybird encryption software for cryptographic data transmission and cryptographic digital signature.
 
