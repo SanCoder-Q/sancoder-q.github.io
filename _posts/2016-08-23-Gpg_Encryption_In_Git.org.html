@@ -10,7 +10,7 @@ In April, Github announce to support Gpg encryption when submitting the commit. 
 
 
 <div class="figure">
-<p><img src="/images/Pasted image at 2016_08_23 10_27 AM.png" alt="Pasted image at 2016_08_23 10_27 AM.png" />
+<p><img src="file:///images/Pasted image at 2016_08_23 10_27 AM.png" alt="Pasted image at 2016_08_23 10_27 AM.png" />
 </p>
 </div>
 
@@ -34,8 +34,8 @@ Gpg is short for "GNU Privacy Guard". Gpg (or GnuPG) is a free hybird encryption
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6"><span class="section-number-2">3</span> How can use Gpg to encrypt my commit?</h2>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7"><span class="section-number-2">3</span> How can use Gpg to encrypt my commit?</h2>
 <div class="outline-text-2" id="text-3">
 </div><div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="orgheadline3"><span class="section-number-3">3.1</span> Generate a new key pair</h3>
@@ -100,6 +100,21 @@ You need to explicitly tell git to encrypt your commit.
 <div class="org-src-container">
 
 <pre class="src src-shell-script">git commit -S -m <span style="color: #99ffff;">"your commit message"</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6"><span class="section-number-3">3.4</span> Set as default</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+Add the following config into your .gitconfig file.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-python">[commit]
+    <span style="color: #ffeead;">gpgsign</span> = true
 </pre>
 </div>
 </div>

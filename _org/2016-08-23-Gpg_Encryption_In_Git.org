@@ -54,3 +54,10 @@ You need to explicitly tell git to encrypt your commit.
 #+BEGIN_SRC shell-script
   git commit -S -m "your commit message"
 #+END_SRC
+
+*** Set as default
+Add the following config into your .gitconfig file.
+#+BEGIN_SRC python
+[commit]
+    gpgsign = true
+#+END_SRC
