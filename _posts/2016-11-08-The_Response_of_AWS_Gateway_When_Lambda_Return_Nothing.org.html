@@ -1,0 +1,203 @@
+---
+layout: post
+title: The Response of AWS Gateway When Lambda Return Nothing
+---
+
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> Why</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+We were trying to handle the error after we built a AWS lambda and API gateway micro-service with Scala. One case was when something wrong with writing the response data into the <code>OutputStream</code>, what could happen? Since nothing would be put into the <code>OutputStream</code>, the API gateway cannot get the response status and entity from that stream. I couldn't find any clue from AWS official document, so I decided to give it a try.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> For NodeJS</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+AWS lambda allows us to implement the functionality by using three languages: Python, JavaScript, and Java. I am not familiar with python, so I decided to try node first.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js">exports.myHandler = <span style="color: #d1f1a9;">function</span>(<span style="color: #ffeead;">event</span>, <span style="color: #ffeead;">context</span>, <span style="color: #ffeead;">callback</span>) {
+   callback(<span style="color: #bbdaff;">null</span>, <span style="color: #bbdaff;">null</span>); <span style="color: #7285b7; font-style: italic;">// </span><span style="color: #7285b7; font-style: italic;">Get same result if this line is deleted</span>
+};
+</pre>
+</div>
+
+<p>
+After test, I got a <b>502 status</b> with the response body like the following:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-js">{
+  <span style="color: #99ffff;">"message"</span>: <span style="color: #99ffff;">"Internal server error"</span>
+}
+</pre>
+</div>
+
+<p>
+And the log show more informations:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #bbdaff;">Tue</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">08</span> <span style="color: #bbdaff;">01</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">28</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">47</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Endpoint</span> response body before transformations<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">null</span>
+<span style="color: #bbdaff;">Tue</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">08</span> <span style="color: #bbdaff;">01</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">28</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">47</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Endpoint</span> response headers<span style="color: #d1f1a9;">:</span> {x-amzn-<span style="color: #bbdaff;">Remapped</span>-<span style="color: #bbdaff;">Content</span>-<span style="color: #bbdaff;">Length</span><span style="color: #d1f1a9;">=</span><span style="color: #bbdaff;">0</span>, x-amzn-<span style="color: #bbdaff;">RequestId</span>=*********-a552<span style="color: #bbdaff;">-11e6-8982</span>-e3ac77aaf27f, <span style="color: #bbdaff;">Connection</span><span style="color: #d1f1a9;">=</span>keep-alive, <span style="color: #bbdaff;">Content</span>-<span style="color: #bbdaff;">Length</span><span style="color: #d1f1a9;">=</span><span style="color: #bbdaff;">4</span>, <span style="color: #bbdaff;">Date</span><span style="color: #d1f1a9;">=</span><span style="color: #bbdaff;">Tue</span>, <span style="color: #bbdaff;">08</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">2016</span> <span style="color: #bbdaff;">01</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">28</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">47</span> <span style="color: #bbdaff;">GMT</span>, <span style="color: #bbdaff;">Content</span>-<span style="color: #bbdaff;">Type</span><span style="color: #d1f1a9;">=</span>application/json}
+<span style="color: #bbdaff;">Tue</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">08</span> <span style="color: #bbdaff;">01</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">28</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">47</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Execution</span> failed due to configuration error<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Malformed</span> <span style="color: #bbdaff;">Lambda</span> proxy response
+<span style="color: #bbdaff;">Tue</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">08</span> <span style="color: #bbdaff;">01</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">28</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">47</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Method</span> completed <span style="color: #d1f1a9;">with</span> <span style="color: #bbdaff;">status</span><span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">502</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> Run in JVM</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The beauty of the AWS lambda is that it not only support JAVA but also any language that has the capability of running in JVM. So it means that languages like Scala, Ruby, and Closure could also be used to built a lambda.
+</p>
+
+<p>
+Here is my test handler:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d1f1a9;">package</span> <span style="color: #99ffff;">tech.jmqu</span>
+
+<span style="color: #d1f1a9;">import</span> java.io.{<span style="color: #bbdaff;">OutputStream</span>, <span style="color: #bbdaff;">InputStream</span>}
+<span style="color: #d1f1a9;">import</span> com.amazonaws.services.lambda.runtime.<span style="color: #bbdaff;">Context</span>
+
+<span style="color: #d1f1a9;">object</span> <span style="color: #bbdaff;">LambdaTest</span> {
+  <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">handle</span>(input<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">InputStream</span>, output<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">OutputStream</span>, context<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Context</span>)<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Unit</span> <span style="color: #d1f1a9;">=</span> {
+    input.close()
+    output.close()
+  }
+}
+</pre>
+</div>
+
+<p>
+Here is my <code>Built.scala</code> for sbt:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d1f1a9;">import</span> sbt.<span style="color: #d1f1a9;">_</span>, <span style="color: #bbdaff;">Keys</span>.<span style="color: #d1f1a9;">_</span>
+<span style="color: #d1f1a9;">import</span> sbtassembly.{<span style="color: #bbdaff;">PathList</span>, <span style="color: #bbdaff;">MergeStrategy</span>}
+<span style="color: #d1f1a9;">import</span> sbtassembly.<span style="color: #bbdaff;">AssemblyKeys</span>.<span style="color: #d1f1a9;">_</span>
+
+<span style="color: #d1f1a9;">object</span> <span style="color: #bbdaff;">AppBuild</span> <span style="color: #d1f1a9;">extends</span> <span style="color: #bbdaff;">Build</span> {
+  <span style="color: #d1f1a9;">val</span> <span style="color: #ffeead;">appDependencies</span> <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">Seq</span>(
+    <span style="color: #99ffff;">"com.amazonaws"</span> % <span style="color: #99ffff;">"aws-lambda-java-core"</span> % <span style="color: #99ffff;">"1.1.0"</span>,
+    <span style="color: #99ffff;">"com.amazonaws"</span> % <span style="color: #99ffff;">"aws-lambda-java-events"</span> % <span style="color: #99ffff;">"1.3.0"</span>
+  )
+
+  <span style="color: #d1f1a9;">val</span> <span style="color: #ffeead;">projectSettings</span> <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">Defaults</span>.coreDefaultSettings ++ <span style="color: #bbdaff;">Seq</span>(
+    name := <span style="color: #99ffff;">"test"</span>,
+    version := <span style="color: #99ffff;">"0.1-SNAPSHOT"</span>,
+    scalaVersion := <span style="color: #99ffff;">"2.11.5"</span>,
+    sbtVersion := <span style="color: #99ffff;">"0.13.11"</span>,
+    scalacOptions ++= <span style="color: #bbdaff;">Seq</span>(
+      <span style="color: #99ffff;">"-Xfatal-warnings"</span>,
+      <span style="color: #99ffff;">"-deprecation"</span>,
+      <span style="color: #99ffff;">"-feature"</span>,
+      <span style="color: #99ffff;">"-encoding"</span>, <span style="color: #99ffff;">"UTF-8"</span>
+    ),
+    javaOptions ++= <span style="color: #bbdaff;">Seq</span>(<span style="color: #99ffff;">"-encoding"</span>, <span style="color: #99ffff;">"UTF-8"</span>),
+    libraryDependencies ++= appDependencies,
+    assemblyJarName in assembly := s<span style="color: #99ffff;">"test.jar"</span>,
+    mergeStrategy in assembly := {
+      <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">PathList</span>(<span style="color: #99ffff;">"META-INF"</span>, <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">@</span> <span style="color: #d1f1a9;">_</span><span style="color: #bbdaff;">*</span>) <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">MergeStrategy</span>.discard
+      <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">MergeStrategy</span>.first
+    }
+  )
+
+  <span style="color: #ebbbff;">lazy</span> <span style="color: #d1f1a9;">val</span> <span style="color: #ffeead;">project</span> <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">Project</span>(<span style="color: #99ffff;">"test"</span>, file(<span style="color: #99ffff;">"."</span>),
+    settings <span style="color: #d1f1a9;">=</span> projectSettings
+  )
+}
+</pre>
+</div>
+
+<p>
+And here is my <code>plugin.sbt</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">addSbtPlugin(<span style="color: #99ffff;">"io.get-coursier"</span> % <span style="color: #99ffff;">"sbt-coursier"</span> % <span style="color: #99ffff;">"1.0.0-M14"</span>)
+addSbtPlugin(<span style="color: #99ffff;">"com.eed3si9n"</span> % <span style="color: #99ffff;">"sbt-assembly"</span> % <span style="color: #99ffff;">"0.14.3"</span>)
+</pre>
+</div>
+
+<p>
+After <code>sbt assembly</code> and uploaded to S3, I deployed to the lambda. I got the same result: <code>Status 502</code> with the body:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-js">{
+  <span style="color: #99ffff;">"message"</span>: <span style="color: #99ffff;">"Internal server error"</span>
+}
+</pre>
+</div>
+
+<p>
+But the log in API gateway is a little different:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #bbdaff;">Mon</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">07</span> <span style="color: #bbdaff;">15</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">36</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">32</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Endpoint</span> response body before transformations<span style="color: #d1f1a9;">:</span>
+<span style="color: #bbdaff;">Mon</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">07</span> <span style="color: #bbdaff;">15</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">36</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">32</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Endpoint</span> response headers<span style="color: #d1f1a9;">:</span> {x-amzn-<span style="color: #bbdaff;">Remapped</span>-<span style="color: #bbdaff;">Content</span>-<span style="color: #bbdaff;">Length</span><span style="color: #d1f1a9;">=</span><span style="color: #bbdaff;">0</span>, x-amzn-<span style="color: #bbdaff;">RequestId</span>=*******-a4ff-11e6-b40b-430392a24fcf, <span style="color: #bbdaff;">Connection</span><span style="color: #d1f1a9;">=</span>keep-alive, <span style="color: #bbdaff;">Content</span>-<span style="color: #bbdaff;">Length</span><span style="color: #d1f1a9;">=</span><span style="color: #bbdaff;">0</span>, <span style="color: #bbdaff;">Date</span><span style="color: #d1f1a9;">=</span><span style="color: #bbdaff;">Mon</span>, <span style="color: #bbdaff;">07</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">2016</span> <span style="color: #bbdaff;">15</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">36</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">31</span> <span style="color: #bbdaff;">GMT</span>, <span style="color: #bbdaff;">Content</span>-<span style="color: #bbdaff;">Type</span><span style="color: #d1f1a9;">=</span>application/json}
+<span style="color: #bbdaff;">Mon</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">07</span> <span style="color: #bbdaff;">15</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">36</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">32</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Execution</span> failed due to configuration error<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Malformed</span> <span style="color: #bbdaff;">Lambda</span> proxy response
+<span style="color: #bbdaff;">Mon</span> <span style="color: #bbdaff;">Nov</span> <span style="color: #bbdaff;">07</span> <span style="color: #bbdaff;">15</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">36</span><span style="color: #d1f1a9;">:</span><span style="color: #bbdaff;">32</span> <span style="color: #bbdaff;">UTC</span> <span style="color: #bbdaff;">2016</span> <span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Method</span> completed <span style="color: #d1f1a9;">with</span> <span style="color: #bbdaff;">status</span><span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">502</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4"><span class="section-number-2">4</span> Conclusion</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+The status 502 is for <code>Bad Gateway</code>, but the cause is from lambda. So it doesn't make any sense. So we should always avoid to response an null body in lambda. But we still cannot ensure that, so here is the solution.
+</p>
+
+<p>
+The API gateway allows us to set up the pattern regex in <code>Integration Response</code> for certain request method in <code>Resources</code>, it support <code>Lambda Error Regex</code>. So after I setting up with following:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Lambda Error Regex</th>
+<th scope="col" class="org-right">Method response status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">.+</td>
+<td class="org-right">200</td>
+</tr>
+
+<tr>
+<td class="org-left">^$</td>
+<td class="org-right">500</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+I got a <code>null</code> response body with <b>500 status</b>.
+</p>
+</div>
+</div>
