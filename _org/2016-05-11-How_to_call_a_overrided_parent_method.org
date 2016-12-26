@@ -1,11 +1,11 @@
 #+STARTUP: showall indent
 #+STARTUP: hidestars
-#+BEGIN_HTML
+#+BEGIN_EXPORT HTML
 ---
 layout: post
 title: How To Call A Overrided Parent Method
 ---
-#+END_HTML
+#+END_EXPORT
 
 * COMMENT Requirement
 
