@@ -3,7 +3,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: How To Call A Overrided Parent Method (WIP)
+title: How To Call A Overrided Parent Method
 ---
 #+END_HTML
 
@@ -110,11 +110,11 @@ title: How To Call A Overrided Parent Method (WIP)
 * In Scala
 #+BEGIN_SRC scala
   trait Parent {
-    def callee: Unit = Console println "parent method"
+    def callee: Unit = println "parent method"
   }
 
   class Child extends Parent {
-    override def callee: Unit = Console println "child method"
+    override def callee: Unit = println "child method"
 
     def caller: Unit = super.callee
   }
@@ -136,7 +136,74 @@ class Child extends Parent
 #+END_SRC
 
 * In C#
+#+BEGIN_SRC csharp
+  public class Parent
+  {
+      public void Callee()
+      {
+          Console.WriteLine("parent method");
+      }
+  }
+
+  public class Child: Parent
+  {
+      public void Callee()
+      {
+          Console.WriteLine("child method");
+      }
+
+      public void Caller()
+      {
+          base.Callee();
+      }
+  }
+#+END_SRC
+
 
 * In C++
+#+BEGIN_SRC c++
+  class Parent {
+  public:
+    void callee();
+  };
+
+  void Parent::callee() {
+    cout << "parent method" << endl;
+  }
+
+  class Child: Public Parent {
+  public:
+    void callee();
+    void caller();
+  };
+
+  void Child::callee() {
+    cout << "child method" << endl;
+  }
+
+  void Child::caller() {
+    Parent::callee();
+  }
+
+  int main()
+  {
+    Child *child = new Child();
+    child -> caller();
+    child -> Parent::callee();
+  }
+#+END_SRC
+
 
 * In Python
+#+BEGIN_SRC python
+  class Parent:
+      def callee(self):
+          print("parent method")
+
+  class Child(Parent):
+      def callee(self):
+          print("child method")
+
+      def caller(self):
+          super(Child, self).callee()
+#+END_SRC

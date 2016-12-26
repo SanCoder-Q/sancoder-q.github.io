@@ -48,11 +48,11 @@ case class State[S, +A](runS: S => (A, S)) {
 函数 =runS= 以一个类型为 =S= 的状态作为输入, 返回一个类型为 =A= 的值以及一个新的状态. 而 =map= 和 =flatMap= 方法允许通过 for-comprehension 以一种命令式的代码方式将状态变换组合在一起, 如:
 
 #+BEGIN_SRC scala
-def getState[S]: State[S, S] = State(s => (s, s))
+  def getState[S]: State[S, S] = State(s => (s, s))
 
-def setState[S](s: S): State[S, Unit] = State(_ => ((), s))
+  def setState[S](s: S): State[S, Unit] = State(_ => ((), s))
 
-def pureState[S, A](a: A): State[S, A] = State(s => (a, s))
+  def pureState[S, A](a: A): State[S, A] = State(s => (a, s))
 #+END_SRC
 
 注意到 =pureState= 和 =flatMap= 两个方法使得 =State= 成为一个 Monad.
@@ -60,17 +60,17 @@ def pureState[S, A](a: A): State[S, A] = State(s => (a, s))
 作为一个简单的例子, 我们用 =State= 来实现对一个 =List= 中的元素编号. 这并不见得是 =State= 的一个常见的用例, 仅仅因为这能够简单的诠释上文所说的堆栈溢出问题.
 
 #+BEGIN_SRC scala
-def zipIndex[A](as: List[A]): List[(Int, A)] = as.foldLeft(pureState[Int, List[(Int, A)]](Nil)) { (acc, a) =>
-  for {
-    xs <- acc
-    n <- getState[Int]
-    _ <- setState[Int](n + 1)
-  } yield (n, a) :: xs
-}.runS(0)._1.reverse
+  def zipIndex[A](as: List[A]): List[(Int, A)] = as.foldLeft(pureState[Int, List[(Int, A)]](Nil)) { (acc, a) =>
+    for {
+      xs <- acc
+      n <- getState[Int]
+      _ <- setState[Int](n + 1)
+    } yield (n, a) :: xs
+  }.runS(0)._1.reverse
 #+END_SRC
 
 #+BEGIN_QUOTE
-译者注: 对于 =State= 的 =flatMap= 方法, 每次调用都会在堆中产生一个新的 =State.class= 类型实例及其 =runS= 方法的函数类型 =State.1.class= 的实例. ([[http://blog.thegodcode.net/post/239967776/a-look-at-how-scala-compiles-to-java][A Look at How Scala Compiles to Java]]) f
+译者注: 对于 =State= 的 =flatMap= 方法, 每次调用都会在堆中产生一个新的 =State.class= 类型实例及其 =runS= 方法的函数类型 =State.1.class= 的实例. ([[http://blog.thegodcode.net/post/239967776/a-look-at-how-scala-compiles-to-java][A Look at How Scala Compiles to Java]])
 #+END_QUOTE
 
 我们使用一个 =foldLeft= 来强调对 =list= 的遍历是一个尾递归的调用. 这个函数以一个空的 =list= 为起点, 不断在列表的头部添加元素, 所以与原 =list= 顺序相反. 而 =state= 是一个从零开始每步递增的整数, 所有的 =state= 的生成都发生在反转结果之前.
