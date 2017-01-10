@@ -110,7 +110,7 @@ In time window, there are no data points at all. <span class="underline">And, af
 <tr>
 <td class="org-left">OK/ID -&gt; Alarm</td>
 <td class="org-left">State change immediately</td>
-<td class="org-left">State change after a while</td>
+<td class="org-left">State change after a while<sup>1</sup></td>
 </tr>
 
 <tr>
@@ -121,10 +121,16 @@ In time window, there are no data points at all. <span class="underline">And, af
 
 <tr>
 <td class="org-left">Alarm/OK -&gt; ID</td>
-<td class="org-left">State change after time window with a delay</td>
-<td class="org-left">State change after time window with a delay</td>
+<td class="org-left">State change after time window with a longer delay<sup>2</sup></td>
+<td class="org-left">State change after time window with a shorter delay<sup>3</sup></td>
 </tr>
 </tbody>
 </table>
+
+<ol class="org-ol">
+<li>The time should be <code>(period * evaluationPeriods)</code>.</li>
+<li>The delay is equal to <code>period + min(2 * period, 300)</code>.</li>
+<li>The delay is equal to <code>(period * evaluationPeriods) + min(2 * period, 300)</code>.</li>
+</ol>
 </div>
 </div>

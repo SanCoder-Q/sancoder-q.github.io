@@ -55,8 +55,12 @@ In time window, there are no data points at all. _And, after 5 minutes OR two ti
 
 * The difference between high period with 1 evaluation period and low period with more evaluation periods?
 
-| Changes        | high period with 1 evaluation period        | low period with more evaluation periods     |
-|----------------+---------------------------------------------+---------------------------------------------|
-| OK/ID -> Alarm | State change immediately                    | State change after a while                  |
-| Alarm/ID -> OK | State change immediately                    | State change immediately                    |
-| Alarm/OK -> ID | State change after time window with a delay | State change after time window with a delay |
+| Changes        | high period with 1 evaluation period                   | low period with more evaluation periods                 |
+|----------------+--------------------------------------------------------+---------------------------------------------------------|
+| OK/ID -> Alarm | State change immediately                               | State change after a while^{1}                          |
+| Alarm/ID -> OK | State change immediately                               | State change immediately                                |
+| Alarm/OK -> ID | State change after time window with a longer delay^{2} | State change after time window with a shorter delay^{3} |
+
+1. The time should be ~(period * evaluationPeriods)~.
+2. The delay is equal to ~period + min(2 * period, 300)~.
+3. The delay is equal to ~(period * evaluationPeriods) + min(2 * period, 300)~.
