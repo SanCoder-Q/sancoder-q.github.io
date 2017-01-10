@@ -1,0 +1,130 @@
+---
+layout: post
+title: AWS Cloudwatch Alarm Behavior
+---
+
+<div id="outline-container-org90e71cb" class="outline-2">
+<h2 id="org90e71cb"><span class="section-number-2">1</span> The three state of the alarm</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li><b>Alarm</b> (if the statistic value satisfy the comparison with threshold)</li>
+<li><b>OK</b> (if the statistic value cannot satisfy the comparison with threshold)</li>
+<li><b>Insufficient_Data</b> (No metric data point in evaluation period)</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org5a16ccc" class="outline-2">
+<h2 id="org5a16ccc"><span class="section-number-2">2</span> Time window</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The time window is equal to the product the period times the evaluation periods. For example:
+If the period is 600 (10 minutes),
+and the evaluation periods is 3,
+then the time window is 3x600 = 1800 (half an hour)
+</p>
+</div>
+</div>
+
+<div id="outline-container-org919b77a" class="outline-2">
+<h2 id="org919b77a"><span class="section-number-2">3</span> Check Frequency</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+The period evaluation is done <span class="underline">per minute</span>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orge2ba6cb" class="outline-2">
+<h2 id="orge2ba6cb"><span class="section-number-2">4</span> The cases that change from <b>OK</b> or <b>Insufficient_Data</b> to <b>Alarm</b></h2>
+<div class="outline-text-2" id="text-4">
+<p>
+In time window, there should be a data point that is satisfy the comparison in the oldest period, and if there are other data points, they should also be satisfy the comparison too. For example:
+</p>
+
+<p>
+If the period is 600,
+and the evaluation periods is 3,
+and the comparison operator is <code>GreaterThanThreshold</code>,
+and the threshold is 1,
+and all the data points before 6:00 are 0,
+and the data point at 6:00 is 2,
+Then the alarm state will change to <b>Alarm</b> if
+</p>
+<ul class="org-ul">
+<li>there are no more data points from 6:00 to 6:30,</li>
+<li>there are some data points from 6:00 to 6:30, but the statistic values of them in their periods are all greater than 1.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org92be46c" class="outline-2">
+<h2 id="org92be46c"><span class="section-number-2">5</span> The cases that change from <b>Alarm</b> or <b>Insufficient_Data</b> to <b>OK</b></h2>
+<div class="outline-text-2" id="text-5">
+<p>
+In time window, the latest data point is not satisfy the comparison. For example:
+</p>
+
+<p>
+If the period is 600,
+and the evaluation periods is 3,
+and the comparison operator is <code>GreaterThanThreshold</code>,
+and the threshold is 1,
+and all the data points before 6:00 are 2,
+and the state is already <b>Alarm</b>,
+Then the alarm state will change to <b>OK</b> if the data point at 6:00 is 0.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2a70bb0" class="outline-2">
+<h2 id="org2a70bb0"><span class="section-number-2">6</span> The cases that change from <b>Alarm</b> or <b>OK</b> to <b>Insufficient_Data</b></h2>
+<div class="outline-text-2" id="text-6">
+<p>
+In time window, there are no data points at all. <span class="underline">And, after 5 minutes OR two times of period delay (the greater), the status will change to insufficient</span>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgae9fa3b" class="outline-2">
+<h2 id="orgae9fa3b"><span class="section-number-2">7</span> The difference between high period with 1 evaluation period and low period with more evaluation periods?</h2>
+<div class="outline-text-2" id="text-7">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Changes</th>
+<th scope="col" class="org-left">high period with 1 evaluation period</th>
+<th scope="col" class="org-left">low period with more evaluation periods</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">OK/ID -&gt; Alarm</td>
+<td class="org-left">State change immediately</td>
+<td class="org-left">State change after a while</td>
+</tr>
+
+<tr>
+<td class="org-left">Alarm/ID -&gt; OK</td>
+<td class="org-left">State change immediately</td>
+<td class="org-left">State change immediately</td>
+</tr>
+
+<tr>
+<td class="org-left">Alarm/OK -&gt; ID</td>
+<td class="org-left">State change after time window with a delay</td>
+<td class="org-left">State change after time window with a delay</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

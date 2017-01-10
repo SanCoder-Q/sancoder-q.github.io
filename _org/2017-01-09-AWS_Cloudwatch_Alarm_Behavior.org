@@ -1,0 +1,62 @@
+#+STARTUP: indent
+#+STARTUP: showall
+#+PROPERTY: header-args :results silent
+
+#+BEGIN_EXPORT HTML
+---
+layout: post
+title: AWS Cloudwatch Alarm Behavior
+---
+#+END_EXPORT
+
+#+TITLE: AWS Cloudwatch Alarm Behavior (Rules)
+#+author: Jianming Qu
+
+* The three state of the alarm
+- *Alarm* (if the statistic value satisfy the comparison with threshold)
+- *OK* (if the statistic value cannot satisfy the comparison with threshold)
+- *Insufficient_Data* (No metric data point in evaluation period)
+
+* Time window
+The time window is equal to the product the period times the evaluation periods. For example:
+If the period is 600 (10 minutes),
+and the evaluation periods is 3,
+then the time window is 3x600 = 1800 (half an hour)
+
+* Check Frequency
+The period evaluation is done _per minute_.
+
+* The cases that change from *OK* or *Insufficient_Data* to *Alarm*
+In time window, there should be a data point that is satisfy the comparison in the oldest period, and if there are other data points, they should also be satisfy the comparison too. For example:
+
+If the period is 600,
+and the evaluation periods is 3,
+and the comparison operator is ~GreaterThanThreshold~,
+and the threshold is 1,
+and all the data points before 6:00 are 0,
+and the data point at 6:00 is 2,
+Then the alarm state will change to *Alarm* if
+ - there are no more data points from 6:00 to 6:30,
+ - there are some data points from 6:00 to 6:30, but the statistic values of them in their periods are all greater than 1.
+
+* The cases that change from *Alarm* or *Insufficient_Data* to *OK*
+In time window, the latest data point is not satisfy the comparison. For example:
+
+If the period is 600,
+and the evaluation periods is 3,
+and the comparison operator is ~GreaterThanThreshold~,
+and the threshold is 1,
+and all the data points before 6:00 are 2,
+and the state is already *Alarm*,
+Then the alarm state will change to *OK* if the data point at 6:00 is 0.
+
+* The cases that change from *Alarm* or *OK* to *Insufficient_Data*
+In time window, there are no data points at all. _And, after 5 minutes OR two times of period delay (the greater), the status will change to insufficient_.
+
+* The difference between high period with 1 evaluation period and low period with more evaluation periods?
+
+| Changes        | high period with 1 evaluation period        | low period with more evaluation periods     |
+|----------------+---------------------------------------------+---------------------------------------------|
+| OK/ID -> Alarm | State change immediately                    | State change after a while                  |
+| Alarm/ID -> OK | State change immediately                    | State change immediately                    |
+| Alarm/OK -> ID | State change after time window with a delay | State change after time window with a delay |
