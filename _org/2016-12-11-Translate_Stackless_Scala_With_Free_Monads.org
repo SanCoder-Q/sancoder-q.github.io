@@ -1,12 +1,12 @@
 #+STARTUP: indent
 #+STARTUP: showall
 #+PROPERTY: header-args :results replace
-#+BEGIN_HTML
+#+BEGIN_EXPORT HTML
 ---
 layout: post
 title: "Translate: Stackless Scala With Free Monads"
 ---
-#+END_HTML
+#+END_EXPORT
 
 #+TITLE: Translate: Stackless Scala With Free Monads
 #+author: Jianming Qu
