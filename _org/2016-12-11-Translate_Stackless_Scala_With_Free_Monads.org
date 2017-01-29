@@ -83,3 +83,88 @@ case class State[S, +A](runS: S => (A, S)) {
 - 在实现这种 monad 时, 如果实现不当, 依然会导致在一些场景堆栈溢出的错误. 在 4.3 节, 我们将探讨这些场景以及如何消除这些问题.
 - Trampolined 程序可以是多层嵌套的来提供 cooperative coroutines, 我们将在第五部分探讨.
 - 在第六部分, 我们将 Trampolines 推广为 Free Monad, 一种极为通用的递归数据结构. 通过分析操作这种结构的部分函数, 利用 Trampoline 的方法来解决 Free Monad 的堆栈问题.
+
+** 背景: Scala 的尾调用优化
+Scala 的编译器能够对一种叫做自调用尾递归 (Self-recursive Call) 的代码进行优化. 例如, 下面实例代码中对 list 的 *左折* 操作可以被编译器优化为一个使用固定栈空间的函数:
+
+#+BEGIN_SRC scala
+def foldl[A, B](as: List[A], b: B, f: (B, A) => B): B =
+  as match {
+    case Nil => b
+    case x :: xs => foldl(xs, f(b, x), f)
+  }
+#+END_SRC
+
+当编译器发现一个函数在尾部调用了自己, 并且 *该函数不能被重载 (例如, 使用 ~private~ 或 ~final~ 关键字声明)*, 则该函数的自调用会被编译替换为一个简单的跳转 (Jump). 这就相当于将该递归写成一个这循环:
+
+#+BEGIN_SRC scala
+def foldl[A, B](as: List[A], b: B, f: (B, A) => B): B = {
+  var z = b
+  var az = as
+  while (true) {
+    az match {
+      case Nil => return z
+      case x :: xs =>
+        z = f(b, x)
+        az = xs
+    }
+  }
+}
+#+END_SRC
+
+除了跳转比方法调用更高效这个优势外, 这种优化使得无需使用任何调用栈.
+但是,用跳转替换一个普通的尾调用就没有自递归调用优化那么简单了. 目前, JVM 只允许本地跳转, 所以根本没法从一个方法尾部直接跳转至另一个方法.例如, 一个相互跳转的递归是不能被编译器优化的, 即便它的调用在方法的尾部.
+
+#+BEGIN_SRC scala
+  def even[A](ns: List[A]): Boolean = ns match {
+    case Nil => true
+    case x :: xs => odd(xs)
+  }
+
+  def odd[A](ns: List[A]): Boolean = ns match {
+    case Nil => false
+    case x :: xs = even(xs)
+  }
+#+END_SRC
+
+这两个方法会在参数长度大于堆栈长度时引发堆栈溢出.
+
+尽管 JVM 很可能会在未来改进这点, 但也并不是一件容易的事, 并且有可能没有想象中那么有用. 比如说, JVM 的调用模型需要把每个线程的执行状态都保存在线程的调用堆栈里. 另外, 异常处理也是通过将异常压栈后将堆栈暴露给程序进行检查的. 事实上, JVM 的安全模型也是基于检查每个调用栈帧 (Stack Frame) 的权限来实现的. 而这又与子类, 动态分配策略,
+即时编译器偶合在一起, 使得 Scala 编译器的尾调用优化难以实现.
+
+不过还好, 我们可以回避所有这些问题, 通过一种简单的数据结构来用堆空间来代替栈空间.
+
+** Trampolines: 以堆换栈
+我们从一个非常简单的 Trampoline 数据类型来说明. 下例与 ~scala.util.control.TailCalls.TailRec~ 包中的 Trampoline 从原理上是完全相同的, 尽管实现的方式不同.
+
+#+BEGIN_SRC scala
+  sealed trait Trampoline[+A] {
+    final def runT: A = this match {
+      case More(k) => k().runT
+      case Done(v) => v
+    }
+  }
+
+  case class More[+A](k: () => Trampoline[A])
+      extends Trampoline[A]
+
+  case class Done[+A](v: A)
+      extends Trampoline[A]
+#+END_SRC
+
+Trampoline 将计算分解为多个步骤, 每个步骤可以有两种形式. ~Done~ 包含一个用于返回的值 ~v~, 表示后续再无其他步骤. ~More~ 则包含一个生成后续步骤的函数 ~k~. 而 ~runT~ 方法则是一个简单的尾递归, 用于执行所有的步骤. 它被定义为 ~final~ 以便让 Scala 编译器进行优化.
+这就可以解决上文提到的互相跳转的尾调用递归问题. 我们只需要机械的将所有类型为 ~T~ 的返回值替换为 ~Trampoline[T]~ 就行了. 具体如下:
+
+#+BEGIN_SRC scala
+  def even[A](ns: List[A]): Trampoline[Boolean] = ns match {
+    case Nil => Done(true)
+    case x :: xs => More(() => odd(xs))
+  }
+
+  def odd[A](ns: List[A]): Trampoline[Boolean] = ns match {
+    case Nil => Done(false)
+    case x :: xs = More(() => even(xs))
+  }
+#+END_SRC
+
+我们从原来的直接递归调用, 变成使其返回一个表示下一个步骤的 ~Trampoline~, 然后可以通过调用可以被优化的方法 ~runT~ 来递归执行. 这样, 无论输入的 ~List~ 有多长, 上面的代码也不会再引发堆栈溢出.

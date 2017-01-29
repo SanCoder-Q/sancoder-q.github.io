@@ -1,10 +1,15 @@
+<div class="HTML">
+<p>
 ---
 layout: post
 title: "Translate: Stackless Scala With Free Monads"
 ---
+</p>
 
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><span class="section-number-2">1</span> Motivation</h2>
+</div>
+
+<div id="outline-container-org0eda3a3" class="outline-2">
+<h2 id="org0eda3a3"><span class="section-number-2">1</span> Motivation</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 由于最近经常在生产中使用 <code>Free Monad</code> 范式, 所以就顺带看了看 <code>cats.Free</code> 的实现, 发现其实现方式和我想想中的 <code>Free</code> 不太一样, 除了 <code>Pure</code> (<code>Return</code>), <code>Suspend</code> 两种状态之外, 还有一个 <code>FlatMapped</code> 状态. 这样做看上去是为了将 <code>flatMap</code> 的 evaluation 延迟至 transform 期间完成, 但还是隐隐感觉和堆栈安全有关. 顺带想起关于 Scala FP 的堆栈安全一直是自己知识体系的一个空白, 因此就有了翻译 <code>Stackless Scala With Free Monads</code> 这篇论文的冲动, 期望这个工作能 drive 自己搞清楚 <b>Trampolining</b>.
@@ -12,8 +17,8 @@ title: "Translate: Stackless Scala With Free Monads"
 </div>
 </div>
 
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2"><span class="section-number-2">2</span> Stackless Scala With Free Monads</h2>
+<div id="outline-container-org0c4777f" class="outline-2">
+<h2 id="org0c4777f"><span class="section-number-2">2</span> Stackless Scala With Free Monads</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 这篇论文是 Rúnar Bjarnason 在 2012 年的 Scala Days Conf 上发表并演讲的主题, 通过引入 Trampolining 范式(堆换栈, 感觉和 CPS 的理念很相似) 来解决 Scala 编译器无法完全尾调用优化的问题.
@@ -23,11 +28,11 @@ title: "Translate: Stackless Scala With Free Monads"
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5"><span class="section-number-2">3</span> Body 正文</h2>
+<div id="outline-container-org81aaf48" class="outline-2">
+<h2 id="org81aaf48"><span class="section-number-2">3</span> Body 正文</h2>
 <div class="outline-text-2" id="text-3">
-</div><div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3"><span class="section-number-3">3.1</span> Abstract 摘要</h3>
+</div><div id="outline-container-org1800b66" class="outline-3">
+<h3 id="org1800b66"><span class="section-number-3">3.1</span> Abstract 摘要</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递归方法 (Self-Recursive Methods) 而不是所有的尾调用. 这很容易使得那些由小函数组合而成的函数造成堆栈溢出. 拥有一个通用的尾调用优化方法非常有益于 Scala 语言, 尤其是有益于 Scala 的函数式编程. 针对那些本不支持尾调用优化的语音, Trampolining 是一个可以用于解决尾调用优化问题的常用方法. 本文引入 Trampolining 技术, 以将其推广为一个对任何方法调用(甚至是非尾部调用)的优化技术. 该技术能够完全的消除 Scala 程序对调用堆栈的使用.
@@ -35,8 +40,8 @@ Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递�
 </div>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4"><span class="section-number-3">3.2</span> Introduction 介绍</h3>
+<div id="outline-container-org766ed74" class="outline-3">
+<h3 id="org766ed74"><span class="section-number-3">3.2</span> Introduction 介绍</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 调用堆栈是虚拟机的有限资源, 稍微有点经验的 Scala 程序员应该都遇见过一些看上去很正常的函数用尽了调用堆栈后使得程序崩溃并抛出 <code>StackOverflowError</code> 的错误.
@@ -44,7 +49,6 @@ Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递�
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-scala"><span style="color: #d1f1a9;">case</span> <span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">State</span>[<span style="color: #bbdaff;">S</span>, +<span style="color: #bbdaff;">A</span>](runS<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">S</span> <span style="color: #d1f1a9;">=&gt;</span> (<span style="color: #bbdaff;">A</span>, <span style="color: #bbdaff;">S</span>)) {
   <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">map</span>[<span style="color: #bbdaff;">B</span>](f<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">A</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">B</span>) <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">State</span>[<span style="color: #bbdaff;">S</span>, <span style="color: #bbdaff;">B</span>] { s <span style="color: #d1f1a9;">=&gt;</span> {
     <span style="color: #d1f1a9;">val</span> (<span style="color: #ffeead;">a</span>, <span style="color: #ffeead;">s1</span>) <span style="color: #d1f1a9;">=</span> runS(s)
@@ -64,7 +68,6 @@ Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递�
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">getState</span>[<span style="color: #bbdaff;">S</span>]<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">State</span>[<span style="color: #bbdaff;">S</span>, <span style="color: #bbdaff;">S</span>] <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">State</span>(s <span style="color: #d1f1a9;">=&gt;</span> (s, s))
 
 <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">setState</span>[<span style="color: #bbdaff;">S</span>](s<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">S</span>)<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">State</span>[<span style="color: #bbdaff;">S</span>, <span style="color: #bbdaff;">Unit</span>] <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">State</span>(<span style="color: #d1f1a9;">_</span> <span style="color: #d1f1a9;">=&gt;</span> ((), s))
@@ -82,7 +85,6 @@ Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递�
 </p>
 
 <div class="org-src-container">
-
 <pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">zipIndex</span>[<span style="color: #bbdaff;">A</span>](as<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>])<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[(<span style="color: #bbdaff;">Int</span>, <span style="color: #bbdaff;">A</span>)] <span style="color: #d1f1a9;">=</span> as.foldLeft(pureState[<span style="color: #bbdaff;">Int</span>, <span style="color: #bbdaff;">List</span>[(<span style="color: #bbdaff;">Int</span>, <span style="color: #bbdaff;">A</span>)]](<span style="color: #bbdaff;">Nil</span>)) { (acc, a) <span style="color: #d1f1a9;">=&gt;</span>
   <span style="color: #d1f1a9;">for</span> {
     xs <span style="color: #d1f1a9;">&lt;-</span> acc
@@ -95,7 +97,7 @@ Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递�
 
 <blockquote>
 <p>
-译者注: 对于 <code>State</code> 的 <code>flatMap</code> 方法, 每次调用都会在堆中产生一个新的 <code>State.class</code> 类型实例及其 <code>runS</code> 方法的函数类型 <code>State.1.class</code> 的实例. (<a href="http://blog.thegodcode.net/post/239967776/a-look-at-how-scala-compiles-to-java">A Look at How Scala Compiles to Java</a>) f
+译者注: 对于 <code>State</code> 的 <code>flatMap</code> 方法, 每次调用都会在堆中产生一个新的 <code>State.class</code> 类型实例及其 <code>runS</code> 方法的函数类型 <code>State.1.class</code> 的实例. (<a href="http://blog.thegodcode.net/post/239967776/a-look-at-how-scala-compiles-to-java">A Look at How Scala Compiles to Java</a>)
 </p>
 </blockquote>
 
@@ -117,6 +119,122 @@ Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递�
 <li>Trampolined 程序可以是多层嵌套的来提供 cooperative coroutines, 我们将在第五部分探讨.</li>
 <li>在第六部分, 我们将 Trampolines 推广为 Free Monad, 一种极为通用的递归数据结构. 通过分析操作这种结构的部分函数, 利用 Trampoline 的方法来解决 Free Monad 的堆栈问题.</li>
 </ul>
+</div>
+</div>
+
+<div id="outline-container-org4d35178" class="outline-3">
+<h3 id="org4d35178"><span class="section-number-3">3.3</span> 背景: Scala 的尾调用优化</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+Scala 的编译器能够对一种叫做自调用尾递归 (Self-recursive Call) 的代码进行优化. 例如, 下面实例代码中对 list 的 <b>左折</b> 操作可以被编译器优化为一个使用固定栈空间的函数:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">foldl</span>[<span style="color: #bbdaff;">A</span>, <span style="color: #bbdaff;">B</span>](as<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>], b<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">B</span>, f<span style="color: #d1f1a9;">:</span> (<span style="color: #bbdaff;">B</span>, <span style="color: #bbdaff;">A</span>) <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">B</span>)<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">B</span> <span style="color: #d1f1a9;">=</span>
+  as <span style="color: #d1f1a9;">match</span> {
+    <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Nil</span> <span style="color: #d1f1a9;">=&gt;</span> b
+    <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #bbdaff;">::</span> <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">=&gt;</span> foldl(xs, f(b, x), f)
+  }
+</pre>
+</div>
+
+<p>
+当编译器发现一个函数在尾部调用了自己, 并且 <b>该函数不能被重载 (例如, 使用 <code>private</code> 或 <code>final</code> 关键字声明)</b>, 则该函数的自调用会被编译替换为一个简单的跳转 (Jump). 这就相当于将该递归写成一个这循环:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">foldl</span>[<span style="color: #bbdaff;">A</span>, <span style="color: #bbdaff;">B</span>](as<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>], b<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">B</span>, f<span style="color: #d1f1a9;">:</span> (<span style="color: #bbdaff;">B</span>, <span style="color: #bbdaff;">A</span>) <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">B</span>)<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">B</span> <span style="color: #d1f1a9;">=</span> {
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ff9da4; font-weight: bold;">z</span> <span style="color: #d1f1a9;">=</span> b
+  <span style="color: #d1f1a9;">var</span> <span style="color: #ff9da4; font-weight: bold;">az</span> <span style="color: #d1f1a9;">=</span> as
+  <span style="color: #d1f1a9;">while</span> (<span style="color: #bbdaff;">true</span>) {
+    az <span style="color: #d1f1a9;">match</span> {
+      <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Nil</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #d1f1a9;">return</span> z
+      <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #bbdaff;">::</span> <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">=&gt;</span>
+        z <span style="color: #d1f1a9;">=</span> f(b, x)
+        az <span style="color: #d1f1a9;">=</span> xs
+    }
+  }
+}
+</pre>
+</div>
+
+<p>
+除了跳转比方法调用更高效这个优势外, 这种优化使得无需使用任何调用栈.
+但是,用跳转替换一个普通的尾调用就没有自递归调用优化那么简单了. 目前, JVM 只允许本地跳转, 所以根本没法从一个方法尾部直接跳转至另一个方法.例如, 一个相互跳转的递归是不能被编译器优化的, 即便它的调用在方法的尾部.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">even</span>[<span style="color: #bbdaff;">A</span>](ns<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>])<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Boolean</span> <span style="color: #d1f1a9;">=</span> ns <span style="color: #d1f1a9;">match</span> {
+  <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Nil</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">true</span>
+  <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #bbdaff;">::</span> <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">=&gt;</span> odd(xs)
+}
+
+<span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">odd</span>[<span style="color: #bbdaff;">A</span>](ns<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>])<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Boolean</span> <span style="color: #d1f1a9;">=</span> ns <span style="color: #d1f1a9;">match</span> {
+  <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Nil</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">false</span>
+  <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #bbdaff;">::</span> <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">=</span> even(xs)
+}
+</pre>
+</div>
+
+<p>
+这两个方法会在参数长度大于堆栈长度时引发堆栈溢出.
+</p>
+
+<p>
+尽管 JVM 很可能会在未来改进这点, 但也并不是一件容易的事, 并且有可能没有想象中那么有用. 比如说, JVM 的调用模型需要把每个线程的执行状态都保存在线程的调用堆栈里. 另外, 异常处理也是通过将异常压栈后将堆栈暴露给程序进行检查的. 事实上, JVM 的安全模型也是基于检查每个调用栈帧 (Stack Frame) 的权限来实现的. 而这又与子类, 动态分配策略,
+即时编译器偶合在一起, 使得 Scala 编译器的尾调用优化难以实现.
+</p>
+
+<p>
+不过还好, 我们可以回避所有这些问题, 通过一种简单的数据结构来用堆空间来代替栈空间.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org532d2f1" class="outline-3">
+<h3 id="org532d2f1"><span class="section-number-3">3.4</span> Trampolines: 以堆换栈</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+我们从一个非常简单的 Trampoline 数据类型来说明. 下例与 <code>scala.util.control.TailCalls.TailRec</code> 包中的 Trampoline 从原理上是完全相同的, 尽管实现的方式不同.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #ebbbff;">sealed</span> <span style="color: #d1f1a9;">trait</span> <span style="color: #bbdaff;">Trampoline</span>[+<span style="color: #bbdaff;">A</span>] {
+  <span style="color: #ebbbff;">final</span> <span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">runT</span><span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">A</span> <span style="color: #d1f1a9;">=</span> <span style="color: #d1f1a9;">this</span> <span style="color: #d1f1a9;">match</span> {
+    <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">More</span>(<span style="color: #ffeead;">k</span>) <span style="color: #d1f1a9;">=&gt;</span> k().runT
+    <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Done</span>(<span style="color: #ffeead;">v</span>) <span style="color: #d1f1a9;">=&gt;</span> v
+  }
+}
+
+<span style="color: #d1f1a9;">case</span> <span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">More</span>[+<span style="color: #bbdaff;">A</span>](k<span style="color: #d1f1a9;">:</span> () <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">Trampoline</span>[<span style="color: #bbdaff;">A</span>])
+    <span style="color: #d1f1a9;">extends</span> <span style="color: #bbdaff;">Trampoline</span>[<span style="color: #bbdaff;">A</span>]
+
+<span style="color: #d1f1a9;">case</span> <span style="color: #d1f1a9;">class</span> <span style="color: #bbdaff;">Done</span>[+<span style="color: #bbdaff;">A</span>](v<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">A</span>)
+    <span style="color: #d1f1a9;">extends</span> <span style="color: #bbdaff;">Trampoline</span>[<span style="color: #bbdaff;">A</span>]
+</pre>
+</div>
+
+<p>
+Trampoline 将计算分解为多个步骤, 每个步骤可以有两种形式. <code>Done</code> 包含一个用于返回的值 <code>v</code>, 表示后续再无其他步骤. <code>More</code> 则包含一个生成后续步骤的函数 <code>k</code>. 而 <code>runT</code> 方法则是一个简单的尾递归, 用于执行所有的步骤. 它被定义为 <code>final</code> 以便让 Scala 编译器进行优化.
+这就可以解决上文提到的互相跳转的尾调用递归问题. 我们只需要机械的将所有类型为 <code>T</code> 的返回值替换为 <code>Trampoline[T]</code> 就行了. 具体如下:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-scala"><span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">even</span>[<span style="color: #bbdaff;">A</span>](ns<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>])<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Trampoline</span>[<span style="color: #bbdaff;">Boolean</span>] <span style="color: #d1f1a9;">=</span> ns <span style="color: #d1f1a9;">match</span> {
+  <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Nil</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">Done</span>(<span style="color: #bbdaff;">true</span>)
+  <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #bbdaff;">::</span> <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">More</span>(() <span style="color: #d1f1a9;">=&gt;</span> odd(xs))
+}
+
+<span style="color: #d1f1a9;">def</span> <span style="color: #ffc58f;">odd</span>[<span style="color: #bbdaff;">A</span>](ns<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">List</span>[<span style="color: #bbdaff;">A</span>])<span style="color: #d1f1a9;">:</span> <span style="color: #bbdaff;">Trampoline</span>[<span style="color: #bbdaff;">Boolean</span>] <span style="color: #d1f1a9;">=</span> ns <span style="color: #d1f1a9;">match</span> {
+  <span style="color: #d1f1a9;">case</span> <span style="color: #bbdaff;">Nil</span> <span style="color: #d1f1a9;">=&gt;</span> <span style="color: #bbdaff;">Done</span>(<span style="color: #bbdaff;">false</span>)
+  <span style="color: #d1f1a9;">case</span> <span style="color: #ffeead;">x</span> <span style="color: #bbdaff;">::</span> <span style="color: #ffeead;">xs</span> <span style="color: #d1f1a9;">=</span> <span style="color: #bbdaff;">More</span>(() <span style="color: #d1f1a9;">=&gt;</span> even(xs))
+}
+</pre>
+</div>
+
+<p>
+我们从原来的直接递归调用, 变成使其返回一个表示下一个步骤的 <code>Trampoline</code>, 然后可以通过调用可以被优化的方法 <code>runT</code> 来递归执行. 这样, 无论输入的 <code>List</code> 有多长, 上面的代码也不会再引发堆栈溢出.
+</p>
 </div>
 </div>
 </div>
