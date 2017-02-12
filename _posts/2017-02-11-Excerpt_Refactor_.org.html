@@ -1,0 +1,54 @@
+---
+layout: post
+title: "Excerpt: Refactoring"
+---
+
+<div id="outline-container-org4832af7" class="outline-2">
+<h2 id="org4832af7"><span class="section-number-2">1</span> Why Should You Refactor?</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org901ab27" class="outline-3">
+<h3 id="org901ab27"><span class="section-number-3">1.1</span> Refactoring Improves the Design of Software</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Without refactoring, the design of the program will decay. As people change code - changes to realize short-term goals or changes made without a full comprehension of the design of the code - the code loses its structure. It becomes harder to see the design by reading the code. Refactor is rather like tidying up the code. Work is done to remove the bits that aren't really in the right place. Loss of the structure of the code has a cumulative effect. The harder it is to see the design of the code, the harder it is to preserve it, and the more rapidly it decays. Regular refactoring helps code retain its shape.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf14f2c6" class="outline-2">
+<h2 id="orgf14f2c6"><span class="section-number-2">2</span> What Do I Tell My Manager?</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Software developers are professional. Our job is to build effective software as rapidly as we can. My experience is that refactoring is a big aid to building software quickly. If I need to add a new function and the design does not suit the change, I find it's quicker to refactor first and then add the function. If I need to fix a bug, I need to understand how the software works—and I find refactoring is the fastest way to do this. A schedule-driven manager wants me to do things the fastest way I can; how I do it is my business. The fastest way is to refactor; therefore I refactor.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org71f2ae7" class="outline-2">
+<h2 id="org71f2ae7"><span class="section-number-2">3</span> Indirection and Refactoring</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+Indirection is a two-edged sword, however. Every time you break one thing into two pieces, you have more things to manage.
+Indirection can pay for itself. Here are some of the ways.
+</p>
+<ul class="org-ul">
+<li>To enable sharing of logic.</li>
+<li>To explain intention and implementation separately.</li>
+<li>To isolate change.</li>
+<li>To encode conditional logic.</li>
+</ul>
+<p>
+The most common variant of the game is to look at your program. Identify a place where it is missing one or more of the benefits of indirection. Put in that indirection without changing the existing behavior. Now you have a more valuable program because it has more qualities that we will appreciate tomorrow.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org0d7d5d0" class="outline-2">
+<h2 id="org0d7d5d0"><span class="section-number-2">4</span> Refactoring and Performance</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+This would be a cost worth paying if the resulting software were quicker, but usually it is not. The performance improvements are spread all around the program, and each improvement is made with a narrow perspective of the program's behavior.
+</p>
+</div>
+</div>

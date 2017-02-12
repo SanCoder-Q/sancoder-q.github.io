@@ -168,3 +168,23 @@ Trampoline 将计算分解为多个步骤, 每个步骤可以有两种形式. ~D
 #+END_SRC
 
 我们从原来的直接递归调用, 变成使其返回一个表示下一个步骤的 ~Trampoline~, 然后可以通过调用可以被优化的方法 ~runT~ 来递归执行. 这样, 无论输入的 ~List~ 有多长, 上面的代码也不会再引发堆栈溢出.
+
+** 把所有调用都变为尾调用
+让我们看看如何使用 Trampoline 技术来解决论文一开始提出的 State 遍历 list 的 堆栈溢出问题. 首先, 我们需要改写 State 的行为来返回可供尾递归的 Trampoline 类型.
+
+#+BEGIN_SRC scala
+  case class State[S, +A](runS: S => Trampoline[(A, S)])
+#+END_SRC
+
+我们现在该如何实现组合 State 的 flatMap 呢? 先试试这样:
+
+#+BEGIN_SRC scala
+  def flatMap[B](f: A => State[S, B]) = State[S, B] { s =>
+    More[(S, B)] { () =>
+      val (a, s1) = runS(s).runT
+      More(() => f(a).runS(s1))
+    }
+  }
+#+END_SRC
+
+但这样写会很低效. 而且例一中的 ~zipIndex~ 仍然可能会堆栈溢出, 甚至对于更小的 list. 问题出在 ~runT~ 的调用没有出现在尾部, 所以它并不能被封装在 ~Trampoline~ 内部, 也不能用 Trampoline 来优化.

@@ -1,0 +1,32 @@
+#+STARTUP: indent
+#+STARTUP: showall
+#+PROPERTY: header-args :results silent
+
+#+BEGIN_EXPORT HTML
+---
+layout: post
+title: "Excerpt: Refactoring"
+---
+#+END_EXPORT
+
+#+TITLE: Excerpt: Refactoring
+#+author: Jianming Qu
+
+** Why Should You Refactor?
+*** Refactoring Improves the Design of Software
+Without refactoring, the design of the program will decay. As people change code - changes to realize short-term goals or changes made without a full comprehension of the design of the code - the code loses its structure. It becomes harder to see the design by reading the code. Refactor is rather like tidying up the code. Work is done to remove the bits that aren't really in the right place. Loss of the structure of the code has a cumulative effect. The harder it is to see the design of the code, the harder it is to preserve it, and the more rapidly it decays. Regular refactoring helps code retain its shape.
+
+** What Do I Tell My Manager?
+Software developers are professional. Our job is to build effective software as rapidly as we can. My experience is that refactoring is a big aid to building software quickly. If I need to add a new function and the design does not suit the change, I find it's quicker to refactor first and then add the function. If I need to fix a bug, I need to understand how the software works—and I find refactoring is the fastest way to do this. A schedule-driven manager wants me to do things the fastest way I can; how I do it is my business. The fastest way is to refactor; therefore I refactor.
+
+** Indirection and Refactoring
+Indirection is a two-edged sword, however. Every time you break one thing into two pieces, you have more things to manage.
+Indirection can pay for itself. Here are some of the ways.
+- To enable sharing of logic.
+- To explain intention and implementation separately.
+- To isolate change.
+- To encode conditional logic.
+The most common variant of the game is to look at your program. Identify a place where it is missing one or more of the benefits of indirection. Put in that indirection without changing the existing behavior. Now you have a more valuable program because it has more qualities that we will appreciate tomorrow.
+
+** Refactoring and Performance
+This would be a cost worth paying if the resulting software were quicker, but usually it is not. The performance improvements are spread all around the program, and each improvement is made with a narrow perspective of the program's behavior.
