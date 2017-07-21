@@ -24,7 +24,7 @@ title: "Translate: Stackless Scala With Free Monads"
 * Body 正文
 ** Abstract 摘要
 
-Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递归方法 (Self-Recursive Methods) 而不是所有的尾调用. 这很容易使得那些由小函数组合而成的函数造成堆栈溢出. 拥有一个通用的尾调用优化方法非常有益于 Scala 语言, 尤其是有益于 Scala 的函数式编程. 针对那些本不支持尾调用优化的语音, Trampolining 是一个可以用于解决尾调用优化问题的常用方法. 本文引入 Trampolining 技术, 以将其推广为一个对任何方法调用(甚至是非尾部调用)的优化技术. 该技术能够完全的消除 Scala 程序对调用堆栈的使用.
+Scala 编译器的尾调用优化 (Tail Call Elimination, TCE) 仅限于自递归方法 (Self-Recursive Methods) 而不是所有的尾调用. 这很容易使得那些由小函数组合而成的函数造成堆栈溢出. 拥有一个通用的尾调用优化方法非常有益于 Scala 语言, 尤其是有益于 Scala 的函数式编程. 针对那些本不支持尾调用优化的语言, Trampolining 是一个可以用于解决尾调用优化问题的常用方法. 本文引入 Trampolining 技术, 以将其推广为一个对任何方法调用(甚至是非尾部调用)的优化技术. 该技术能够完全的消除 Scala 程序对调用堆栈的使用.
 
 ** Introduction 介绍
 
@@ -57,7 +57,7 @@ case class State[S, +A](runS: S => (A, S)) {
 
 注意到 =pureState= 和 =flatMap= 两个方法使得 =State= 成为一个 Monad.
 
-作为一个简单的例子, 我们用 =State= 来实现对一个 =List= 中的元素编号. 这并不见得是 =State= 的一个常见的用例, 仅仅因为这能够简单的诠释上文所说的堆栈溢出问题.
+作为一个简单的例子, 我们用 =State= 来实现对一个 =List= 中的元素编号. 这并不见得是 =State= 的一个常见用例, 仅仅因为这能够简单的诠释上文所说的堆栈溢出问题.
 
 #+BEGIN_SRC scala
   def zipIndex[A](as: List[A]): List[(Int, A)] = as.foldLeft(pureState[Int, List[(Int, A)]](Nil)) { (acc, a) =>
@@ -188,3 +188,363 @@ Trampoline 将计算分解为多个步骤, 每个步骤可以有两种形式. ~D
 #+END_SRC
 
 但这样写会很低效. 而且例一中的 ~zipIndex~ 仍然可能会堆栈溢出, 甚至对于更小的 list. 问题出在 ~runT~ 的调用没有出现在尾部, 所以它并不能被封装在 ~Trampoline~ 内部, 也不能用 Trampoline 来优化.
+
+*** 用一个 Trampoline Monad ?
+
+现在我们要用一个 Monadic 的 ~Trampoline~ 来解决该问题。它已经有了 ~unit~ 操作^{1}，定义在构造函数中。因此，只需要定义 Monadic 的 ~bind~ 操作，也就是 ~flatMap~ 方法, 即可. 让我们直接给 ~Trampoline~ 添加一个 ~flatMap~ 方法，如此一来，就可以将 ~State.flatMap~ 改写为：
+
+#+BEGIN_SRC scala
+  def flatMap[B](f: A => State[S, B]) =
+    State[S, B](s => More(() => runS(s) flatMap {
+      case (a, s1) => More(() => f(a) runS s1)
+    }))
+#+END_SRC
+
+#+BEGIN_QUOTE
+.^{1} 对于任意类型 =A=, ~Monad~ =M= 的 ~unit~ 函数定义为 =A => M[A]=. 之所以叫做 ~unit~ 是因为它是 ~flatMap~ 操作的 ~幺元~.
+#+END_QUOTE
+
+这显然有所改进. 它把问题转移到 ~Trampoline~ 的 ~flatMap~ 方法中, 因此我们可以这样试着实现：
+
+#+BEGIN_SRC scala
+  def flatMap[B](f: A => Trampoline[B]) =
+    More[B](() => f(runT))
+#+END_SRC
+
+但这不是我们想要的. ~runT~ 依然不在调用的尾部. 看来无论我们怎么实现 ~Trampoline~ 的 ~flatMap~, 都不可能不消耗额外的栈空间.
+
+*** 正确的构建 Monad
+
+解决该问题的方法是为 ~Trampoline~ 数据类型增加一个类型构造器，并将 ~flatMap~ 方法的调用改为对构造器的调用:
+
+#+BEGIN_SRC scala
+  case class FlatMap[A, +B](
+    sub: Trampoline[A],
+    k: A => Trampoline[B]) extends Trampoline[B]
+#+END_SRC
+
+~Trampoline~ 的这种形式可以看作是对子程序 ~sub~ 的调用，其结果会被传入 =continuation= ~k~.
+这时候, ~Trampoline~ =trait= 的 ~runT~ 就需要考虑这个新的构造器. 为了简单说明, 让我们把执行下一步与执行所有步分开：
+
+#+BEGIN_SRC scala
+  final def resume: Either[() => Trampoline[A], A] = this match {
+    case Done(v) => Right(v)
+    case More(k) => Left(k)
+    case FlatMap(a, f) => a match {
+      case Done(v) => f(v).resume
+      case More(k) => Left(() => FlatMap(k(), f))
+      case FlatMap(b, g) => (FlatMap(b, (x: Any) => FlatMap(g(x), f)): Trampoline[A]).resume
+    }
+  }
+
+  final def runT: A = resume match {
+    case Right(a) => a
+    case Left(k) => k().runT
+  }
+#+END_SRC
+
+~resume~ 方法利用模式匹配来处理 ~Trampoline~, 或者返回一个结果(即 ~Right~), 或者返回一个 ~Function0~ 来表明下一步的操作(即 ~Left~).
+这里处理 ~FlatMap~ 这种情况的方式微秒而重要. 如果子程序 ~a~ 是 ~Done~, 我们会直接执行 =continuation=. 如果其被包裹在 ~More~ 中, 我们向前执行一步(译者: 即执行 ~More~ 中的函数), 并对其执行 ~FlatMap~ 操作. 如果子程序包含另一个子程序, 也就是一个内嵌的左结合的 ~FlatMap~ 如下:
+
+#+BEGIN_SRC scala
+  FlatMap(FlatMap(b, g), f)
+#+END_SRC
+
+这一步非常关键, 我们需要保证不引入新的栈帧. 技巧是利用结合律将其变换到右边:
+(译者: 注意 ~Trampoline~ =Monad= 满足结合律,
+因此 ~(b FlatMap g) FlatMap f = b FlatMap (x => g(x) FlatMap f)~)
+
+#+BEGIN_SRC scala
+  FlatMap(b, x => FlatMap(g(x), f))
+#+END_SRC
+
+这样一来, 在下一个迭代时就会对 ~b~ 进行模式匹配, 这样就能够在尾部继续调用 ~resume~.
+由于这次 ~resume~ 调用是在 ~FlatMap~ 上的, 我们必须显示的将当前的对象转换为 ~Trampoline~, 这样编译器才能明白这其实是一次尾递归调用^{2}. 不用担心, 我们会在 4.3 节去掉该转换.
+
+同时需要注意的是, 内嵌的 ~FlatMap~ 构造器中丢失了一些类型信息. 在 ~FlatMap(FlatMap(b, g), f)~ 形式中, ~b~ 的类型无从得知, 所以只能在转换右结合时将其视为 ~Any~. 这其实非常安全, 因为左结合时的嵌套结构的类型是正确的.
+p
+通过结合律转换利用到了 =Monad= 的规则. ~Trampoline~ 是一个 =Monad=, 而 =Monad= 一定是满足结合律的. 因此, 右结合方式一定等价于左结合的.
+
+#+BEGIN_QUOTE
+译者注:
+~Trampoline~ 的三个实例代表了不同的使用场景: ~Done~ 表明了下一步计算会取出其值, 用于递归中的返回. ~More~ 表明了下一步计算的递归特性, 一般用于递归调用. ~FlatMap~ 中包含两个值, 左侧的子程序表明了下一步计算的类型, 右侧的函数表明了在下一步计算后需要做的事, 因此可用于非尾递归的后续操作.
+#+END_QUOTE
+
+*** 一个易错的问题
+
+这里还有一个边缘情况需要考虑. ~resume~ 函数依然有可能造成栈溢出. 倘若 ~FlatMap~ 左侧的堆叠层次高出了调用栈的高度, ~f(v)~ 的调用会导致 ~g(x)~ 调用, 然后会导致里层的函数调用, 等等. 这可以通过在一开始就禁止左结合的内嵌的构造来避免. 我们将 ~FlatMap~ 构造器变为 =private=, 并通过暴露 ~Trampoline~ 的 ~flatMap~ 方法来代替它, 这样就能总是用右结合的结构来改写:
+
+#+BEGIN_SRC scala
+  def flatMap[B](f: A => Trampoline[B]): Trampoline[B] = this match {
+    case FlatMap(a, g) => FlatMap(a, (x: A) => g(a) flatMap f)
+    case x => FlatMap(x, f)
+  }
+#+END_SRC
+
+同时, 必须同时避免通过 ~resume~ 方法来构造这种结构, 我们可以将其中的 ~FlatMap~ 构造改为对 ~flatMap~ 的调用:
+
+#+BEGIN_SRC scala
+  case FlatMap(a, f) => a match {
+    case Done(v) => f(v).resume
+    case More(k) => Left(() => k() flatMap f)
+    case FlatMap(b, g) =>
+      b.flatMap((x: Any) => g(x) flatMap f).resume
+  }
+#+END_SRC
+
+最终, 为了能够在 Scala 的 for-comprehension 表达式中使用 ~Trampoline~ monad, 只需要用 ~flatMap~ 定义一个 ~map~ 方法就行了:
+
+#+BEGIN_SRC scala
+  def map[B](f: A => B): Trampoline[B] =
+    flatMap(a => Done(f(a)))
+#+END_SRC
+
+** 无栈 Scala
+
+通过使用 ~Trampoline~ 化的 ~State~ monad, 对任何大小的输入 =list=, 现在运行之前看到的 ~zipIndex~ 方法不会在引发堆栈溢出的异常了.
+这里介绍的 ~Trampoline~ 是 Scala 中清除栈帧的一种通用手段. 我们可以用它来重写任何程序而不再需要栈空间了. 考虑一个具有如下形式的程序:
+
+#+BEGIN_SRC scala
+  val x = f()
+  val y = g(x)
+  h(y)
+#+END_SRC
+
+可以非常轻松的这样重写:
+
+#+BEGIN_SRC scala
+  for {
+    x <- f()
+    y <- g(x)
+    z <- h(y)
+  } yield z
+#+END_SRC
+
+当然, 需要定义如下的隐式转换:
+
+#+BEGIN_SRC scala
+  implicit def step[A](a: => A): Trampoline[A] =
+    More(() => Done(a))
+#+END_SRC
+
+唯一不太适合用 ~step~ 转换的是(非偶然地)自递归调用. 这非常容易察觉, 当这种情况, 我们可以显示的调用 ~More~ 构造器, 例如下面的计算第 =n= 个斐波那契数的递归函数:
+
+#+BEGIN_SRC scala
+  def fib(n: Int): Trampoline[Int] =
+    if(n <= 1) Done(n) else for {
+      x <- More(() => fib(n-1))
+      y <- More(() => fib(n-2))
+    } yield x + y
+#+END_SRC
+
+由于这种转换是完全机械化的, 可能有人会写一个编译器插件或者扩展 Scala 的编译期将所有程序转换成这样.
+
+** 多任务
+
+我们已经看到如何使用 ~flatMap~ 序列化的组合 ~Trampoline~. 但其实可以通过交叉计算来并行的组合它们:
+
+#+BEGIN_SRC scala
+  def zip[B](b: Trampoline[B]): Trampoline[(A, B)] =
+    (this.resume, b.resume) match {
+      case (Right(a), Right(B)) => Done((a, b))
+      case (Left(a), Left(b)) =>
+        More(() => a() zip b())
+      case (Left(a), Right(b)) =>
+        More(() => a() zip Done(b))
+      case (Right(a), Left(b)) =>
+        More(() => Done(a) zip b())
+    }
+#+END_SRC
+
+为了验证, 我们引入控制台打印:
+
+#+BEGIN_SRC scala
+  val hello: Trampoline[Unit] = for {
+    _ <- print("Hello, ")
+    _ <- println("World!")
+  } yield ()
+#+END_SRC
+
+将其与自身交错执行, 然后观察结果:
+
+#+BEGIN_SRC scala
+  (hello zip hello).runT
+  // Hello, Hello, World!
+  // World!
+#+END_SRC
+
+尽管这是单线程的并行计算, 但很容易扩展到多线程的分布式计算. 对于一组待执行的 =trampoline=, 任何不是 ~Done~ 的 ~resume~ 任务都可以在任何线程执行.
+
+可以将其推广到一个完全对称的协同程序. 我们会在下一节讨论.
+
+** Free Monads: Trampoline 的推广
+
+我们可以将 ~Trampoline~ 看作事一个能通过 ~Function0~ 挂起并之后执行的协同程序. 那么它就不再是唯一一种有此性质的类型构造器了, 如果将该行为抽象, 我们就能获得如下的类型:
+
+#+BEGIN_SRC scala
+  sealed trait Free[S[+_], +A] {
+    private case class FlatMap[S[+_], A, +B](
+      a: Free[S, A],
+      f: A => Free[S, B]) extends Free[S, B]
+  }
+
+  case class Done[S[+_], +A](a: A) extends Free[S, A]
+
+  case class More[S[+_], +A](k: S[Free[S, A]]) extends Free[S, A]
+#+END_SRC
+
+#+BEGIN_QUOTE
+译者注: S 是 Function0 的推广. S 具有能够挂起计算的能力.
+#+END_QUOTE
+
+那么, ~Trampoline~ 可以如下定义:
+
+#+BEGIN_SRC scala
+type Trampoline[+A] = Free[Function0, A]
+#+END_SRC
+
+就像 ~Done~ 和 ~FlatMap~ 数据构造器一样, ~Free[S, A]~ 是任意协变的 =Functor= S 的一种 Monad. 从范畴论角度来看, 它正是该 =Functor= 生成的 =Free Monad= [4].
+S 必须是一个 =Functor= 即必须存在 Functor[S]^{3}:
+
+#+BEGIN_SRC scala
+  trait Functor[F[_]] {
+    def map[A, B](m: F[A])(f: A => B): F[B]
+  }
+#+END_SRC
+
+对 ~Function0~ 来说是显而易见的:
+
+#+BEGIN_SRC scala
+  implicit val f0Functor = new Functor[Function0] {
+    def map[A, B](a: () => A)(f: A => B) = () => f(a())
+  }
+#+END_SRC
+
+*** Free Monad 的函数
+
+为证实 Free Monad 的功效, 我们需要将之前为 ~Trampoline~ 定义的函数进行推广. 例如, 以下是 ~resume~ 的推广:
+
+#+BEGIN_SRC scala
+  final def resume(implicit S: Functor[S]): Either[S[Free[S, A]], A] =
+    this match {
+      case Done(a) => Right(a)
+      case More(k) => Left(k)
+      case a FlatMap f => a match {
+        case Done(a) => f(a).resume
+        case More(k) => Left(S.map(k)(_ flatMap f))
+        case b FlatMap g => b.flatMap((x: Any) => g(x) flatMap f).resume
+      }
+    }
+#+END_SRC
+
+注意到该定义与之前 ~Trampoline~ 的 ~resume~ 如出一辙. 有所不同的只是类型签名, 隐式的 ~Functor~ 参数, 以及我们将显式的 ~Function0~ 构造改为了 ~Functor~ 的 ~map~ 方法调用. 这也适用于其它函数, 如 ~zip~, ~map~, 和 ~flatMap~ [10]. 以下是 ~zip~ 的定义:
+
+#+BEGIN_SRC scala
+  def zip[B](b: Free[S, B])(implicit S: Functor[S]): Free[S, (A, B)] =
+    (this.resume, b.resume) match {
+      case (Right(a), Right(B)) => Done((a, b))
+      case (Left(a), Left(b)) => More(S.map(a)(x => More(S.map(b)(y => x zip y))))
+      case (Left(a), Right(b)) => More(S.map(a)(x => x zip Done(b))
+      case (Right(a), Left(b)) => More(S.map(b)(y => Done(a) zip y)
+    }
+#+END_SRC
+
+*** 普通数据类型到 Free Monad
+
+粗略的来看, 我们可以将 ~Free[S, A]~ 看作事任何以某种 ~Functor~ S 作为分支节点并以某种数据类型 A 作为叶子节点的计算. 为证明这一点, 考虑一个普通的决策树. 它是一个 =Free Monad=, 其 ~Functor~ 将每个分支节点的计算分为两部分:
+
+#+BEGIN_SRC scala
+  type Pair[+A] = (A, A)
+  type BinTree[+A] = Free[Pair, A]
+#+END_SRC
+
+~BinTree[A]~ 的 ~Done~ 的情况指的是包含一个类型为 A 的值的叶子节点. 其 ~More~ 则是一个包含两个类型为 ~BinTree[A]~ 的分支节点. 我们的 =Free Monad= (即 FlatMap 的情况) 就是对任意的节点, 给予一个树生成算法, 再将生成的树替换原有节点. 由于它是 ~Free~ 的实例, 因此 ~Trampline~ 的特性使得我们可以在恒定的时间和栈空间进行操作.
+
+为了得到一棵能够给定任意分支数量的树, 我们可以使用 ~List~ Functor:
+
+#+BEGIN_SRC scala
+  type Tree[+A] = Free[List, A]
+#+END_SRC
+
+事实上, ~List~ 本身就可以表示为 ~Free~ _^{4} 的应用:
+
+#+BEGIN_SRC scala
+type List[A] = Free[({type λ[+α] = (A, α)}#λ), Unit]
+#+END_SRC
+
+在这种表示中, 一个 ~List[A]~ 是一个协同程序, 它每次 ~resume~ 可以产生一个类型为 A 的值, 而 =Unit= 则表示当前为空. 这里的 ~bind~ 并不是真正 ~List~ 的 ~flatMap~ (也就是由一个新生成 =List= 替代每个当前元素), 而是将两个 =List= 首尾相连^{5}. 同样, 由于是 ~Free~ 的实例, 操作均在恒定的时间和栈空间中.
+
+这里所给的 ~List~ 的类型参数是一个逆变的, 但可以改为协变. 这可以作为一个小练习.
+
+*** 一个 Free 的 State Monad
+
+尽管本文所举的 =Free Monad= 的例子非常简单, 用来挂起的 =Functor= 可以是非常复杂的. 它可以以任意的组合方式来输出或等待输入. 我们可以把 ~State~ 作为一种小型语言, 这是状态的 ~set~ 和 ~put~ 定义:
+
+#+BEGIN_SRC scala
+  sealed trait StateF[S, +A]
+  case class Get[S, A](f: S => A) extends StateF[S, A]
+  case class Put[S, A](s: S, a: A) extends StateF[S, A]
+#+END_SRC
+
+在 ~Get~ 的构造器中, ~f~ 是一个接收当前状态值的函数. 而在 ~Put~ 构造器中, ~s~ 是一个新的状态, a 是计算的剩余部分 (可能用来对状态做一些事情).
+
+我们要指明当前的数据类型是一个 ~Functor~:
+
+#+BEGIN_SRC scala
+  implicit def statefFun[S] = new Functor[({type λ[+α] = StateF[S, α)})#λ] {
+    def map[A, B](m: StateF[S, A])(f: A => B) = m match {
+      case Get(g) => Get((s: S) => f(g(s)))
+      case Put(s, a) => Put(s, f(a))
+    }
+  }
+#+END_SRC
+
+我们可以直接用 ~StateF~ ~Functor~ 来生成一个类 ~State~ 的 ~Monad~:
+
+#+BEGIN_SRC scala
+  type FreeState[S, +A] = Free[({type λ[+α] = StateF[S, α)})#λ, A]
+#+END_SRC
+
+第一部分的 ~pureState~ 组合子可以由 =Free Monad= 的 ~Done~ 构造器生成:
+
+#+BEGIN_SRC scala
+  def pureState[S, A](a: A): FreeState[S, A] = Done(a)
+#+END_SRC
+
+另外的获取和设置状态的方法也可以简单定义:
+
+#+BEGIN_SRC scala
+  def getState[S]: FreeState[S, S] = More(Get(s => Done(s)))
+
+  def setState[S](s: S): FreeState[S, Unit] = More(Put(s, Done()))
+#+END_SRC
+
+执行一个 =State= 只需一个简单的循环:
+
+#+BEGIN_SRC scala
+  def evalS[S, A](s: S, t: FreeState[S, A]): A = t.resume match {
+    case Left(Get(f)) => evalS(s, f(s))
+    case Left(Put(n, a)) => evalS(n, a)
+    case Right(a) => a
+  }
+#+END_SRC
+
+现在我们可以在该 ~Monad~ 中写纯函数了. 比如, 一下是第一部分的 ~zipIndex~, 这次我们用 ~FreeState~ 的 ~Monda~:
+
+#+BEGIN_SRC scala
+  def zipIndex[A](as: List[A]): List[(Int, A)] = evalS(0, as.foldLeft(
+    pureState[Int, List[(Int, A)]](List())) {
+    (acc, a) => for {
+      rs <- acc
+      n <- getState
+      _ <- setState(n + 1)
+    } yield (n,a)::xs }).reverse
+#+END_SRC
+
+实现的方式几乎是一致的, 同时在不使用 ~Trampoline~ 的情况下使用恒定的栈空间. 这里的结论是不需要总使用 ~trampoline~ 来封装数据类型. 可以使用新的 ~Free Monad~ 来实现同样的目的.
+
+** 其它
+
+#+BEGIN_QUOTE
+后续部分是作者对当前工作的总结和展望.
+#+END_QUOTE
