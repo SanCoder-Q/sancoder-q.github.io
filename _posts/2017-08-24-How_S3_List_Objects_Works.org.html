@@ -1,0 +1,66 @@
+---
+layout: post
+title: "How S3 list objects works ?"
+---
+
+
+<p>
+Amazon Web Service (AWS) S3 is all based on the object naming mechanism. Any object in a S3 bucket has its name as an identity. Even though S3 console give us a view of the filing system with depth folders, it actually store the data all at the root. And it provides a way to allow us leveraging a concept of prefix to structure our files. This is the basic storage mechanism of S3.
+</p>
+
+<p>
+When talking about listing (scanning) the objects in a pretty large S3 bucket, AWS forth you to get the results with pagination. There is a 1000 keys upper limit for the S3 list operation. Regarding the virtually unlimited number of keys support, obviously the operation is not atomic. So it is important to know how it works. So based on the AWS documents, there is a concept called <code>marker</code> which indicates the position of the pagination scrolling. I envision that S3 will order the files naturally. Then a marker could divide the whole files to two parts: one has been scanned and the other hasn't. And when you provide a marker, S3 could know which files should be put into the next page results. So there are some cases that S3 would return an empty page if at the point no file exists in unscanned part.
+</p>
+
+<p>
+So assuming we are in the middle of scrolling, and we have a marker, the files in both parts could be changes in three ways:
+</p>
+<ul class="org-ul">
+<li>A file has been just <code>Put</code> into it.</li>
+<li>A file has been just <code>Deleted</code> from it.</li>
+<li>A file has been just <code>Updated</code> from it.</li>
+</ul>
+<p>
+And what will happen to the rest list results is illustrated as following:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Put</th>
+<th scope="col" class="org-left">Deleted</th>
+<th scope="col" class="org-left">Updated</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Scanned</td>
+<td class="org-left">Nothing</td>
+<td class="org-left">Nothing</td>
+<td class="org-left">Nothing</td>
+</tr>
+
+<tr>
+<td class="org-left">Unscanned</td>
+<td class="org-left">With the new file</td>
+<td class="org-left">Without the new file</td>
+<td class="org-left">With the updated file</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+One thing to keep in mind here is that it is all about the file names because it will determine which part should your file be divided in.
+</p>
