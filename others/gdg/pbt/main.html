@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Property-based Testing</title>
+<meta name="author" content="(屈鉴铭)"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./js/reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./js/reveal.js/css/theme/moon.css" id="theme"/>
+
+<link rel="stylesheet" href="./style/main.css"/>
+<link rel="stylesheet" href="./js/highlight.js/styles/dracula.css"/>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './js/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide"><h1 class="title">Property-based Testing</h1><h2 class="author">屈鉴铭</h2>
+</section>
+
+
+<section>
+<section id="slide-org8275bd2">
+<h2 id="org8275bd2">软件测试</h2>
+<aside class="notes">
+<p>
+抛出问题: 大家在开发过程中会写测试吗?
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgb395c7b">
+<h3 id="orgb395c7b">不写测试的理由</h3>
+<ul>
+<li>麻烦</li>
+<li>没创造性</li>
+
+</ul>
+
+<p class="fragment (appear)">
+<span class="underline">有人认为可以不写测试, 没人认为软件不需测试.</span>
+</p>
+
+<blockquote  class="fragment (appear)">
+<p>
+测试是连接实现代码和业务需求的桥梁.
+</p>
+</blockquote>
+
+</section>
+<section id="slide-orgf364969">
+<h3 id="orgf364969">测试的好处</h3>
+<ul>
+<li>测试是向需求方证明软件稳定和正确的重要方式</li>
+
+</ul>
+
+<ul>
+<li class="fragment appear">写测试可以让代码阅读者更好的理解实现代码逻辑</li>
+<li class="fragment appear">写测试可以让你的产品持续集成和持续交付</li>
+<li class="fragment appear">写测试可以快速验证实现的正确性</li>
+<li class="fragment appear">写测试可以快速发现实现过程中出现的问题</li>
+<li class="fragment appear">写测试可以帮助我们梳理和明确需求</li>
+<li class="fragment appear">写测试可以用来衡量软件维护和二次开发的成本</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+测试要写, 但是可以通过好的方式来减少不写测试的理由.
+</p>
+
+</aside>
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgfee35ad">
+<h2 id="orgfee35ad">传统测试存在的问题</h2>
+<div class="outline-text-2" id="text-orgfee35ad">
+</div>
+</section>
+<section id="slide-orgd32f25c">
+<h3 id="orgd32f25c">Example-Based Testing</h3>
+<p>
+用少量的测试采样点 (测试用例) 来覆盖待测逻辑的可能输入集合, 并将测试的结果与期望的输出进行比较.
+</p>
+
+
+<div class="figure">
+<p><img src="images/joke.png" alt="joke.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+在通常的测试中, 我们都会采用 EBT 的测试策略.
+(解释 EBT)
+这种测试写出来是什么样的呢?
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org9cfcabb">
+<h3 id="org9cfcabb">测试驱动开发 (TDD)</h3>
+
+<div class="figure">
+<p><object type="image/svg+xml" data="images/unit-test.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<aside class="notes">
+<p>
+TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用例, 再驱动代码的设计和功能的实现，最后驱动代码的再设计和重构。
+关键在于, 在进入 TDD 闭环前, 有一个隐含的重要环境是, 需要先进行定义域的(业务的)划分并将其转化为一个个的测试用例. (业务也伴随这一过程逐渐确定, 这是测试能够驱动开发的根本原因)
+但是, 没有人会告诉我们如何去划分这些业务, 这完全依赖于软件开发工程师对业务的了解和其开发经验, 来发现问题的边界和条件.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org5682bb2">
+<h3 id="org5682bb2">Happy &amp; Sad Paths</h3>
+
+<div class="figure">
+<p><img src="images/happy-sad.jpg" alt="happy-sad.jpg" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+通常我们会将业务进行归类.
+一个常见的分类方式是 Happy, sad path 分类.
+</p>
+
+<p>
+通常我们会从编写 Happy path 测试开始, 因为 happy Path 测试是最简单直接明了, 也是最具有业务价值的测试. (按套路出牌)
+之后我们需要根据对业务模型和程序语言的了解, 编写 Sad Path 测试, 这些测试用于测试各种逻辑边界, 非法输入, 空值判断, 异常数据 等 cases. 
+</p>
+
+<p>
+在这里我们很容易忽略一些 corner cases. 而且当业务非常复杂时, happy path 的测试都容易遗漏. 
+</p>
+
+<p>
+举个例子:
+</p>
+
+</aside>
+
+</section>
+<section >
+<p>
+假设我们要测试 <i>y = tan(x)</i>:
+</p>
+
+
+<div class="figure">
+<p><img src="images/tan0.png" alt="tan0.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+要验证 tan 函数的输出是否正确, 其 happy path 可以是 (0, 0) 或 (pi/4, 1).
+</p>
+
+</aside>
+
+</section>
+<section >
+<p>
+但是, 只有对 <i>y = tan(x)</i> 非常了解, 才知道: 
+</p>
+
+<blockquote nil>
+<p>
+<i>&forall; x &isin; { (2n+1)&pi;/2 | n &isin; N }, y = tan(x) &rArr; y = &infin;</i>
+</p>
+</blockquote>
+
+</section>
+<section >
+<p>
+而且, 即便是 Happy path, 实现也可能出错:
+</p>
+
+
+<div class="figure">
+<p><img src="images/tan1.png" alt="tan1.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-orge7ff9db">
+<h3 id="orge7ff9db">一个产品实例: REA</h3>
+<p>
+用字符串替换的方式将元数据通过 HTML 文件传输前端浏览器.
+</p>
+<div class="org-src-container">
+
+<pre><code class="js" >// serverConfig.regexes.page.data = /¡PAGEDATA!/
+module.exports = function (platformExtractor, data) {
+    return readHTML(platformExtractor.data.html)
+	.replace(serverConfig.regexes.page.data, data);
+}
+</code></pre>
+</div>
+
+<p>
+测试覆盖率: 100%._
+</p>
+<aside class="notes">
+<p>
+我们有一个 Isomorphic 的 React 前端项目中, 其中有一段逻辑: 
+</p>
+
+</aside>
+
+</section>
+<section >
+<p>
+直到有一天 &#x2026;
+</p>
+
+
+<div class="figure">
+<p><img src="images/replace.png" alt="replace.png" width="600px" />
+</p>
+</div>
+
+</section>
+<section >
+<p>
+问题出在哪了?
+</p>
+
+<div class="figure">
+<p><img src="images/mozilla.png" alt="mozilla.png" width="600px" />
+</p>
+</div>
+
+</section>
+<section >
+<p>
+问题出在哪了?
+</p>
+
+<div class="figure">
+<p><img src="images/replace-detail.png" alt="replace-detail.png" width="600px" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+看出来了么? 在测试覆盖率 100% 的情况下, 你的程序仍然可能出错. 这个例子教育我们, (不要用 JS)
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org0904640">
+<h3 id="org0904640">另一个产品实例: Quviq</h3>
+
+<div class="figure">
+<p><img src="images/car.png" alt="car.png" width="800px" />
+</p>
+</div>
+
+<blockquote nil>
+<p>
+Quviq found more than 200 faults in AUT@SAR Basic Software.
+</p>
+</blockquote>
+
+<aside class="notes">
+<p>
+沃尔沃请 Hughes 的公司为其寻找可能的问题. 5200个模块通过总线连接在一起, 通过一个叫做 "AUT@SAR 标准" 进行通讯. 3000 个 PBT 测试寻找出来 200 多个潜在的问题.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org97b05fe">
+<h3 id="org97b05fe">EBT 的根源问题</h3>
+<blockquote nil>
+<ul>
+<li>离散的测试采样点无法完全代表实现的输入.</li>
+<li>多个模块之间的相互影响.</li>
+
+</ul>
+</blockquote>
+
+<aside class="notes">
+<p>
+通过上面几个例子, 可以看出:
+如果是新接触某个语言, 某种框架, 某个库, 这种经验空白是很常见的.
+那么如何突破?
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd67dae2">
+<h2 id="orgd67dae2">Property-based Testing</h2>
+<p style="text-align:left;">
+<b>Test Generator:</b>
+</p>
+
+<p>
+Using random testing tool to generate tests.
+</p>
+
+<aside class="notes">
+<p>
+简单来讲, PBT 就是一种测试生成器, 它能够根据预定义的规则, 快速生成大量的随机测试, 来检查实现逻辑, 从而发现常规 EBT 很难发现的问题.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org9125ad0">
+<h3 id="org9125ad0">A little about PBT history</h3>
+<ul style="font-size:0.6em;">
+<li>[1999] QuickCheck first release by (Koen Claessen, John Hughes).</li>
+<li>[2000-2004] Papers
+<ul>
+<li><i>QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs</i> (ICFP)</li>
+<li><i>Testing Monadic Programs with QuickCheck</i></li>
+<li><i>Specification Based Testing with QuickCheck</i></li>
+<li><i>QuickCheck: Specification-based Random Testing</i></li>
+
+</ul></li>
+<li>[2007] Erlang, Java.</li>
+<li>[2015-2017] PBT Patterns. Charles O’Farrell</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+1999年 查尔姆斯理工大学的 Claessen, Hughes 基于 Haskell 发布了 PBT 的第一个测试工具 Quickcheck. 
+在本世纪初, 软件测试在行业内还没有达到今日的高度. 因此, PBT 还只是流行在学术圈. 当时其作者发表了大量的论文来推广 PBT 的概念.
+慢慢的, PBT 开始在函数式编程社区流行起来. 大家开始用 Quickcheck 来测试自己的 Haskell 函数. 
+到了 2007年, PBT 有了 Erlang 和 Java 的实现. 开始用于测试面向对象程序. 同时, Quickcheck 经过演进, 以及具备了测试外部程序的能力. 很多人用其来进行功能测试或者更 high-level 的测试. 还有很多人用来测试其它语言的编译器. 随着 PBT 的推广, 大家越来越发现, PBT 不但能够帮助开发人员有效的查找程序潜在的问题, 其对程序规则的描述对了解程序的行为非常有帮助. 
+2016, Charles 总结出了 PBT 的一些通用测试模式, 将 PBT 实践提升到方法论的高度, 使其更容易应用于产品环境的系统测试中.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org0e292a3">
+<h3 id="org0e292a3">Where can we use PBT?</h3>
+
+<div class="figure">
+<p><img src="images/pyramid.png" alt="pyramid.png" width="400px;" />
+</p>
+</div>
+
+</section>
+<section id="slide-org51fc206">
+<h3 id="org51fc206">EBT &amp; PBT</h3>
+
+<div class="figure">
+<p><img src="images/ebt.png" alt="ebt.png" width="300px" style="padding:1em;" />
+</p>
+</div>
+
+<p>
+<i>add (<ruby>1, 2<rt> known input</rt></ruby>) <ruby>===<rt> assert</rt></ruby> <ruby>3<rt> known output</rt></ruby></i>
+</p>
+
+<aside class="notes">
+<p>
+PBT 和 EBT 到底哪里不同呢?
+EBT 基于已知的输入来断言已知的输出. 例如:
+断言 1 + 2 = 3, 1 和 2 是已知输入, 3 是对应的已知输出.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org7773368">
+<h3 id="org7773368">EBT &amp; PBT</h3>
+
+<div class="figure">
+<p><img src="images/pbt.png" alt="pbt.png" width="300px" style="padding:1em;" />
+</p>
+</div>
+
+<p>
+<i>add (<ruby>x, y<rt> generated input</rt></ruby>) <ruby>===<rt> match</rt></ruby> <ruby>add (y, x)<rt> rule</rt></ruby></i>
+</p>
+
+<aside class="notes">
+<p>
+而 PBT 的输入并不是由开发人员直接给出, 而是由 PBT 框架提供的生成器生成的, 这些输入通过待测系统得到相应的输出, 再断言这些输出是否满足待测系统应当满足的特定规则.
+比如, 对于加法, 因为交换率是加法的必要条件, 我们可以测试其是否满足交换率.
+这里注意到, PBT 并不会, 也不能测试待测系统输出的结果的具体值, 只能测试待测系统的行为特性. 而这种特性就叫做 property. 
+这些 property 多多少少和数学有所关联. 因此, 即便 PBT 能够帮助我们突破经验不足的问题, 但依然要求开发人员拥有敏锐的洞察力和一定的数学建模能力.
+回到刚才正切的例子, 用 PBT 测试会是什么样的?
+</p>
+
+</aside>
+
+</section>
+<section >
+<p>
+使用 PBT 测试 <i>y = tan(x)</i>
+</p>
+
+
+<div class="figure">
+<p><img src="images/tan2.png" alt="tan2.png" />
+</p>
+</div>
+
+<aside class="notes">
+<p>
+可以从图中看出, 在定义域区间的曲线, 被生成的测试数据密集的覆盖着, 这使得待测系统的输出可以与我们期望高度的一致.
+一但定义域区间含有可能导致错误输出的数据, 那么这些特殊的测试用例就会被 PBT 框架收集起来, 汇报给我们.
+例如, 图中当输入为 &pi;/2 和 -&pi;/2 时, PBT 测试会发现正切函数会报出异常.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org85ee350">
+<h3 id="org85ee350">What about replace?</h3>
+<div class="org-src-container">
+
+<pre><code class="js" >const jsc = require("jsverify");
+
+const replaceTest =
+      jsc.forall(jsc.string, function (string) {
+	  return "¡PAGEDATA!".replace(/¡PAGEDATA!/, string) == string;
+      });
+
+return jsc.check(replaceTest, {size: 100});
+</code></pre>
+</div>
+<aside class="notes">
+<p>
+刚才说了, 在 PBT 测试中, 我们无法测试具体输出的值, 而只能测试代表行为规则的 property.
+那么怎么来确定待测系统的 property 呢?
+</p>
+
+</aside>
+
+</section>
+<section >
+<div class="org-src-container">
+
+<pre><code class="js" >{
+  counterexample: [ '$`' ],
+  counterexamplestr: '"$`"',
+  shrinks: 4,
+  exc: false,
+  tests: 57,
+  rngState: '0bc0184fd9ae3b5267'
+}
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgc4c2756">
+<h3 id="orgc4c2756">怎样寻找 property</h3>
+<ul>
+<li>SUT 做了些什么? <i>square(x) <code>=</code> x*x</i></li>
+<li>SUT 没做什么? <i>arr.sort().length <code>=</code> arr.length</i></li>
+<li>SUT 与已知系统有什么共性? <i>eq(bubbleSort(arr), quickSort(arr))</i></li>
+<li>SUT 与已知系统有什么不同? <i>isOdd(x) !== isEven(x)</i></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org5d314ff">
+<h2 id="org5d314ff">PBT Patterns</h2>
+<div class="outline-text-2" id="text-org5d314ff">
+</div>
+</section>
+<section id="slide-org27cd1e0">
+<h3 id="org27cd1e0">Round-tripping</h3>
+
+<div class="figure">
+<p><img src="images/round.png" alt="round.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="scala" >int.toString.toInt === int
+formatter.parseDateTime(formatter.print(dataTime)) == dataTime
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+存在反函数
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org69be9c8">
+<h3 id="org69be9c8">Different Order Same Result</h3>
+
+<div class="figure">
+<p><img src="images/order.png" alt="order.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="js" >list.map(x => x + 1).sorted == list.sorted.map(x => x + 1)
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+结合律
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org4b43b6a">
+<h3 id="org4b43b6a">Some things never change</h3>
+
+<div class="figure">
+<p><img src="images/same.png" alt="same.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="scala" >list.sorted.length === list.length
+list ++ List() === list
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+不变性
+如果待测系统是二元运算, 且其构成的代数系统中存在幺元
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orge5c2d82">
+<h3 id="orge5c2d82">The more things change, the more they stay the same</h3>
+
+<div class="figure">
+<p><img src="images/idempotence.png" alt="idempotence.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="scala" >list.sorted.sorted === list.sorted
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+幂等性
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgb7d45da">
+<h3 id="orgb7d45da">Compose methods</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >(listA ++ listB).reverse == listA.reverse ++ listB.reverse
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+分配率
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org6f9d43d">
+<h3 id="org6f9d43d">Hard to prove, easy to verify</h3>
+
+<div class="figure">
+<p><img src="images/hard.png" alt="hard.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="scala" >val sortedList = list.sorted
+forall { i: Int => (i < list.length && i > 0) ==> 
+  sortedList(i-1) <= sortedList(i)
+}
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgaa3118b">
+<h3 id="orgaa3118b">Test oracle</h3>
+
+<div class="figure">
+<p><img src="images/oracle.png" alt="oracle.png" />
+</p>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="scala" >list.par.map(x => x + 1) == list.map(x => x + 1) 
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+等价性.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org4a055a3">
+<h3 id="org4a055a3">Value division</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >isOdd(anyOdd) === true
+isOdd(anyEven) === false
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+以值域划分. 这个 pattern 是 PBT 和 EBT 的结合. 因为其结果是可知的.
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org882ba6e">
+<h2 id="org882ba6e">Generators</h2>
+<div class="outline-text-2" id="text-org882ba6e">
+</div>
+</section>
+<section id="slide-org595a650">
+<h3 id="org595a650">基本生成器</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >import org.scalacheck.Arbitrary._
+
+arbitrary[String].sample.get
+// "挥Ⱡ⾦墑릺亶 䫮쳤述䂢ࢴ浞滗ᢣ௸⮡噽隮焃峟"
+
+arbitrary[Int].sample.get 
+// -830952424
+
+arbitrary[Boolean].sample.get 
+// false
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org2f41f1f">
+<h3 id="org2f41f1f">容器生成器</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >arbitrary[List[Int]].sample.get 
+// List(-2147483648, 780907473, 2147483647, 2147483647, 1)
+
+arbitrary[Set[Boolean]].sample.get 
+// Set(true, false)
+
+arbitrary[Option[Boolean]].sample.get 
+// Some(true)
+
+arbitrary[Tuple2[Int, Boolean]].sample.get 
+// (-866750280,true)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org0da2c86">
+<h3 id="org0da2c86">选择生成器</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >frequency(4 -> 1, 6 -> 2).sample.get // 2
+
+oneOf(const(1), const(2)).sample.get // 2
+
+choose('a', 'z').sample.get // c
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org41da1d1">
+<h3 id="org41da1d1">条件生成器</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >choose(0, 200) suchThat (_ % 2 == 0) // 126
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org84f36fc">
+<h3 id="org84f36fc">组合生成器</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >sealed abstract class Tree
+case class Node(left: Tree, right: Tree, v: Int) extends Tree
+case class Leaf(v: Int) extends Tree
+
+val genLeaf = arbitrary[Int].map(Leaf(_))
+
+val genNode = for {
+  v <- arbitrary[Int]
+  left <- genTree
+  right <- genTree
+} yield Node(left, right, v)
+
+def genTree: Gen[Tree] = oneOf(genLeaf, genNode)
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgaa138fc">
+<h2 id="orgaa138fc">PBT 测试报告</h2>
+<p>
+如果测试报告中指出下方的输入会导致 SUT 错误, &#x2026;&#x2026;
+</p>
+<blockquote nil>
+<p>
+<code>"挥HⱠ⾦墑y릺亶 (䫮쳤述䂢$`浞滗ᢣ௸⮡噽隮焃峟"</code> 
+</p>
+</blockquote>
+
+<blockquote  class="fragment (appear)">
+<p>
+<code>"$`"</code>
+</p>
+</blockquote>
+
+</section>
+<section >
+<p>
+jsverify 失败后的测试报告:
+</p>
+<div class="org-src-container">
+
+<pre><code class="js" >{
+    counterexample: [ '$$' ],
+    counterexamplestr: '"$$"',
+    shrinks: 4,
+    exc: false,
+    tests: 388,
+    rngState: '08025de13ac94f7b68'
+}
+</code></pre>
+</div>
+<aside class="notes">
+<p>
+注意到测试报告并没有将一大串包含各类字符的字符串作为结果返回给我们, 相反, 它将最直观, 最能够反应错误的结果返回了.
+</p>
+
+</aside>
+
+</section>
+<section >
+<p>
+ScalaCheck 失败后的测试报告:
+</p>
+<div class="org-src-container">
+
+<pre><code class="scala" >! Falsified after 5 passed tests.
+> ARG_0: 0
+> ARG_0_ORIGINAL: 2147483647
+</code></pre>
+</div>
+
+<aside class="notes">
+<p>
+再看 scalacheck 的测试报告, 注意到其中有两个参数: 参数0 和参数0 original. 那么, 测试框架是如何做到将最直接, 简单易于 troubleshooting 的结果返回的呢?
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgf53630a">
+<h3 id="orgf53630a">Shrinking</h3>
+
+<div class="figure">
+<p><object type="image/svg+xml" data="images/shrink.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+<aside class="notes">
+<p>
+通过 Shrinking, 我们能够快速发现引起待测系统问题的最小输入. (广义的最小)
+</p>
+
+</aside>
+
+</section>
+<section >
+
+<div class="figure">
+<p><img src="images/shrink.png" alt="shrink.png" width="800px" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb996224">
+<h2 id="orgb996224">State Machine</h2>
+
+<div class="figure">
+<p><object type="image/svg+xml" data="images/state.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section >
+<p>
+Callbacks
+Command Generator
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="scala" >override def newSut(state: Int): Counter = new Counter
+override def genInitialState: Gen[Int] = Gen.const(0)
+override def genCommand(state: Int): Gen[Command] = Gen.oneOf(Inc, Reset, Get)
+
+case object Inc extends UnitCommand {
+  def preCondition(state: Int): Boolean = true 
+  def run(sut: Counter): Unit = sut.inc
+  def nextState(state: Int): Int = state + 1
+
+  def postCondition(state: Int, success: Boolean): Prop = success //assertion
+}
+</code></pre>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgd63cea2">
+<h2 id="orgd63cea2">PBT 的优势</h2>
+<ul>
+<li>更可靠 (更容易寻找系统的边界和 Bugs)</li>
+<li>更好的描述性</li>
+<li>更少的测试 (一个 PBT 可以覆盖多个 EBT 才能覆盖的逻辑)</li>
+<li>Fail-fast</li>
+<li>在并发情况下更可靠 (Race condition)</li>
+<li>迫使开发者思考 (Make testing much more interesting)</li>
+<li>迫使开发中写出更加干净的代码 (Pure functional Best practice)</li>
+
+</ul>
+
+<aside class="notes">
+<p>
+总结一下 PBT 的优势
+</p>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-org1ec290d">
+<h2 id="org1ec290d">PBT &amp; TDD</h2>
+<ul>
+<li>TDD 基于 EBT, 是一种程序设计的良好方式</li>
+<li>PBT 能够弥补 TDD 的很多不足, 使得代码更加可靠稳定.</li>
+<li>混合 EBT &amp; PBT</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org9df21cf">
+<h2 id="org9df21cf">languages</h2>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" style="font-size:.8em">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">Library</th>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">Library</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C</td>
+<td class="org-left">theft</td>
+<td class="org-left">C++</td>
+<td class="org-left">CppQuickCheck</td>
+</tr>
+
+<tr>
+<td class="org-left">Clojure</td>
+<td class="org-left">test.check</td>
+<td class="org-left">Coq</td>
+<td class="org-left">QuickChick</td>
+</tr>
+
+<tr>
+<td class="org-left">F#</td>
+<td class="org-left">FsCheck</td>
+<td class="org-left">Go</td>
+<td class="org-left">gopter</td>
+</tr>
+
+<tr>
+<td class="org-left">Haskell</td>
+<td class="org-left">Hedgehog</td>
+<td class="org-left">Java</td>
+<td class="org-left">QuickTheories</td>
+</tr>
+
+<tr>
+<td class="org-left">JavaScript</td>
+<td class="org-left">jsverify</td>
+<td class="org-left">PHP</td>
+<td class="org-left">Eris</td>
+</tr>
+
+<tr>
+<td class="org-left">Python</td>
+<td class="org-left">Hypothesis</td>
+<td class="org-left">Ruby</td>
+<td class="org-left">Rantly</td>
+</tr>
+
+<tr>
+<td class="org-left">Rust</td>
+<td class="org-left">Quickcheck</td>
+<td class="org-left">Scala</td>
+<td class="org-left">ScalaCheck</td>
+</tr>
+
+<tr>
+<td class="org-left">Swift</td>
+<td class="org-left">Swiftcheck</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<aside class="notes">
+<p>
+对有限离散的输入采用 EBT, 对宽泛, 条件复杂的输入使用 PBT
+</p>
+
+</aside>
+</section>
+</section>
+</div>
+</div>
+<script src="./js/reveal.js/lib/js/head.min.js"></script>
+<script src="./js/reveal.js/js/reveal.js"></script>
+
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+overview: true,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+transitionSpeed: 'default',
+multiplex: {
+    secret: '1510214614007847366', // null if client
+    id: '47fac6210df3b1bb', // id, obtained from socket.io server
+    url: 'https://reveal-js-multiplex-ccjbegmaii.now.sh' // Location of socket.io server
+},
+
+// Optional libraries used to extend on reveal.js
+dependencies: [
+ { src: './js/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './js/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+ { src: 'http://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js', async: true },
+ { src: './js/reveal.js/plugin/multiplex/master.js', async: true }]
+});
+</script>
+</body>
+</html>

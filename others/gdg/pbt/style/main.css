@@ -1,0 +1,31 @@
+div.slides {
+    width: 90% !important;
+}
+
+div.org-src-container {
+    background-color: #282a36;
+    padding: 5px;
+    border: 2px solid #46595d;
+}
+
+.reveal blockquote {
+    padding: 20px;
+    border: 2px solid #46595d;
+}
+
+.reveal table {
+    border: 2px solid;
+}
+
+div.org-src-container pre{
+    box-shadow: none;
+}
+
+pre.src {
+    margin: 8px auto;
+    font-size: 0.8em;
+}
+
+i {
+    font-family: serif;
+}

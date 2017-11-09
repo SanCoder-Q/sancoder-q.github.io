@@ -1,0 +1,63 @@
+#+STARTUP: indent
+#+STARTUP: showall
+#+PROPERTY: header-args :results replace
+
+#+BEGIN_EXPORT HTML
+---
+layout: post
+title: "My Lambda Calculus Note"
+---
+#+END_EXPORT
+
+#+TITLE: Lambda 演算学习笔记
+#+author: Jianming Qu
+
+* COMMENT Requirement
+
+#+BEGIN_SRC emacs-lisp
+(require 'ob-haskell)
+#+END_SRC
+
+* 形式化定义
+** λ 项
+*** 定义
+- 原子定义: 所有的变元都是 λ 项
+- 应用定义: 若 M 和 N 是 λ 项, 则 (M N) 也是 λ 项
+- 抽象定义: 若 M 是 λ 项, 且 \phi 是一个变元, 则 (λ\phi.M) 也是 λ 项
+
+*** 符号约定
+**** 括号省略约定
+- λ 项中最外层的括号可以省略. 如 (λx.x) => λx.x
+- 左结合的应用型 λ 项, 其括号可省略. 如 ((M N) P) Q) => M N P Q
+- 抽象型 λ 项 (λ\phi.M) 中, M 的最外层括号可省略. 如 λx.(y z) => λx.y z
+
+** 替换
+*** 语法全等
+M ≡ N 表示 M 和 N 有完全的结构, 且对应位置的变量也相同.
+
+*** 自由变量 (对映于约束变量)
+对于一个 λ 项 P, 可定义 P 中的自由变量的集合 FV(P) 如下:
+- FV(\phi) = {\phi}
+- FV(M N) = FV(M) ∪ FV(N)
+- FV(λ\phi.M) = FV(M)\{\phi}
+
+*** 出现
+对于 λ 项 P 和 Q, 可定义二元关系 _出现_ :
+- P 出现在 P 中;
+- 若 P 出现在 M 中或 N 中, 则 P 出现在 (M N) 中;
+- 若 P 出现在 M 中或 P ≡ \phi, 则 P 出现在 (λ\phi.M) 中.
+
+*** 替换
+对任意的 M, N, \phi, 定义 [N/\phi] M 是把 M 中出现的自由变量 \phi 替换成 N 后得到的结果, 替换操作可能改变部分约束变量的名称以避免冲突.
+- [N/\phi] \phi ≡ N
+- [N/\phi] \alpha ≡ \alpha,                      \alpha 为非 \phi 的变元
+- [N/\phi] (P Q) ≡ ([N/\phi] P [N/\phi] Q)
+- [N/\phi] (λ\phi.P) ≡ λ\phi.P
+- [N/\phi] (λ\psi.P) ≡ (λ\psi.P),            \phi ∉ FV(P)
+- [N/\phi] (λ\psi.P) ≡ λ\psi.[N/\phi] P,        \phi ∉ FV(P) 且 \psi ∉ FV(N)
+- [N/\phi] (λ\psi.P) ≡ λ\eta.[N/\phi][\eta/\psi] P,   \phi ∉ FV(P) 且 \psi ∈ FV(N)
+
+*** \alpha 变换和 \alpha 等价
+设 λ\phi.M 出现在一个 λ 项 P 中, 且设 \phi ∈ FV(M), 那么把 λ\phi.M 替换成 λ\psi.[\psi/\phi] M 的操作成为 P 的 \alpha 变换. 当且仅当 P 经过有限步 \alpha 变换后, 得到新 λ 项 Q, 则称 P 与 Q 是 \alpha 等价的, 记为 P ≡_{\alpha} Q
+
+*** 若 M ≡_{\alpha} M' 且 N ≡_{\alpha} N', 则 [N/x] M ≡_{\alpha} [N'/x] M'
