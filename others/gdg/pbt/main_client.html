@@ -31,8 +31,8 @@
 </section>
 
 <section>
-<section id="slide-org30532e2">
-<h2 id="org30532e2">序: 软件测试</h2>
+<section id="slide-orgc2eae6d">
+<h2 id="orgc2eae6d">序: 软件测试</h2>
 <span id="notes_span" style="display: none" onclick="() => RevealNotes.open()">Notes</span>
 
 <aside class="notes">
@@ -43,8 +43,8 @@
 </aside>
 
 </section>
-<section id="slide-org2871c1e">
-<h3 id="org2871c1e">什么使你不写测试</h3>
+<section id="slide-org867a28f">
+<h3 id="org867a28f">什么使你不写测试</h3>
 <ul>
 <li>麻烦, 浪费时间</li>
 <li>单调, 没创造性</li>
@@ -65,8 +65,8 @@
 </blockquote>
 
 </section>
-<section id="slide-org0ad5620">
-<h3 id="org0ad5620">写测试的好处</h3>
+<section id="slide-org07b8551">
+<h3 id="org07b8551">写测试的好处</h3>
 <ul>
 <li>可以让代码阅读者更好的理解实现代码逻辑</li>
 <li>可以让的产品持续集成和持续交付</li>
@@ -87,13 +87,13 @@
 </section>
 </section>
 <section>
-<section id="slide-orgf7af4f7">
-<h2 id="orgf7af4f7">传统测试存在的问题</h2>
-<div class="outline-text-2" id="text-orgf7af4f7">
+<section id="slide-org8348209">
+<h2 id="org8348209">传统测试存在的问题</h2>
+<div class="outline-text-2" id="text-org8348209">
 </div>
 </section>
-<section id="slide-orgd1ec1ea">
-<h3 id="orgd1ec1ea">Example-Based Testing</h3>
+<section id="slide-org9272a34">
+<h3 id="org9272a34">Example-Based Testing</h3>
 <p>
 用少量的测试样本 (测试用例) 来覆盖待测逻辑的输入区间, 并将输出与期望的结果进行比较.
 </p>
@@ -113,8 +113,8 @@ EBT 的典型应用是 TDD.
 </aside>
 
 </section>
-<section id="slide-orgfa13796">
-<h3 id="orgfa13796">测试驱动开发 (TDD)</h3>
+<section id="slide-orgfdd4680">
+<h3 id="orgfdd4680">测试驱动开发 (TDD)</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/unit-test.svg" class="org-svg">
@@ -133,8 +133,8 @@ EBT 通常会采用 Happy Sad Paths 划分.
 </aside>
 
 </section>
-<section id="slide-org27c8e71">
-<h3 id="org27c8e71">Happy &amp; Sad Paths</h3>
+<section id="slide-org8f9ab71">
+<h3 id="org8f9ab71">Happy &amp; Sad Paths</h3>
 
 <div class="figure">
 <p><img src="images/happy-sad.jpg" alt="happy-sad.jpg" />
@@ -217,8 +217,8 @@ Sad path:
 </aside>
 
 </section>
-<section id="slide-orgbc63626">
-<h3 id="orgbc63626">一个产品实例: REA</h3>
+<section id="slide-org90f29ed">
+<h3 id="org90f29ed">一个产品实例: REA</h3>
 <p>
 字符串替换:
 </p>
@@ -278,8 +278,8 @@ module.exports = function (platformExtractor, data) {
 </aside>
 
 </section>
-<section id="slide-orgb6e1d90">
-<h3 id="orgb6e1d90">EBT 的问题根源</h3>
+<section id="slide-orgebe50a9">
+<h3 id="orgebe50a9">EBT 的问题根源</h3>
 <blockquote nil>
 <ul>
 <li>离散的测试采样点无法完全代表实现的输入.</li>
@@ -299,8 +299,8 @@ module.exports = function (platformExtractor, data) {
 </aside>
 
 </section>
-<section id="slide-org5d117ca">
-<h3 id="org5d117ca">QuviQ</h3>
+<section id="slide-org8d1d5a9">
+<h3 id="org8d1d5a9">QuviQ</h3>
 
 <div class="figure">
 <p><img src="images/car.png" alt="car.png" width="800px" />
@@ -325,8 +325,8 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 </section>
 </section>
 <section>
-<section id="slide-org19dfd34">
-<h2 id="org19dfd34">Property-based Testing</h2>
+<section id="slide-org30b9b31">
+<h2 id="org30b9b31">Property-based Testing</h2>
 <p style="text-align:left;">
 <b>PBT :</b>
 </p>
@@ -343,8 +343,8 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 </aside>
 
 </section>
-<section id="slide-org120ada7">
-<h3 id="org120ada7">A little about PBT history</h3>
+<section id="slide-orgbd32ed4">
+<h3 id="orgbd32ed4">A little about PBT history</h3>
 <ul style="font-size:0.6em;">
 <li>[1999] QuickCheck first release by (Koen Claessen, John Hughes).</li>
 <li>[2000-2004] Papers
@@ -372,8 +372,8 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 </aside>
 
 </section>
-<section id="slide-orgad75598">
-<h3 id="orgad75598">PBT 能用在哪?</h3>
+<section id="slide-orgb772053">
+<h3 id="orgb772053">PBT 能用在哪?</h3>
 
 <div class="figure">
 <p><img src="images/pyramid.png" alt="pyramid.png" width="400px;" />
@@ -381,8 +381,8 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 </div>
 
 </section>
-<section id="slide-org53a10e7">
-<h3 id="org53a10e7">EBT &amp; PBT 的不同</h3>
+<section id="slide-org8368db6">
+<h3 id="org8368db6">EBT &amp; PBT 的不同</h3>
 
 <div class="figure">
 <p><img src="images/ebt.png" alt="ebt.png" width="300px" style="padding:1em;" />
@@ -403,8 +403,8 @@ EBT 基于已知的输入来断言已知的输出. 例如:
 </aside>
 
 </section>
-<section id="slide-orgd4d2132">
-<h3 id="orgd4d2132">EBT &amp; PBT</h3>
+<section id="slide-org4034dff">
+<h3 id="org4034dff">EBT &amp; PBT</h3>
 
 <div class="figure">
 <p><img src="images/pbt.png" alt="pbt.png" width="300px" style="padding:1em;" />
@@ -448,8 +448,8 @@ EBT 基于已知的输入来断言已知的输出. 例如:
 </aside>
 
 </section>
-<section id="slide-orgd5b1a56">
-<h3 id="orgd5b1a56">What about replace?</h3>
+<section id="slide-org1054e84">
+<h3 id="org1054e84">What about replace?</h3>
 <div class="org-src-container">
 
 <pre><code class="js" >const jsc = require("jsverify");
@@ -486,8 +486,8 @@ return jsc.check(replaceTest, {size: 100});
 </aside>
 
 </section>
-<section id="slide-orgd8e926f">
-<h3 id="orgd8e926f">怎样寻找 property</h3>
+<section id="slide-org7e6f1b2">
+<h3 id="org7e6f1b2">怎样寻找 property</h3>
 <ul>
 <li>SUT 做了些什么? <i>square(x) <code>=</code> x*x</i></li>
 <li>SUT 没做什么? <i>arr.sort().length <code>=</code> arr.length</i></li>
@@ -499,13 +499,13 @@ return jsc.check(replaceTest, {size: 100});
 </section>
 </section>
 <section>
-<section id="slide-org5dc1c4f">
-<h2 id="org5dc1c4f">PBT Patterns</h2>
-<div class="outline-text-2" id="text-org5dc1c4f">
+<section id="slide-org8f82181">
+<h2 id="org8f82181">PBT Patterns</h2>
+<div class="outline-text-2" id="text-org8f82181">
 </div>
 </section>
-<section id="slide-orge2161ba">
-<h3 id="orge2161ba">Round-tripping</h3>
+<section id="slide-org32edd6a">
+<h3 id="org32edd6a">Round-tripping</h3>
 
 <div class="figure">
 <p><img src="images/round.png" alt="round.png" />
@@ -527,8 +527,8 @@ formatter.parseDateTime(formatter.print(dataTime)) == dataTime
 </aside>
 
 </section>
-<section id="slide-orgb76bb96">
-<h3 id="orgb76bb96">Different Order Same Result</h3>
+<section id="slide-orgfa6d593">
+<h3 id="orgfa6d593">Different Order Same Result</h3>
 
 <div class="figure">
 <p><img src="images/order.png" alt="order.png" />
@@ -549,8 +549,8 @@ formatter.parseDateTime(formatter.print(dataTime)) == dataTime
 </aside>
 
 </section>
-<section id="slide-org6aadad1">
-<h3 id="org6aadad1">Some things never change</h3>
+<section id="slide-orge6b5069">
+<h3 id="orge6b5069">Some things never change</h3>
 
 <div class="figure">
 <p><img src="images/same.png" alt="same.png" />
@@ -573,8 +573,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-orgd15a159">
-<h3 id="orgd15a159">The more things change, the more they stay the same</h3>
+<section id="slide-orgec5552c">
+<h3 id="orgec5552c">The more things change, the more they stay the same</h3>
 
 <div class="figure">
 <p><img src="images/idempotence.png" alt="idempotence.png" />
@@ -595,8 +595,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-orgd2d4ea5">
-<h3 id="orgd2d4ea5">Compose methods</h3>
+<section id="slide-orgcbdfe28">
+<h3 id="orgcbdfe28">Compose methods</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >(listA ++ listB).reverse == listA.reverse ++ listB.reverse
@@ -611,8 +611,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-org48c5cd0">
-<h3 id="org48c5cd0">Hard to prove, easy to verify</h3>
+<section id="slide-org8a2f73d">
+<h3 id="org8a2f73d">Hard to prove, easy to verify</h3>
 
 <div class="figure">
 <p><img src="images/hard.png" alt="hard.png" />
@@ -629,8 +629,8 @@ forall { i: Int => (i < list.length && i > 0) ==>
 </div>
 
 </section>
-<section id="slide-org6ce8560">
-<h3 id="org6ce8560">Test oracle</h3>
+<section id="slide-org378dfc6">
+<h3 id="org378dfc6">Test oracle</h3>
 
 <div class="figure">
 <p><img src="images/oracle.png" alt="oracle.png" />
@@ -651,8 +651,8 @@ forall { i: Int => (i < list.length && i > 0) ==>
 </aside>
 
 </section>
-<section id="slide-org018f6d3">
-<h3 id="org018f6d3">Value division</h3>
+<section id="slide-org27d865d">
+<h3 id="org27d865d">Value division</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >isOdd(anyOdd) === true
@@ -670,13 +670,13 @@ isOdd(anyEven) === false
 </section>
 </section>
 <section>
-<section id="slide-org37bb27b">
-<h2 id="org37bb27b">Generators</h2>
-<div class="outline-text-2" id="text-org37bb27b">
+<section id="slide-org156491f">
+<h2 id="org156491f">Generators</h2>
+<div class="outline-text-2" id="text-org156491f">
 </div>
 </section>
-<section id="slide-org2970a57">
-<h3 id="org2970a57">基本生成器</h3>
+<section id="slide-org0c6bb68">
+<h3 id="org0c6bb68">基本生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >import org.scalacheck.Arbitrary._
@@ -693,8 +693,8 @@ arbitrary[Boolean].sample.get
 </div>
 
 </section>
-<section id="slide-orgcfe1780">
-<h3 id="orgcfe1780">容器生成器</h3>
+<section id="slide-org4ddbfc3">
+<h3 id="org4ddbfc3">容器生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >arbitrary[List[Int]].sample.get 
@@ -712,8 +712,8 @@ arbitrary[Tuple2[Int, Boolean]].sample.get
 </div>
 
 </section>
-<section id="slide-orgf3ca2a8">
-<h3 id="orgf3ca2a8">选择生成器</h3>
+<section id="slide-org7e51c96">
+<h3 id="org7e51c96">选择生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >frequency(4 -> 1, 6 -> 2).sample.get // 2
@@ -725,8 +725,8 @@ choose('a', 'z').sample.get // c
 </div>
 
 </section>
-<section id="slide-orgf2d358c">
-<h3 id="orgf2d358c">条件生成器</h3>
+<section id="slide-org06f2aa6">
+<h3 id="org06f2aa6">条件生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >choose(0, 200) suchThat (_ % 2 == 0) // 126
@@ -734,8 +734,8 @@ choose('a', 'z').sample.get // c
 </div>
 
 </section>
-<section id="slide-org6921bc6">
-<h3 id="org6921bc6">组合生成器</h3>
+<section id="slide-org3a363b8">
+<h3 id="org3a363b8">组合生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >sealed abstract class Tree
@@ -757,10 +757,10 @@ def genTree: Gen[Tree] = oneOf(genLeaf, genNode)
 </section>
 </section>
 <section>
-<section id="slide-org2cfb0f2">
-<h2 id="org2cfb0f2">PBT 测试报告</h2>
+<section id="slide-orgc4e3dab">
+<h2 id="orgc4e3dab">PBT 测试报告</h2>
 <p>
-如果测试报告中指出下方的输入会导致 SUT 错误, &#x2026;&#x2026;
+错误是由以下输入引起的, &#x2026;&#x2026;
 </p>
 <blockquote nil>
 <p>
@@ -819,8 +819,8 @@ ScalaCheck 失败后的测试报告:
 </aside>
 
 </section>
-<section id="slide-orgb9d5910">
-<h3 id="orgb9d5910">Shrinking</h3>
+<section id="slide-orgae58a69">
+<h3 id="orgae58a69">Shrinking</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/shrink.svg" class="org-svg">
@@ -844,8 +844,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-orgdffa3b0">
-<h3 id="orgdffa3b0">怎样 PBT 一个 Counter?</h3>
+<section id="slide-orgf44deed">
+<h3 id="orgf44deed">怎样 PBT 一个 Counter?</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >class Counter {
@@ -860,8 +860,8 @@ Sorry, your browser does not support SVG.</object>
 </section>
 </section>
 <section>
-<section id="slide-orga08d1a6">
-<h2 id="orga08d1a6">State Machine</h2>
+<section id="slide-org555ecc2">
+<h2 id="org555ecc2">State Machine</h2>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/state.svg" class="org-svg">
@@ -895,8 +895,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-org2d69d40">
-<h2 id="org2d69d40">PBT 的优势</h2>
+<section id="slide-orgb6f97a9">
+<h2 id="orgb6f97a9">PBT 的优势</h2>
 <ul>
 <li>更可靠 (更容易寻找系统的边界和 Bugs)</li>
 <li>更好的描述性</li>
@@ -918,8 +918,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-orgea8c9ea">
-<h2 id="orgea8c9ea">要 PBT, 不要 TDD?</h2>
+<section id="slide-org34359f7">
+<h2 id="org34359f7">要 PBT, 不要 TDD?</h2>
 <ul>
 <li>TDD 基于 EBT, 是一种程序设计的良好方式</li>
 <li>PBT 能够弥补 TDD 的很多不足, 使得代码更加可靠稳定.</li>
@@ -936,8 +936,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-org29ceaa5">
-<h2 id="org29ceaa5">languages</h2>
+<section id="slide-org80c3889">
+<h2 id="org80c3889">languages</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" style="font-size:.8em">
 
 
@@ -1020,8 +1020,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-orge290f79">
-<h2 id="orge290f79">谢谢</h2>
+<section id="slide-org4238d18">
+<h2 id="org4238d18">谢谢</h2>
 <script>
   if(location.search.includes("notes")) {
     document.getElementById("notes_span").style.display = "block";
