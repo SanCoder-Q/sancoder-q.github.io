@@ -31,8 +31,8 @@
 </section>
 
 <section>
-<section id="slide-org51efc79">
-<h2 id="org51efc79">软件测试</h2>
+<section id="slide-org30532e2">
+<h2 id="org30532e2">序: 软件测试</h2>
 <span id="notes_span" style="display: none" onclick="() => RevealNotes.open()">Notes</span>
 
 <aside class="notes">
@@ -43,12 +43,12 @@
 </aside>
 
 </section>
-<section id="slide-org05aa6db">
-<h3 id="org05aa6db">什么使你不写测试</h3>
+<section id="slide-org2871c1e">
+<h3 id="org2871c1e">什么使你不写测试</h3>
 <ul>
 <li>麻烦, 浪费时间</li>
-<li>有 QA, 没有必要</li>
 <li>单调, 没创造性</li>
+<li>有 QA, 没有必要</li>
 
 </ul>
 
@@ -57,34 +57,29 @@
 </p>
 
 <blockquote  class="fragment (appear)">
-<p>
-测试是连接实现代码和业务需求的桥梁.
-</p>
-</blockquote>
-
-</section>
-<section id="slide-orgf9b256e">
-<h3 id="orgf9b256e">软件测试的好处</h3>
 <ul>
+<li>测试是连接实现代码和业务需求的桥梁.</li>
 <li>测试是向需求方证明软件稳定和正确的重要方式</li>
 
 </ul>
+</blockquote>
 
 </section>
-<section id="slide-orgca42102">
-<h3 id="orgca42102">写测试的好处</h3>
+<section id="slide-org0ad5620">
+<h3 id="org0ad5620">写测试的好处</h3>
 <ul>
 <li>可以让代码阅读者更好的理解实现代码逻辑</li>
-<li>可以让你的产品持续集成和持续交付</li>
+<li>可以让的产品持续集成和持续交付</li>
 <li>可以快速验证实现的正确性</li>
-<li>可以帮助我们梳理和明确需求</li>
+<li>可以帮助我们梳理和明确业务需求</li>
 <li>可以用来衡量软件维护和二次开发的成本</li>
 
 </ul>
 
 <aside class="notes">
 <p>
-测试要写, 但是可以通过好的方式来减少不写测试的理由.
+好处多, 要写
+为什么不让程序自己生成测试呢? PBT 就是一种生成测试的方法
 </p>
 
 </aside>
@@ -92,15 +87,15 @@
 </section>
 </section>
 <section>
-<section id="slide-orgb07f6d2">
-<h2 id="orgb07f6d2">传统测试存在的问题</h2>
-<div class="outline-text-2" id="text-orgb07f6d2">
+<section id="slide-orgf7af4f7">
+<h2 id="orgf7af4f7">传统测试存在的问题</h2>
+<div class="outline-text-2" id="text-orgf7af4f7">
 </div>
 </section>
-<section id="slide-org0024c0a">
-<h3 id="org0024c0a">Example-Based Testing</h3>
+<section id="slide-orgd1ec1ea">
+<h3 id="orgd1ec1ea">Example-Based Testing</h3>
 <p>
-用少量的测试采样点 (测试用例) 来覆盖待测逻辑的可能输入集合, 并将测试的结果与期望的输出进行比较.
+用少量的测试样本 (测试用例) 来覆盖待测逻辑的输入区间, 并将输出与期望的结果进行比较.
 </p>
 
 
@@ -112,15 +107,14 @@
 <aside class="notes">
 <p>
 在通常的测试中, 我们都会采用 EBT 的测试策略.
-(解释 EBT)
-这种测试写出来是什么样的呢?
+EBT 的典型应用是 TDD.
 </p>
 
 </aside>
 
 </section>
-<section id="slide-org61052a0">
-<h3 id="org61052a0">测试驱动开发 (TDD)</h3>
+<section id="slide-orgfa13796">
+<h3 id="orgfa13796">测试驱动开发 (TDD)</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/unit-test.svg" class="org-svg">
@@ -130,16 +124,17 @@ Sorry, your browser does not support SVG.</object>
 
 <aside class="notes">
 <p>
-TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用例, 再驱动代码的设计和功能的实现，最后驱动代码的再设计和重构。
-关键在于, 在进入 TDD 闭环前, 有一个隐含的重要环境是, 需要先进行定义域的(业务的)划分并将其转化为一个个的测试用例. (业务也伴随这一过程逐渐确定, 这是测试能够驱动开发的根本原因)
-但是, 没有人会告诉我们如何去划分这些业务, 这完全依赖于软件开发工程师对业务的了解和其开发经验, 来发现问题的边界和条件.
+TDD 是一种用于快速迭代的程序设计方法和开发过程.
+一个重要条件是, 需要进行定义域的(业务的)划分并将其转化为一个个的测试用例. (业务也伴随这一过程逐渐确定, 这是测试能够驱动开发的根本原因)
+如何去划分这些业务? 
+EBT 通常会采用 Happy Sad Paths 划分.
 </p>
 
 </aside>
 
 </section>
-<section id="slide-org66db3a0">
-<h3 id="org66db3a0">Happy &amp; Sad Paths</h3>
+<section id="slide-org27c8e71">
+<h3 id="org27c8e71">Happy &amp; Sad Paths</h3>
 
 <div class="figure">
 <p><img src="images/happy-sad.jpg" alt="happy-sad.jpg" />
@@ -148,17 +143,20 @@ TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用�
 
 <aside class="notes">
 <p>
-通常我们会将业务进行归类.
 一个常见的分类方式是 Happy, sad path 分类.
 </p>
 
 <p>
-通常我们会从编写 Happy path 测试开始, 因为 happy Path 测试是最简单直接明了, 也是最具有业务价值的测试. (按套路出牌)
-之后我们需要根据对业务模型和程序语言的了解, 编写 Sad Path 测试, 这些测试用于测试各种逻辑边界, 非法输入, 空值判断, 异常数据 等 cases. 
+Happy Path 测试是最简单直接明了, 也是最具有业务价值的测试. 也就是按套路出牌.
 </p>
 
 <p>
-在这里我们很容易忽略一些 corner cases. 而且当业务非常复杂时, happy path 的测试都容易遗漏. 
+编写 Sad Path 测试, 这些测试用于测试各种逻辑边界, 非法输入, 空值判断, 异常数据 等 cases. 
+这完全依赖于软件开发工程师对业务的了解和其开发经验, 来发现问题的边界和条件.
+</p>
+
+<p>
+很容易忽略一些 corner cases. 而且当业务非常复杂时, happy path 的测试都容易遗漏. 
 </p>
 
 <p>
@@ -189,19 +187,7 @@ TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用�
 </section>
 <section >
 <p>
-但是, 只有对 <i>y = tan(x)</i> 非常了解, 才知道: 
-</p>
-
-<blockquote nil>
-<p>
-<i>&forall; x &isin; { (2n+1)&pi;/2 | n &isin; N }, y = tan(x) &rArr; y = &infin;</i>
-</p>
-</blockquote>
-
-</section>
-<section >
-<p>
-而且, 即便是 Happy path, 实现也可能出错:
+需要很多测试样本来保证 Happy path 所测逻辑的正确性
 </p>
 
 
@@ -211,10 +197,30 @@ TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用�
 </div>
 
 </section>
-<section id="slide-org6934cc3">
-<h3 id="org6934cc3">一个产品实例: REA</h3>
+<section >
+
 <p>
-用字符串替换的方式将元数据通过 HTML 文件传输前端浏览器.
+Sad path:
+</p>
+
+<blockquote nil>
+<p>
+<i>&forall; x &isin; { (2n+1)&pi;/2 | n &isin; N }, y = tan(x) &rArr; y = &infin;</i>
+</p>
+</blockquote>
+
+<aside class="notes">
+<p>
+只有对 <i>y = tan(x)</i> 了解的人 才知道: 
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgbc63626">
+<h3 id="orgbc63626">一个产品实例: REA</h3>
+<p>
+字符串替换:
 </p>
 <div class="org-src-container">
 
@@ -227,14 +233,8 @@ module.exports = function (platformExtractor, data) {
 </div>
 
 <p>
-测试覆盖率: 100%._
+测试覆盖率: 100%
 </p>
-<aside class="notes">
-<p>
-我们有一个 Isomorphic 的 React 前端项目中, 其中有一段逻辑: 
-</p>
-
-</aside>
 
 </section>
 <section >
@@ -272,14 +272,14 @@ module.exports = function (platformExtractor, data) {
 
 <aside class="notes">
 <p>
-看出来了么? 在测试覆盖率 100% 的情况下, 你的程序仍然可能出错. 这个例子教育我们, (不要用 JS)
+即便在测试覆盖率 100% 的情况下, 你的程序仍然可能出错. 这个例子教育我们, (不要用 JS)
 </p>
 
 </aside>
 
 </section>
-<section id="slide-org3a025b7">
-<h3 id="org3a025b7">EBT 的问题根源</h3>
+<section id="slide-orgb6e1d90">
+<h3 id="orgb6e1d90">EBT 的问题根源</h3>
 <blockquote nil>
 <ul>
 <li>离散的测试采样点无法完全代表实现的输入.</li>
@@ -290,16 +290,17 @@ module.exports = function (platformExtractor, data) {
 
 <aside class="notes">
 <p>
-通过上面几个例子, 可以看出:
-如果是新接触某个语言, 某种框架, 某个库, 这种经验空白是很常见的.
-那么如何突破?
+我的总结, 因为经验和对业务不足够了解, 开发人员对测试输入的划分不合理.
+经验空白是很常见的: 如果是新接触某个语言, 某种框架, 某个库.
+业务理解不到位经常发生.
+那么如何突破, 如何逆袭?
 </p>
 
 </aside>
 
 </section>
-<section id="slide-org7dec16f">
-<h3 id="org7dec16f">QuviQ</h3>
+<section id="slide-org5d117ca">
+<h3 id="org5d117ca">QuviQ</h3>
 
 <div class="figure">
 <p><img src="images/car.png" alt="car.png" width="800px" />
@@ -314,7 +315,9 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 
 <aside class="notes">
 <p>
-沃尔沃请 Hughes 的公司为其寻找可能的问题. 5200个模块通过总线连接在一起, 通过一个叫做 "AUT@SAR 标准" 进行通讯. 3000 个 PBT 测试寻找出来 200 多个潜在的问题.
+5200个模块通过总线连接在一起. 
+通过 3000 个 PBT 测试寻找出来 200 多个潜在的问题.
+这些测试人员对待测系统的业务和语言并不是非常的了解.
 </p>
 
 </aside>
@@ -322,26 +325,26 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 </section>
 </section>
 <section>
-<section id="slide-org60d0027">
-<h2 id="org60d0027">Property-based Testing</h2>
+<section id="slide-org19dfd34">
+<h2 id="org19dfd34">Property-based Testing</h2>
 <p style="text-align:left;">
-<b>Test Generator:</b>
+<b>PBT :</b>
 </p>
 
 <p>
-Using random testing tool to generate tests.
+能够生成大量测试的随机测试工具.
 </p>
 
 <aside class="notes">
 <p>
-简单来讲, PBT 就是一种测试生成器, 它能够根据预定义的规则, 快速生成大量的随机测试, 来检查实现逻辑, 从而发现常规 EBT 很难发现的问题.
+能够根据预定义的规则, 快速生成大量的随机测试, 来检查实现逻辑, 从而发现常规 EBT 很难发现的问题.
 </p>
 
 </aside>
 
 </section>
-<section id="slide-org5b9bfb9">
-<h3 id="org5b9bfb9">A little about PBT history</h3>
+<section id="slide-org120ada7">
+<h3 id="org120ada7">A little about PBT history</h3>
 <ul style="font-size:0.6em;">
 <li>[1999] QuickCheck first release by (Koen Claessen, John Hughes).</li>
 <li>[2000-2004] Papers
@@ -369,8 +372,8 @@ Using random testing tool to generate tests.
 </aside>
 
 </section>
-<section id="slide-org4b58a54">
-<h3 id="org4b58a54">Where can we use PBT?</h3>
+<section id="slide-orgad75598">
+<h3 id="orgad75598">PBT 能用在哪?</h3>
 
 <div class="figure">
 <p><img src="images/pyramid.png" alt="pyramid.png" width="400px;" />
@@ -378,8 +381,8 @@ Using random testing tool to generate tests.
 </div>
 
 </section>
-<section id="slide-org70c2ee0">
-<h3 id="org70c2ee0">EBT &amp; PBT</h3>
+<section id="slide-org53a10e7">
+<h3 id="org53a10e7">EBT &amp; PBT 的不同</h3>
 
 <div class="figure">
 <p><img src="images/ebt.png" alt="ebt.png" width="300px" style="padding:1em;" />
@@ -400,8 +403,8 @@ EBT 基于已知的输入来断言已知的输出. 例如:
 </aside>
 
 </section>
-<section id="slide-org03fbebf">
-<h3 id="org03fbebf">EBT &amp; PBT</h3>
+<section id="slide-orgd4d2132">
+<h3 id="orgd4d2132">EBT &amp; PBT</h3>
 
 <div class="figure">
 <p><img src="images/pbt.png" alt="pbt.png" width="300px" style="padding:1em;" />
@@ -445,8 +448,8 @@ EBT 基于已知的输入来断言已知的输出. 例如:
 </aside>
 
 </section>
-<section id="slide-orge694b0a">
-<h3 id="orge694b0a">What about replace?</h3>
+<section id="slide-orgd5b1a56">
+<h3 id="orgd5b1a56">What about replace?</h3>
 <div class="org-src-container">
 
 <pre><code class="js" >const jsc = require("jsverify");
@@ -459,14 +462,6 @@ const replaceTest =
 return jsc.check(replaceTest, {size: 100});
 </code></pre>
 </div>
-<aside class="notes">
-<p>
-刚才说了, 在 PBT 测试中, 我们无法测试具体输出的值, 而只能测试代表行为规则的 property.
-那么怎么来确定待测系统的 property 呢?
-</p>
-
-</aside>
-
 </section>
 <section >
 <div class="org-src-container">
@@ -482,9 +477,17 @@ return jsc.check(replaceTest, {size: 100});
 </code></pre>
 </div>
 
+<aside class="notes">
+<p>
+在 PBT 测试中, 我们无法测试具体输出的值, 而只能测试代表行为规则的 property.
+那么怎么来确定待测系统的 property 呢?
+</p>
+
+</aside>
+
 </section>
-<section id="slide-org7086f2d">
-<h3 id="org7086f2d">怎样寻找 property</h3>
+<section id="slide-orgd8e926f">
+<h3 id="orgd8e926f">怎样寻找 property</h3>
 <ul>
 <li>SUT 做了些什么? <i>square(x) <code>=</code> x*x</i></li>
 <li>SUT 没做什么? <i>arr.sort().length <code>=</code> arr.length</i></li>
@@ -496,13 +499,13 @@ return jsc.check(replaceTest, {size: 100});
 </section>
 </section>
 <section>
-<section id="slide-orgdf60691">
-<h2 id="orgdf60691">PBT Patterns</h2>
-<div class="outline-text-2" id="text-orgdf60691">
+<section id="slide-org5dc1c4f">
+<h2 id="org5dc1c4f">PBT Patterns</h2>
+<div class="outline-text-2" id="text-org5dc1c4f">
 </div>
 </section>
-<section id="slide-org5f8066a">
-<h3 id="org5f8066a">Round-tripping</h3>
+<section id="slide-orge2161ba">
+<h3 id="orge2161ba">Round-tripping</h3>
 
 <div class="figure">
 <p><img src="images/round.png" alt="round.png" />
@@ -524,8 +527,8 @@ formatter.parseDateTime(formatter.print(dataTime)) == dataTime
 </aside>
 
 </section>
-<section id="slide-org47b6c0e">
-<h3 id="org47b6c0e">Different Order Same Result</h3>
+<section id="slide-orgb76bb96">
+<h3 id="orgb76bb96">Different Order Same Result</h3>
 
 <div class="figure">
 <p><img src="images/order.png" alt="order.png" />
@@ -546,8 +549,8 @@ formatter.parseDateTime(formatter.print(dataTime)) == dataTime
 </aside>
 
 </section>
-<section id="slide-orgd858933">
-<h3 id="orgd858933">Some things never change</h3>
+<section id="slide-org6aadad1">
+<h3 id="org6aadad1">Some things never change</h3>
 
 <div class="figure">
 <p><img src="images/same.png" alt="same.png" />
@@ -570,8 +573,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-org5f48162">
-<h3 id="org5f48162">The more things change, the more they stay the same</h3>
+<section id="slide-orgd15a159">
+<h3 id="orgd15a159">The more things change, the more they stay the same</h3>
 
 <div class="figure">
 <p><img src="images/idempotence.png" alt="idempotence.png" />
@@ -592,8 +595,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-org62df1b4">
-<h3 id="org62df1b4">Compose methods</h3>
+<section id="slide-orgd2d4ea5">
+<h3 id="orgd2d4ea5">Compose methods</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >(listA ++ listB).reverse == listA.reverse ++ listB.reverse
@@ -608,8 +611,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-org6748887">
-<h3 id="org6748887">Hard to prove, easy to verify</h3>
+<section id="slide-org48c5cd0">
+<h3 id="org48c5cd0">Hard to prove, easy to verify</h3>
 
 <div class="figure">
 <p><img src="images/hard.png" alt="hard.png" />
@@ -626,8 +629,8 @@ forall { i: Int => (i < list.length && i > 0) ==>
 </div>
 
 </section>
-<section id="slide-org1d35d8a">
-<h3 id="org1d35d8a">Test oracle</h3>
+<section id="slide-org6ce8560">
+<h3 id="org6ce8560">Test oracle</h3>
 
 <div class="figure">
 <p><img src="images/oracle.png" alt="oracle.png" />
@@ -648,8 +651,8 @@ forall { i: Int => (i < list.length && i > 0) ==>
 </aside>
 
 </section>
-<section id="slide-orga27ea75">
-<h3 id="orga27ea75">Value division</h3>
+<section id="slide-org018f6d3">
+<h3 id="org018f6d3">Value division</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >isOdd(anyOdd) === true
@@ -667,13 +670,13 @@ isOdd(anyEven) === false
 </section>
 </section>
 <section>
-<section id="slide-orgfb1e1bd">
-<h2 id="orgfb1e1bd">Generators</h2>
-<div class="outline-text-2" id="text-orgfb1e1bd">
+<section id="slide-org37bb27b">
+<h2 id="org37bb27b">Generators</h2>
+<div class="outline-text-2" id="text-org37bb27b">
 </div>
 </section>
-<section id="slide-orgab64983">
-<h3 id="orgab64983">基本生成器</h3>
+<section id="slide-org2970a57">
+<h3 id="org2970a57">基本生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >import org.scalacheck.Arbitrary._
@@ -690,8 +693,8 @@ arbitrary[Boolean].sample.get
 </div>
 
 </section>
-<section id="slide-org42816f1">
-<h3 id="org42816f1">容器生成器</h3>
+<section id="slide-orgcfe1780">
+<h3 id="orgcfe1780">容器生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >arbitrary[List[Int]].sample.get 
@@ -709,8 +712,8 @@ arbitrary[Tuple2[Int, Boolean]].sample.get
 </div>
 
 </section>
-<section id="slide-orgfcfd3a5">
-<h3 id="orgfcfd3a5">选择生成器</h3>
+<section id="slide-orgf3ca2a8">
+<h3 id="orgf3ca2a8">选择生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >frequency(4 -> 1, 6 -> 2).sample.get // 2
@@ -722,8 +725,8 @@ choose('a', 'z').sample.get // c
 </div>
 
 </section>
-<section id="slide-orgcf72cbd">
-<h3 id="orgcf72cbd">条件生成器</h3>
+<section id="slide-orgf2d358c">
+<h3 id="orgf2d358c">条件生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >choose(0, 200) suchThat (_ % 2 == 0) // 126
@@ -731,8 +734,8 @@ choose('a', 'z').sample.get // c
 </div>
 
 </section>
-<section id="slide-org438ad57">
-<h3 id="org438ad57">组合生成器</h3>
+<section id="slide-org6921bc6">
+<h3 id="org6921bc6">组合生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >sealed abstract class Tree
@@ -754,8 +757,8 @@ def genTree: Gen[Tree] = oneOf(genLeaf, genNode)
 </section>
 </section>
 <section>
-<section id="slide-org7f3015c">
-<h2 id="org7f3015c">PBT 测试报告</h2>
+<section id="slide-org2cfb0f2">
+<h2 id="org2cfb0f2">PBT 测试报告</h2>
 <p>
 如果测试报告中指出下方的输入会导致 SUT 错误, &#x2026;&#x2026;
 </p>
@@ -810,14 +813,14 @@ ScalaCheck 失败后的测试报告:
 
 <aside class="notes">
 <p>
-再看 scalacheck 的测试报告, 注意到其中有两个参数: 参数0 和参数0 original. 那么, 测试框架是如何做到将最直接, 简单易于 troubleshooting 的结果返回的呢?
+测试框架是如何做到将最直接, 简单易于 troubleshooting 的结果返回的呢?
 </p>
 
 </aside>
 
 </section>
-<section id="slide-orgb224bdf">
-<h3 id="orgb224bdf">Shrinking</h3>
+<section id="slide-orgb9d5910">
+<h3 id="orgb9d5910">Shrinking</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/shrink.svg" class="org-svg">
@@ -841,10 +844,24 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
+<section id="slide-orgdffa3b0">
+<h3 id="orgdffa3b0">怎样 PBT 一个 Counter?</h3>
+<div class="org-src-container">
+
+<pre><code class="scala" >class Counter {
+  var count = 0
+  def get = count
+  def inc = count = count + 1
+  def reset = count = 0
+}
+</code></pre>
+</div>
+
+</section>
 </section>
 <section>
-<section id="slide-orge42d859">
-<h2 id="orge42d859">State Machine</h2>
+<section id="slide-orga08d1a6">
+<h2 id="orga08d1a6">State Machine</h2>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/state.svg" class="org-svg">
@@ -878,8 +895,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-org723c148">
-<h2 id="org723c148">PBT 的优势</h2>
+<section id="slide-org2d69d40">
+<h2 id="org2d69d40">PBT 的优势</h2>
 <ul>
 <li>更可靠 (更容易寻找系统的边界和 Bugs)</li>
 <li>更好的描述性</li>
@@ -901,20 +918,26 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-orga65a1c3">
-<h2 id="orga65a1c3">PBT &amp; TDD</h2>
+<section id="slide-orgea8c9ea">
+<h2 id="orgea8c9ea">要 PBT, 不要 TDD?</h2>
 <ul>
 <li>TDD 基于 EBT, 是一种程序设计的良好方式</li>
 <li>PBT 能够弥补 TDD 的很多不足, 使得代码更加可靠稳定.</li>
-<li>混合 EBT &amp; PBT</li>
 
 </ul>
+
+<aside class="notes">
+<p>
+对有限离散的输入采用 EBT, 对宽泛, 条件复杂的输入使用 PBT
+</p>
+
+</aside>
 
 </section>
 </section>
 <section>
-<section id="slide-orgc3f2772">
-<h2 id="orgc3f2772">languages</h2>
+<section id="slide-org29ceaa5">
+<h2 id="org29ceaa5">languages</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" style="font-size:.8em">
 
 
@@ -994,13 +1017,11 @@ case object Inc extends UnitCommand {
 </tbody>
 </table>
 
-<aside class="notes">
-<p>
-对有限离散的输入采用 EBT, 对宽泛, 条件复杂的输入使用 PBT
-</p>
-
-</aside>
-
+</section>
+</section>
+<section>
+<section id="slide-orge290f79">
+<h2 id="orge290f79">谢谢</h2>
 <script>
   if(location.search.includes("notes")) {
     document.getElementById("notes_span").style.display = "block";
