@@ -30,10 +30,11 @@
 <section id="sec-title-slide"><h1 class="title">Property-based Testing</h1><h2 class="author">屈鉴铭</h2>
 </section>
 
-
 <section>
-<section id="slide-orgacfdf03">
-<h2 id="orgacfdf03">软件测试</h2>
+<section id="slide-org51efc79">
+<h2 id="org51efc79">软件测试</h2>
+<span id="notes_span" style="display: none" onclick="() => RevealNotes.open()">Notes</span>
+
 <aside class="notes">
 <p>
 抛出问题: 大家在开发过程中会写测试吗?
@@ -42,16 +43,17 @@
 </aside>
 
 </section>
-<section id="slide-org0dcf6d6">
-<h3 id="org0dcf6d6">不写测试的理由</h3>
+<section id="slide-org05aa6db">
+<h3 id="org05aa6db">什么使你不写测试</h3>
 <ul>
-<li>麻烦</li>
-<li>没创造性</li>
+<li>麻烦, 浪费时间</li>
+<li>有 QA, 没有必要</li>
+<li>单调, 没创造性</li>
 
 </ul>
 
 <p class="fragment (appear)">
-<span class="underline">有人认为可以不写测试, 没人认为软件不需测试.</span>
+<span class="underline">可以不写测试, 不能没有测试.</span>
 </p>
 
 <blockquote  class="fragment (appear)">
@@ -61,20 +63,22 @@
 </blockquote>
 
 </section>
-<section id="slide-org00fe532">
-<h3 id="org00fe532">测试的好处</h3>
+<section id="slide-orgf9b256e">
+<h3 id="orgf9b256e">软件测试的好处</h3>
 <ul>
 <li>测试是向需求方证明软件稳定和正确的重要方式</li>
 
 </ul>
 
+</section>
+<section id="slide-orgca42102">
+<h3 id="orgca42102">写测试的好处</h3>
 <ul>
-<li class="fragment appear">写测试可以让代码阅读者更好的理解实现代码逻辑</li>
-<li class="fragment appear">写测试可以让你的产品持续集成和持续交付</li>
-<li class="fragment appear">写测试可以快速验证实现的正确性</li>
-<li class="fragment appear">写测试可以快速发现实现过程中出现的问题</li>
-<li class="fragment appear">写测试可以帮助我们梳理和明确需求</li>
-<li class="fragment appear">写测试可以用来衡量软件维护和二次开发的成本</li>
+<li>可以让代码阅读者更好的理解实现代码逻辑</li>
+<li>可以让你的产品持续集成和持续交付</li>
+<li>可以快速验证实现的正确性</li>
+<li>可以帮助我们梳理和明确需求</li>
+<li>可以用来衡量软件维护和二次开发的成本</li>
 
 </ul>
 
@@ -85,17 +89,16 @@
 
 </aside>
 
-
 </section>
 </section>
 <section>
-<section id="slide-org1a9d25c">
-<h2 id="org1a9d25c">传统测试存在的问题</h2>
-<div class="outline-text-2" id="text-org1a9d25c">
+<section id="slide-orgb07f6d2">
+<h2 id="orgb07f6d2">传统测试存在的问题</h2>
+<div class="outline-text-2" id="text-orgb07f6d2">
 </div>
 </section>
-<section id="slide-orge29233e">
-<h3 id="orge29233e">Example-Based Testing</h3>
+<section id="slide-org0024c0a">
+<h3 id="org0024c0a">Example-Based Testing</h3>
 <p>
 用少量的测试采样点 (测试用例) 来覆盖待测逻辑的可能输入集合, 并将测试的结果与期望的输出进行比较.
 </p>
@@ -116,8 +119,8 @@
 </aside>
 
 </section>
-<section id="slide-org09ce96e">
-<h3 id="org09ce96e">测试驱动开发 (TDD)</h3>
+<section id="slide-org61052a0">
+<h3 id="org61052a0">测试驱动开发 (TDD)</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/unit-test.svg" class="org-svg">
@@ -135,8 +138,8 @@ TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用�
 </aside>
 
 </section>
-<section id="slide-orgc38b325">
-<h3 id="orgc38b325">Happy &amp; Sad Paths</h3>
+<section id="slide-org66db3a0">
+<h3 id="org66db3a0">Happy &amp; Sad Paths</h3>
 
 <div class="figure">
 <p><img src="images/happy-sad.jpg" alt="happy-sad.jpg" />
@@ -208,8 +211,8 @@ TDD 是一种用于快速迭代的开发的开发过程. 首先编写测试用�
 </div>
 
 </section>
-<section id="slide-org19ebea5">
-<h3 id="org19ebea5">一个产品实例: REA</h3>
+<section id="slide-org6934cc3">
+<h3 id="org6934cc3">一个产品实例: REA</h3>
 <p>
 用字符串替换的方式将元数据通过 HTML 文件传输前端浏览器.
 </p>
@@ -275,8 +278,28 @@ module.exports = function (platformExtractor, data) {
 </aside>
 
 </section>
-<section id="slide-org259e67a">
-<h3 id="org259e67a">另一个产品实例: Quviq</h3>
+<section id="slide-org3a025b7">
+<h3 id="org3a025b7">EBT 的问题根源</h3>
+<blockquote nil>
+<ul>
+<li>离散的测试采样点无法完全代表实现的输入.</li>
+<li>多个模块之间的相互影响.</li>
+
+</ul>
+</blockquote>
+
+<aside class="notes">
+<p>
+通过上面几个例子, 可以看出:
+如果是新接触某个语言, 某种框架, 某个库, 这种经验空白是很常见的.
+那么如何突破?
+</p>
+
+</aside>
+
+</section>
+<section id="slide-org7dec16f">
+<h3 id="org7dec16f">QuviQ</h3>
 
 <div class="figure">
 <p><img src="images/car.png" alt="car.png" width="800px" />
@@ -297,30 +320,10 @@ Quviq found more than 200 faults in AUT@SAR Basic Software.
 </aside>
 
 </section>
-<section id="slide-orgb0ebebe">
-<h3 id="orgb0ebebe">EBT 的根源问题</h3>
-<blockquote nil>
-<ul>
-<li>离散的测试采样点无法完全代表实现的输入.</li>
-<li>多个模块之间的相互影响.</li>
-
-</ul>
-</blockquote>
-
-<aside class="notes">
-<p>
-通过上面几个例子, 可以看出:
-如果是新接触某个语言, 某种框架, 某个库, 这种经验空白是很常见的.
-那么如何突破?
-</p>
-
-</aside>
-
-</section>
 </section>
 <section>
-<section id="slide-orga09bb1e">
-<h2 id="orga09bb1e">Property-based Testing</h2>
+<section id="slide-org60d0027">
+<h2 id="org60d0027">Property-based Testing</h2>
 <p style="text-align:left;">
 <b>Test Generator:</b>
 </p>
@@ -337,8 +340,8 @@ Using random testing tool to generate tests.
 </aside>
 
 </section>
-<section id="slide-orgc527431">
-<h3 id="orgc527431">A little about PBT history</h3>
+<section id="slide-org5b9bfb9">
+<h3 id="org5b9bfb9">A little about PBT history</h3>
 <ul style="font-size:0.6em;">
 <li>[1999] QuickCheck first release by (Koen Claessen, John Hughes).</li>
 <li>[2000-2004] Papers
@@ -366,8 +369,8 @@ Using random testing tool to generate tests.
 </aside>
 
 </section>
-<section id="slide-org5d167a2">
-<h3 id="org5d167a2">Where can we use PBT?</h3>
+<section id="slide-org4b58a54">
+<h3 id="org4b58a54">Where can we use PBT?</h3>
 
 <div class="figure">
 <p><img src="images/pyramid.png" alt="pyramid.png" width="400px;" />
@@ -375,8 +378,8 @@ Using random testing tool to generate tests.
 </div>
 
 </section>
-<section id="slide-org4bc725d">
-<h3 id="org4bc725d">EBT &amp; PBT</h3>
+<section id="slide-org70c2ee0">
+<h3 id="org70c2ee0">EBT &amp; PBT</h3>
 
 <div class="figure">
 <p><img src="images/ebt.png" alt="ebt.png" width="300px" style="padding:1em;" />
@@ -397,8 +400,8 @@ EBT 基于已知的输入来断言已知的输出. 例如:
 </aside>
 
 </section>
-<section id="slide-org395f20f">
-<h3 id="org395f20f">EBT &amp; PBT</h3>
+<section id="slide-org03fbebf">
+<h3 id="org03fbebf">EBT &amp; PBT</h3>
 
 <div class="figure">
 <p><img src="images/pbt.png" alt="pbt.png" width="300px" style="padding:1em;" />
@@ -442,8 +445,8 @@ EBT 基于已知的输入来断言已知的输出. 例如:
 </aside>
 
 </section>
-<section id="slide-org9be6f1f">
-<h3 id="org9be6f1f">What about replace?</h3>
+<section id="slide-orge694b0a">
+<h3 id="orge694b0a">What about replace?</h3>
 <div class="org-src-container">
 
 <pre><code class="js" >const jsc = require("jsverify");
@@ -480,8 +483,8 @@ return jsc.check(replaceTest, {size: 100});
 </div>
 
 </section>
-<section id="slide-orgf7f8639">
-<h3 id="orgf7f8639">怎样寻找 property</h3>
+<section id="slide-org7086f2d">
+<h3 id="org7086f2d">怎样寻找 property</h3>
 <ul>
 <li>SUT 做了些什么? <i>square(x) <code>=</code> x*x</i></li>
 <li>SUT 没做什么? <i>arr.sort().length <code>=</code> arr.length</i></li>
@@ -493,13 +496,13 @@ return jsc.check(replaceTest, {size: 100});
 </section>
 </section>
 <section>
-<section id="slide-org6f5946b">
-<h2 id="org6f5946b">PBT Patterns</h2>
-<div class="outline-text-2" id="text-org6f5946b">
+<section id="slide-orgdf60691">
+<h2 id="orgdf60691">PBT Patterns</h2>
+<div class="outline-text-2" id="text-orgdf60691">
 </div>
 </section>
-<section id="slide-org99ac189">
-<h3 id="org99ac189">Round-tripping</h3>
+<section id="slide-org5f8066a">
+<h3 id="org5f8066a">Round-tripping</h3>
 
 <div class="figure">
 <p><img src="images/round.png" alt="round.png" />
@@ -521,8 +524,8 @@ formatter.parseDateTime(formatter.print(dataTime)) == dataTime
 </aside>
 
 </section>
-<section id="slide-org7cb6057">
-<h3 id="org7cb6057">Different Order Same Result</h3>
+<section id="slide-org47b6c0e">
+<h3 id="org47b6c0e">Different Order Same Result</h3>
 
 <div class="figure">
 <p><img src="images/order.png" alt="order.png" />
@@ -543,8 +546,8 @@ formatter.parseDateTime(formatter.print(dataTime)) == dataTime
 </aside>
 
 </section>
-<section id="slide-org0874d55">
-<h3 id="org0874d55">Some things never change</h3>
+<section id="slide-orgd858933">
+<h3 id="orgd858933">Some things never change</h3>
 
 <div class="figure">
 <p><img src="images/same.png" alt="same.png" />
@@ -567,8 +570,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-orgc813a77">
-<h3 id="orgc813a77">The more things change, the more they stay the same</h3>
+<section id="slide-org5f48162">
+<h3 id="org5f48162">The more things change, the more they stay the same</h3>
 
 <div class="figure">
 <p><img src="images/idempotence.png" alt="idempotence.png" />
@@ -589,8 +592,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-org1b0377d">
-<h3 id="org1b0377d">Compose methods</h3>
+<section id="slide-org62df1b4">
+<h3 id="org62df1b4">Compose methods</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >(listA ++ listB).reverse == listA.reverse ++ listB.reverse
@@ -605,8 +608,8 @@ list ++ List() === list
 </aside>
 
 </section>
-<section id="slide-org78fe27d">
-<h3 id="org78fe27d">Hard to prove, easy to verify</h3>
+<section id="slide-org6748887">
+<h3 id="org6748887">Hard to prove, easy to verify</h3>
 
 <div class="figure">
 <p><img src="images/hard.png" alt="hard.png" />
@@ -623,8 +626,8 @@ forall { i: Int => (i < list.length && i > 0) ==>
 </div>
 
 </section>
-<section id="slide-org12db522">
-<h3 id="org12db522">Test oracle</h3>
+<section id="slide-org1d35d8a">
+<h3 id="org1d35d8a">Test oracle</h3>
 
 <div class="figure">
 <p><img src="images/oracle.png" alt="oracle.png" />
@@ -645,8 +648,8 @@ forall { i: Int => (i < list.length && i > 0) ==>
 </aside>
 
 </section>
-<section id="slide-org307964e">
-<h3 id="org307964e">Value division</h3>
+<section id="slide-orga27ea75">
+<h3 id="orga27ea75">Value division</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >isOdd(anyOdd) === true
@@ -664,13 +667,13 @@ isOdd(anyEven) === false
 </section>
 </section>
 <section>
-<section id="slide-org7afbc77">
-<h2 id="org7afbc77">Generators</h2>
-<div class="outline-text-2" id="text-org7afbc77">
+<section id="slide-orgfb1e1bd">
+<h2 id="orgfb1e1bd">Generators</h2>
+<div class="outline-text-2" id="text-orgfb1e1bd">
 </div>
 </section>
-<section id="slide-org717431e">
-<h3 id="org717431e">基本生成器</h3>
+<section id="slide-orgab64983">
+<h3 id="orgab64983">基本生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >import org.scalacheck.Arbitrary._
@@ -687,8 +690,8 @@ arbitrary[Boolean].sample.get
 </div>
 
 </section>
-<section id="slide-orgf13fbe5">
-<h3 id="orgf13fbe5">容器生成器</h3>
+<section id="slide-org42816f1">
+<h3 id="org42816f1">容器生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >arbitrary[List[Int]].sample.get 
@@ -706,8 +709,8 @@ arbitrary[Tuple2[Int, Boolean]].sample.get
 </div>
 
 </section>
-<section id="slide-org7eddd0f">
-<h3 id="org7eddd0f">选择生成器</h3>
+<section id="slide-orgfcfd3a5">
+<h3 id="orgfcfd3a5">选择生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >frequency(4 -> 1, 6 -> 2).sample.get // 2
@@ -719,8 +722,8 @@ choose('a', 'z').sample.get // c
 </div>
 
 </section>
-<section id="slide-orgba501da">
-<h3 id="orgba501da">条件生成器</h3>
+<section id="slide-orgcf72cbd">
+<h3 id="orgcf72cbd">条件生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >choose(0, 200) suchThat (_ % 2 == 0) // 126
@@ -728,8 +731,8 @@ choose('a', 'z').sample.get // c
 </div>
 
 </section>
-<section id="slide-org79ae7fb">
-<h3 id="org79ae7fb">组合生成器</h3>
+<section id="slide-org438ad57">
+<h3 id="org438ad57">组合生成器</h3>
 <div class="org-src-container">
 
 <pre><code class="scala" >sealed abstract class Tree
@@ -751,8 +754,8 @@ def genTree: Gen[Tree] = oneOf(genLeaf, genNode)
 </section>
 </section>
 <section>
-<section id="slide-org1449ec6">
-<h2 id="org1449ec6">PBT 测试报告</h2>
+<section id="slide-org7f3015c">
+<h2 id="org7f3015c">PBT 测试报告</h2>
 <p>
 如果测试报告中指出下方的输入会导致 SUT 错误, &#x2026;&#x2026;
 </p>
@@ -813,8 +816,8 @@ ScalaCheck 失败后的测试报告:
 </aside>
 
 </section>
-<section id="slide-orga0b529b">
-<h3 id="orga0b529b">Shrinking</h3>
+<section id="slide-orgb224bdf">
+<h3 id="orgb224bdf">Shrinking</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/shrink.svg" class="org-svg">
@@ -840,8 +843,8 @@ Sorry, your browser does not support SVG.</object>
 </section>
 </section>
 <section>
-<section id="slide-orgc20dcb4">
-<h2 id="orgc20dcb4">State Machine</h2>
+<section id="slide-orge42d859">
+<h2 id="orge42d859">State Machine</h2>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="images/state.svg" class="org-svg">
@@ -875,8 +878,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-org02e48f3">
-<h2 id="org02e48f3">PBT 的优势</h2>
+<section id="slide-org723c148">
+<h2 id="org723c148">PBT 的优势</h2>
 <ul>
 <li>更可靠 (更容易寻找系统的边界和 Bugs)</li>
 <li>更好的描述性</li>
@@ -898,8 +901,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-org672b5f8">
-<h2 id="org672b5f8">PBT &amp; TDD</h2>
+<section id="slide-orga65a1c3">
+<h2 id="orga65a1c3">PBT &amp; TDD</h2>
 <ul>
 <li>TDD 基于 EBT, 是一种程序设计的良好方式</li>
 <li>PBT 能够弥补 TDD 的很多不足, 使得代码更加可靠稳定.</li>
@@ -910,8 +913,8 @@ case object Inc extends UnitCommand {
 </section>
 </section>
 <section>
-<section id="slide-orgfd182dd">
-<h2 id="orgfd182dd">languages</h2>
+<section id="slide-orgc3f2772">
+<h2 id="orgc3f2772">languages</h2>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" style="font-size:.8em">
 
 
@@ -997,6 +1000,12 @@ case object Inc extends UnitCommand {
 </p>
 
 </aside>
+
+<script>
+  if(location.search.includes("notes")) {
+    document.getElementById("notes_span").style.display = "block";
+  }
+</script>
 </section>
 </section>
 </div>
