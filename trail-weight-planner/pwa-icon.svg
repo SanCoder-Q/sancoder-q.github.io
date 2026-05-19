@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Trail Weight Planner Icon</title>
+  <desc id="desc">A stylized mountain with a trail and a pack marker.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="#f8f4ea" />
+  <circle cx="390" cy="126" r="48" fill="#f59e0b" opacity="0.9" />
+  <path d="M92 372 220 176l92 126 46-70 62 140H92Z" fill="url(#sky)" />
+  <path d="M180 394c44-22 70-42 106-42 34 0 54 10 88 28" fill="none" stroke="#1f2a27" stroke-linecap="round" stroke-width="20" />
+  <rect x="214" y="226" width="84" height="108" rx="24" fill="#1f2a27" />
+  <path d="M228 246c0-21 13-36 28-36s28 15 28 36" fill="none" stroke="#f8f4ea" stroke-width="18" stroke-linecap="round" />
+  <path d="M256 168 204 246h104l-52-78Z" fill="#f8f4ea" opacity="0.92" />
+</svg>
